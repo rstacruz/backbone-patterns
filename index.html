@@ -28,6 +28,9 @@
 <hgroup class="header"><h1 id="backbone_patterns">Backbone patterns</h1></hgroup><p class=" brief">This is a document with best practices in Backbone. This is a massive 
 work-in-progress.</p>
 
+<p>This document assumes that you already have some knowledge of <a href="http://documentcloud.github.com/backbone/">Backbone.js</a>,
+<a href="http://jquery.com/">jQuery</a>, and of course, JavaScript itself.</p>
+
 <section class=" h1 model_patterns"><h1 id="model_patterns">Model patterns</h1>
 
 <section class=" h2 preloading_collections"><h2 id="preloading_collections">Preloading collections</h2>
@@ -112,6 +115,9 @@ application, defining your templates in JavaScript code will be unwieldy and
 difficult to maintain.</p>
 
 <p><strong>Solution:</strong> You may need some view templates to be inline in the HTML page.</p>
+
+<p>This solution has been outlined by John Resig in his blog post about <a href="http://ejohn.org/blog/javascript-micro-templating/">JavaScript 
+micro templating</a>.</p>
 
 <section class=" h3 defining_inline_views"><h3 id="defining_inline_views">Defining inline views</h3>
 <pre class=" lang- prettyprint right"><code class="html">&lt;script type="text/html" id="foo"&gt;
