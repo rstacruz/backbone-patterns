@@ -191,7 +191,7 @@ window.JST['person/edit'] = _.template(
 );
 ```
 
-You will then need to include this JavaScript in your HTML.
+You will then need to link to this JavaScript page in your HTML.
 
 ``` html
 <script src="http://myapp.com/javascripts/jst.js"></script>
@@ -205,7 +205,7 @@ views.
 ``` javascript
 var html = JST['person/edit']();
 
-var dict = { name: "Jason", email: "j.smith@gmail.com };
+var dict = { name: "Jason", email: "j.smith@gmail.com" };
 var html = JST['person/contact'](dict);
 ```
 
@@ -216,21 +216,40 @@ var html = JST['person/contact'](dict);
 * __In Sinatra__: The `sinatra-backbone` gem can take care of dynamically 
   serving JST templates.
 
-Nested views
-------------
-
-__The problem:__ You have a lot of views.
-
-Router patterns
-===============
-
-Entry and exit
---------------
-
-TODO.
-
 Conventions
 ===========
+
+Naming convention
+-----------------
+
+Classes often start in uppercase letters, while instances start with lowercase 
+letters. This is a throwback of the general Python and Ruby practice of naming
+constants as uppercase camel.
+
+``` javascript
+// Classes:
+Photo
+Album
+Author
+
+// Instances:
+photo
+myAlbum
+```
+
+For names with multiple words, JavaScript often calls for CamelCase. Using 
+underscores are often discouraged, considering most JavaScript libraries already 
+use CamelCase.
+
+``` javascript
+// Good:
+PhotoAlbum
+albumCover
+
+// Avoid:
+photo_album
+album_cover
+```
 
 Namespace convention
 --------------------
@@ -252,38 +271,8 @@ window.App.Photo = Backbone.Model.extend({
 };
 ```
 
-### Naming convention
-
-Classes often start in uppercase letters, while instances start with lowercase 
-letters. This is a throwback of the general Python and Ruby practice of naming
-constants as uppercase camel.
-
-``` javascript
-Photo      // Classes
-Album
-Author
-
-photo      // Instances
-myAlbum
-```
-
-For names with multiple words, JavaScript often calls for CamelCase. Using 
-underscores are often discouraged, considering most JavaScript libraries already 
-use CamelCase.
-
-``` javascript
-PhotoAlbum     // <= Good
-albumCover
-photo_album    // <= Avoid
-album_cover
-```
-
-### Namespace 
-
-convention
-
 Some people prefer to use namespaces based on their app's name. Consider, say, 
-     `BF.Photo` (instead of `App.Photo`) if your application name is "Bacefook."
+`BF.Photo` (instead of `App.Photo`) if your application name is "Bacefook."
 
     Models:                    App.Photo
     Collections:               App.Photos
@@ -314,7 +303,7 @@ Some prefer to have instances in the global namespace. I personally do not
 recommend this, at it gets confusing when you try to reference them
 somewhere.
 
-    Router instance:           App.router
+    Router instance:           window.router
     View instances:            window.photoView
     Singleton model instances: window.photo
     Collection instances:      window.photos
@@ -483,3 +472,10 @@ it's [contributors][c]. It is sponsored by my startup, [Sinefunc, Inc][sf].
 [rsc]: http://ricostacruz.com
 [c]:   http://github.com/rstacruz/backbone-patterns/contributors
 [sf]:  http://sinefunc.com
+
+### To do list
+
+ - Model associations
+ - View modes
+ - Nested views
+ - Router entry/exit
