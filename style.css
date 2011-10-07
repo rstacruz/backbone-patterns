@@ -1,3 +1,6 @@
+aside#toc {
+  overflow-x: hidden; }
+
 aside#toc a {
   font-size: 0.9em; }
 
