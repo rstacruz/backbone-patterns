@@ -252,26 +252,7 @@ serving JST templates.</li>
 
 </section></section><section class=" h1 conventions"><h1 id="conventions">Conventions</h1>
 
-<section class=" h2 namespace_convention"><h2 id="namespace_convention">Namespace convention</h2>
-<pre class=" lang- prettyprint right"><code class="javascript">window.App = {
-    ...
-};
-</code></pre>
-
-<p>The convention we use puts everything in one <code>App</code> namespace to keep things 
-organized properly.</p>
-
-<br class="post-pre">
-
-<pre class=" lang- prettyprint right"><code class="javascript">window.App.Photo = Backbone.Model.extend({
-    ...
-};
-</code></pre>
-<p class=" after-pre">Subsequent models, views, and other classes will be made in this namespace.</p>
-
-<br class="post-pre">
-
-<section class=" after-pre h3 naming_convention"><h3 id="naming_convention" class=" after-pre">Naming convention</h3>
+<section class=" h2 naming_convention"><h2 id="naming_convention">Naming convention</h2>
 <pre class=" lang- prettyprint right"><code class="javascript">Photo      // Classes
 Album
 Author
@@ -297,7 +278,25 @@ use CamelCase.</p>
 
 <br class="post-pre">
 
-</section><section class=" after-pre h3 namespace"><h3 id="namespace" class=" after-pre">Namespace</h3>
+</section><section class=" after-pre h2 namespace_convention"><h2 id="namespace_convention" class=" after-pre">Namespace convention</h2>
+<pre class=" lang- prettyprint right"><code class="javascript">window.App = {
+    ...
+};
+</code></pre>
+
+<p>The convention we use puts everything in one <code>App</code> namespace to keep things 
+organized properly.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">window.App.Photo = Backbone.Model.extend({
+    ...
+};
+</code></pre>
+<p class=" after-pre">Subsequent models, views, and other classes will be made in this namespace.</p>
+
+<br class="post-pre">
+
 <pre class=" lang- prettyprint right"><code>Models:                    App.Photo
 Collections:               App.Photos
 Views:                     App.PhotoView
@@ -309,15 +308,12 @@ View instances:            App.photoView
 Singleton model instances: App.photo
 Collection instances:      App.photos
 </code></pre>
-
-<p>convention</p>
-
-<p>Some people prefer to use namespaces based on their app's name. Consider, say, 
-     <code>BF.Photo</code> (instead of <code>App.Photo</code>) if your application name is "Bacefook."</p>
+<p class=" after-pre">Some people prefer to use namespaces based on their app's name. Consider, say, 
+<code>BF.Photo</code> (instead of <code>App.Photo</code>) if your application name is "Bacefook."</p>
 
 <br class="post-pre">
 
-</section><section class=" after-pre h3 variation_two-level_namespace"><h3 id="variation_two-level_namespace" class=" after-pre">Variation: two-level namespace</h3>
+<section class=" after-pre h3 variation_two-level_namespace"><h3 id="variation_two-level_namespace" class=" after-pre">Variation: two-level namespace</h3>
 <pre class=" lang- prettyprint right"><code>Models:                    App.Models.Photo
 Collections:               App.Collections.Photos
 Views:                     App.Views.Photo
@@ -534,10 +530,9 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <ul></ul></nav><h2><a href="#router_patterns">Router patterns</a></h2>
 <nav class="level-2"><h3><a href="#entry_and_exit">Entry and exit</a></h3>
 <ul></ul></nav><h2><a href="#conventions">Conventions</a></h2>
-<nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
+<nav class="level-2"><h3><a href="#naming_convention">Naming convention</a></h3>
+<ul></ul></nav><nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
 <ul>
-<li><a href="#naming_convention">Naming convention</a></li>
-<li><a href="#namespace">Namespace</a></li>
 <li><a href="#variation_two-level_namespace">Variation: two-level namespace</a></li>
 <li><a href="#variation_instances_in_global">Variation: Instances in global</a></li>
 <li><a href="#variation_classes_in_global">Variation: Classes in global</a></li>
