@@ -252,6 +252,36 @@ window.App.Photo = Backbone.Model.extend({
 };
 ```
 
+### Naming convention
+
+Classes often start in uppercase letters, while instances start with lowercase 
+letters. This is a throwback of the general Python and Ruby practice of naming
+constants as uppercase camel.
+
+``` javascript
+Photo      // Classes
+Album
+Author
+
+photo      // Instances
+myAlbum
+```
+
+For names with multiple words, JavaScript often calls for CamelCase. Using 
+underscores are often discouraged, considering most JavaScript libraries already 
+use CamelCase.
+
+``` javascript
+PhotoAlbum     // <= Good
+albumCover
+photo_album    // <= Avoid
+album_cover
+```
+
+### Namespace 
+
+convention
+
 Some people prefer to use namespaces based on their app's name. Consider, say, 
      `BF.Photo` (instead of `App.Photo`) if your application name is "Bacefook."
 
@@ -267,6 +297,7 @@ Some people prefer to use namespaces based on their app's name. Consider, say,
     Collection instances:      App.photos
 
 ### Variation: two-level namespace
+
 Some people prefer a verbose two-level version where the classes are divided ino 
 their own namespaces as well.
 
@@ -277,14 +308,27 @@ This is often done to make it easy to iterate over all available models,
     Collections:               App.Collections.Photos
     Views:                     App.Views.Photo
 
-### Variation: Instances in window
+### Variation: Instances in global
+
 Some prefer to have instances in the global namespace. I personally do not 
-recommend this.
+recommend this, at it gets confusing when you try to reference them
+somewhere.
 
     Router instance:           App.router
     View instances:            window.photoView
     Singleton model instances: window.photo
     Collection instances:      window.photos
+
+### Variation: Classes in global
+
+Some prefer to have classes in the global namespace. This makes typing them out 
+easy: you can use `new Photo` instead of `new App.Photo`.
+
+    Models:                    window.Photo
+    Collections:               window.Photos
+    Views:                     window.PhotoView
+    Main router:               window.Router
+    Custom routers:            window.SpecialRouter
 
 File naming
 -----------

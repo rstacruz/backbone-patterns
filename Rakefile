@@ -10,7 +10,7 @@ end
 desc "Uploads documentation"
 task :deploy => :build do
   # github.com/rstacruz/git-update-ghpages
-  system "git update-ghpages -i doc #{repo}"
+  system "git update-ghpages -i output #{repo}"
 end
 
 task :read => :build do
