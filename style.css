@@ -1,0 +1,32 @@
+aside#toc a {
+  font-size: 0.9em; }
+
+aside#toc h2 a {
+  text-transform: uppercase;
+  font-size: 0.9em;
+  padding: 2px 30px;
+  margin: 0 -30px;
+  background: rgba(0, 0, 0, 0.1); }
+
+aside#toc h2,
+aside#toc h3 {
+  padding-top: 1px;
+  border-top: 0; }
+
+aside#toc .level-2 ul {
+  display: none; }
+
+section.h1 {
+  padding-top: 0;
+  border-top: 0; }
+
+section.h1.anti-patterns h2 {
+  margin-bottom: 5px;
+  font-size: 1.3em; }
+
+section.h2 {
+  @include box-shadow(0 0 5px rgba(black, 0.2));
+  background: white; }
+
+section.h2 + section.h2 {
+  margin-top: 10px; }
