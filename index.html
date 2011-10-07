@@ -271,6 +271,33 @@ organized properly.</p>
 
 <br class="post-pre">
 
+<section class=" after-pre h3 naming_convention"><h3 id="naming_convention" class=" after-pre">Naming convention</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">Photo      // Classes
+Album
+Author
+
+photo      // Instances
+myAlbum
+</code></pre>
+
+<p>Classes often start in uppercase letters, while instances start with lowercase 
+letters. This is a throwback of the general Python and Ruby practice of naming
+constants as uppercase camel.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">PhotoAlbum     // &lt;= Good
+albumCover
+photo_album    // &lt;= Avoid
+album_cover
+</code></pre>
+<p class=" after-pre">For names with multiple words, JavaScript often calls for CamelCase. Using 
+underscores are often discouraged, considering most JavaScript libraries already 
+use CamelCase.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 namespace"><h3 id="namespace" class=" after-pre">Namespace</h3>
 <pre class=" lang- prettyprint right"><code>Models:                    App.Photo
 Collections:               App.Photos
 Views:                     App.PhotoView
@@ -282,12 +309,15 @@ View instances:            App.photoView
 Singleton model instances: App.photo
 Collection instances:      App.photos
 </code></pre>
-<p class=" after-pre">Some people prefer to use namespaces based on their app's name. Consider, say, 
+
+<p>convention</p>
+
+<p>Some people prefer to use namespaces based on their app's name. Consider, say, 
      <code>BF.Photo</code> (instead of <code>App.Photo</code>) if your application name is "Bacefook."</p>
 
 <br class="post-pre">
 
-<section class=" after-pre h3 variation_two-level_namespace"><h3 id="variation_two-level_namespace" class=" after-pre">Variation: two-level namespace</h3>
+</section><section class=" after-pre h3 variation_two-level_namespace"><h3 id="variation_two-level_namespace" class=" after-pre">Variation: two-level namespace</h3>
 <pre class=" lang- prettyprint right"><code>Models:                    App.Models.Photo
 Collections:               App.Collections.Photos
 Views:                     App.Views.Photo
@@ -301,7 +331,7 @@ their own namespaces as well.</p>
 
 <br class="post-pre">
 
-</section><section class=" after-pre h3 variation_instances_in_window"><h3 id="variation_instances_in_window" class=" after-pre">Variation: Instances in window</h3>
+</section><section class=" after-pre h3 variation_instances_in_global"><h3 id="variation_instances_in_global" class=" after-pre">Variation: Instances in global</h3>
 <pre class=" lang- prettyprint right"><code>Router instance:           App.router
 View instances:            window.photoView
 Singleton model instances: window.photo
@@ -309,7 +339,21 @@ Collection instances:      window.photos
 </code></pre>
 
 <p>Some prefer to have instances in the global namespace. I personally do not 
-recommend this.</p>
+recommend this, at it gets confusing when you try to reference them
+somewhere.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 variation_classes_in_global"><h3 id="variation_classes_in_global" class=" after-pre">Variation: Classes in global</h3>
+<pre class=" lang- prettyprint right"><code>Models:                    window.Photo
+Collections:               window.Photos
+Views:                     window.PhotoView
+Main router:               window.Router
+Custom routers:            window.SpecialRouter
+</code></pre>
+
+<p>Some prefer to have classes in the global namespace. This makes typing them out 
+easy: you can use <code>new Photo</code> instead of <code>new App.Photo</code>.</p>
 
 <br class="post-pre">
 
@@ -492,8 +536,11 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <ul></ul></nav><h2><a href="#conventions">Conventions</a></h2>
 <nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
 <ul>
+<li><a href="#naming_convention">Naming convention</a></li>
+<li><a href="#namespace">Namespace</a></li>
 <li><a href="#variation_two-level_namespace">Variation: two-level namespace</a></li>
-<li><a href="#variation_instances_in_window">Variation: Instances in window</a></li>
+<li><a href="#variation_instances_in_global">Variation: Instances in global</a></li>
+<li><a href="#variation_classes_in_global">Variation: Classes in global</a></li>
 </ul></nav><nav class="level-2"><h3><a href="#file_naming">File naming</a></h3>
 <ul>
 <li><a href="#the_main_namespace">The main namespace</a></li>
