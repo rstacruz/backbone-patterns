@@ -143,7 +143,7 @@ template function.</p>
   render: function() {
     // This is a dictionary object of the attributes of the models.
     // =&gt; { name: "Jason", email: "j.smith@gmail.com" }
-    var dict = this.model.getAttrs();
+    var dict = this.model.toJSON();
 
     // Pass this object onto the template function.
     // This returns an HTML string.
@@ -241,6 +241,24 @@ serving JST templates.</li>
 </section></section><section class=" h1 conventions"><h1 id="conventions">Conventions</h1>
 
 <section class=" h2 namespace_convention"><h2 id="namespace_convention">Namespace convention</h2>
+<pre class=" lang- prettyprint right"><code class="javascript">window.App = {
+    ...
+};
+</code></pre>
+
+<p>The convention we use puts everything in one <code>App</code> namespace to keep things 
+organized properly.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">window.App.Photo = Backbone.Model.extend({
+    ...
+};
+</code></pre>
+<p class=" after-pre">Subsequent models, views, and other classes will be made in this namespace.</p>
+
+<br class="post-pre">
+
 <pre class=" lang- prettyprint right"><code>Models:                    App.Photo
 Collections:               App.Photos
 Views:                     App.PhotoView
@@ -252,11 +270,7 @@ View instances:            App.photoView
 Singleton model instances: App.photo
 Collection instances:      App.photos
 </code></pre>
-
-<p>The convention we use puts everything in one <code>App</code> namespace to keep things 
-organized properly.</p>
-
-<p>Some people prefer to use namespaces based on their app's name. Consider, say, 
+<p class=" after-pre">Some people prefer to use namespaces based on their app's name. Consider, say, 
      <code>BF.Photo</code> (instead of <code>App.Photo</code>) if your application name is "Bacefook."</p>
 
 <br class="post-pre">
