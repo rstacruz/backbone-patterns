@@ -1,7 +1,13 @@
-# Backbone patterns
+# [Backbone patterns](http://ricostacruz.com/backbone-patterns)
 
 This is a document with best practices in Backbone. This is a massive 
 work-in-progress.
+
+This document assumes that you already have some knowledge of [Backbone.js][bb],
+[jQuery][jq], and of course, JavaScript itself.
+ 
+[bb]: http://documentcloud.github.com/backbone/
+[jq]: http://jquery.com/
 
 Model patterns
 ==============
@@ -92,6 +98,9 @@ application, defining your templates in JavaScript code will be unwieldy and
 difficult to maintain.
 
 __Solution:__ You may need some view templates to be inline in the HTML page.
+
+This solution has been outlined by John Resig in his blog post about [JavaScript 
+micro templating](http://ejohn.org/blog/javascript-micro-templating/).
 
 ### Defining inline views
 You can put views in an HTML `<script>` tag.
@@ -266,7 +275,7 @@ window.App = {
 Subsequent models, views, and other classes will be made in this namespace.
 
 ``` javascript
-window.App.Photo = Backbone.Model.extend({
+App.Photo = Backbone.Model.extend({
     ...
 };
 ```
@@ -457,7 +466,6 @@ $("a.photo").click(function() { ... });
 Acknowledgements
 ================
 
-
 © 2011, Rico Sta. Cruz. Released under the [MIT 
 License](http://www.opensource.org/licenses/mit-license.php).
 
@@ -478,4 +486,6 @@ it's [contributors][c]. It is sponsored by my startup, [Sinefunc, Inc][sf].
  - Model associations
  - View modes
  - Nested views
+ - Nested templates (aka partials)
  - Router entry/exit
+ - View helpers
