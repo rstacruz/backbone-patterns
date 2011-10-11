@@ -246,7 +246,53 @@ views.</p>
 <li>
 <strong>In Sinatra</strong>: The <code>sinatra-backbone</code> gem can take care of dynamically 
 serving JST templates.</li>
-</ul></section></section></section><section class=" h1 conventions"><h1 id="conventions">Conventions</h1>
+</ul></section></section><section class=" h2 partials"><h2 id="partials">Partials</h2>
+
+<p><strong>The problem:</strong> there may be parts of HTML templates that can be reused in many 
+parts of the application. Defining them more than once is not DRY, which may 
+make your application less maintainable.</p>
+
+<p><strong>Solution:</strong> separating these snippets into partials.</p>
+
+<p>Partials are templates that are meant to be used <em>inside</em> other templates.  </p>
+
+<p>One typical use of partials is for lists where the template for list items may 
+be defined as a separate template from the list itself.</p>
+
+<section class=" h3 solution"><h3 id="solution">Solution</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">TasksList = Backbone.View.extend({
+  template: _.template("
+    &lt;ul class='task_list'&gt;
+      &lt;% items.each(function(item) { %&gt;
+        &lt;%= itemTemplate(item) %&gt;
+      &lt;% }); %&gt;
+    &lt;/ul&gt;
+  "),
+
+  itemTemplate: _.template("
+    &lt;li&gt;&lt;%= name %&gt;&lt;/li&gt;
+  "),
+
+  render: function() {
+    var html = this.template({
+      items: tasks /* a collection */,
+      itemTemplate: this.itemTemplate
+    });
+
+    $(this.el).append(html);
+  }
+});
+</code></pre>
+
+<p>You can pass the template function for the partial as a parameter to the first 
+template.</p>
+
+<p>In this example, the function <code>itemTemplate</code> is passed onto the parameters for 
+<code>template()</code>.</p>
+
+<br class="post-pre">
+
+</section></section></section><section class=" after-pre h1 conventions"><h1 id="conventions" class=" after-pre">Conventions</h1>
 
 <section class=" h2 naming_convention"><h2 id="naming_convention">Naming convention</h2>
 <pre class=" lang- prettyprint right"><code class="javascript">// Classes:
@@ -513,7 +559,6 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <li>Model associations</li>
 <li>View modes</li>
 <li>Nested views</li>
-<li>Nested templates (aka partials)</li>
 <li>Router entry/exit</li>
 <li>View helpers</li>
 </ul></section></section><aside id="toc"><h1>Backbone patterns</h1>
@@ -537,6 +582,9 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <li><a href="#the_structure">The structure</a></li>
 <li><a href="#using_jst_templates">Using JST templates</a></li>
 <li><a href="#integration_notes">Integration notes</a></li>
+</ul></nav><nav class="level-2"><h3><a href="#partials">Partials</a></h3>
+<ul>
+<li><a href="#solution">Solution</a></li>
 </ul></nav><h2><a href="#conventions">Conventions</a></h2>
 <nav class="level-2"><h3><a href="#naming_convention">Naming convention</a></h3>
 <ul></ul></nav><nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
