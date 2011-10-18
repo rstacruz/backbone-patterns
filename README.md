@@ -272,6 +272,100 @@ TasksList = Backbone.View.extend({
 });
 ```
 
+Animation buffer
+----------------
+
+__The problem:__ When you have events that trigger animations, they can mess up 
+when the user clicks to fast.
+
+__The solution:__ Make a buffering system to ensure that animations are fired 
+serially (one after the other) and never parallel (at the same time).
+
+### The situation
+
+Let's say you have this innocent code that performs an animation.
+
+One fundamental flaw here is that it assumes that `.next()` will only be called 
+when it is not animating. When the user clicks "Next" while the animation is 
+working, unexpected results will occur.
+
+``` javascript
+PicturesView = Backbone.View.extend({
+  events: {
+    'click .next':     'next'
+  },
+
+  next: function() {
+    var current = this.$(".current");
+    var next    = this.$(".current + div");
+
+    if (next.length == 0) { return; }
+
+    // Make the current one move to the left via jQuery.
+    // This uses jQuery.fn.animate() that changes CSS values, then fires
+    // the function supplied when it's done.
+    current.animate({ left: -300, opacity: 0 }, function() {
+      current.removeClass('.current');
+      next.addClass('.current');
+    });
+  }
+});
+```
+
+### The solution
+
+Here's a simple buffering solution. It provides two commands:
+
+ * `add(fn)` which adds a given function to the buffer, and
+ * `next()` which moves onto the next command.
+
+To use this, put your animations inside an anonymous function to be passed onto 
+`add()`. Be sure to trigger `next()` when the animations are done.
+
+``` javascript
+Buffer = {
+  commands: [],
+
+  // Adds a command to the buffer, and executes it if it's the only command
+  // to be ran.
+  add: function(fn) {
+    this.commands.push(fn);
+    if (this.commands.length == 1) fn();
+  },
+
+  // Moves onto the next command in the buffer.
+  next: function() {
+    this.commands.shift();
+    if (this.commands.length) this.commands.shift()();
+  }
+};
+```
+
+### Example
+
+This is our example from a while ago that has been modified to use the bufferer.
+
+``` javascript
+next: function() {
+  var current = this.$(".current");
+  var next    = this.$(".current + div");
+
+  if (next.length == 0) { return; }
+
+  // Ensure that the animation will not happen while another animation is
+  // ongoing.
+  Buffer.add(function() {
+    current.animate({ left: -300, opacity: 0 }, function() {
+      current.removeClass('.current');
+      next.addClass('.current');
+
+      // Trigger the next animation.
+      Buffer.next();
+    });
+  });
+}
+```
+
 Conventions
 ===========
 
@@ -352,17 +446,6 @@ This is often done to make it easy to iterate over all available models,
     Models:                    App.Models.Photo
     Collections:               App.Collections.Photos
     Views:                     App.Views.Photo
-
-### Variation: Instances in global
-
-Some prefer to have instances in the global namespace. I personally do not 
-recommend this, at it gets confusing when you try to reference them
-somewhere.
-
-    Router instance:           window.router
-    View instances:            window.photoView
-    Singleton model instances: window.photo
-    Collection instances:      window.photos
 
 ### Variation: Classes in global
 
