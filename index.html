@@ -292,6 +292,102 @@ template.</p>
 
 <br class="post-pre">
 
+</section></section><section class=" after-pre h2 animation_buffer"><h2 id="animation_buffer" class=" after-pre">Animation buffer</h2>
+
+<p><strong>The problem:</strong> When you have events that trigger animations, they can mess up 
+when the user clicks to fast.</p>
+
+<p><strong>The solution:</strong> Make a buffering system to ensure that animations are fired 
+serially (one after the other) and never parallel (at the same time).</p>
+
+<section class=" h3 the_situation"><h3 id="the_situation">The situation</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">PicturesView = Backbone.View.extend({
+  events: {
+    'click .next':     'next'
+  },
+
+  next: function() {
+    var current = this.$(".current");
+    var next    = this.$(".current + div");
+
+    if (next.length == 0) { return; }
+
+    // Make the current one move to the left via jQuery.
+    // This uses jQuery.fn.animate() that changes CSS values, then fires
+    // the function supplied when it's done.
+    current.animate({ left: -300, opacity: 0 }, function() {
+      current.removeClass('.current');
+      next.addClass('.current');
+    });
+  }
+});
+</code></pre>
+
+<p>Let's say you have this innocent code that performs an animation.</p>
+
+<p>One fundamental flaw here is that it assumes that <code>.next()</code> will only be called 
+when it is not animating. When the user clicks "Next" while the animation is 
+working, unexpected results will occur.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 the_solution"><h3 id="the_solution" class=" after-pre">The solution</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">Buffer = {
+  commands: [],
+
+  // Adds a command to the buffer, and executes it if it's the only command
+  // to be ran.
+  add: function(fn) {
+    this.commands.push(fn);
+    if (this.commands.length == 1) fn();
+  },
+
+  // Moves onto the next command in the buffer.
+  next: function() {
+    this.commands.shift();
+    if (this.commands.length) this.commands.shift()();
+  }
+};
+</code></pre>
+
+<p>Here's a simple buffering solution. It provides two commands:</p>
+
+<ul>
+<li>
+<code>add(fn)</code> which adds a given function to the buffer, and</li>
+<li>
+<code>next()</code> which moves onto the next command.</li>
+</ul>
+<p>To use this, put your animations inside an anonymous function to be passed onto 
+<code>add()</code>. Be sure to trigger <code>next()</code> when the animations are done.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 example"><h3 id="example" class=" after-pre">Example</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">next: function() {
+  var current = this.$(".current");
+  var next    = this.$(".current + div");
+
+  if (next.length == 0) { return; }
+
+  // Ensure that the animation will not happen while another animation is
+  // ongoing.
+  Buffer.add(function() {
+    current.animate({ left: -300, opacity: 0 }, function() {
+      current.removeClass('.current');
+      next.addClass('.current');
+
+      // Trigger the next animation.
+      Buffer.next();
+    });
+  });
+}
+</code></pre>
+
+<p>This is our example from a while ago that has been modified to use the bufferer.</p>
+
+<br class="post-pre">
+
 </section></section></section><section class=" after-pre h1 conventions"><h1 id="conventions" class=" after-pre">Conventions</h1>
 
 <section class=" h2 naming_convention"><h2 id="naming_convention">Naming convention</h2>
@@ -572,6 +668,11 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 </ul></nav><nav class="level-2"><h3><a href="#partials">Partials</a></h3>
 <ul>
 <li><a href="#solution">Solution</a></li>
+</ul></nav><nav class="level-2"><h3><a href="#animation_buffer">Animation buffer</a></h3>
+<ul>
+<li><a href="#the_situation">The situation</a></li>
+<li><a href="#the_solution">The solution</a></li>
+<li><a href="#example">Example</a></li>
 </ul></nav><h2><a href="#conventions">Conventions</a></h2>
 <nav class="level-2"><h3><a href="#naming_convention">Naming convention</a></h3>
 <ul></ul></nav><nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
