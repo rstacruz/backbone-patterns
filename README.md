@@ -276,7 +276,7 @@ Animation buffer
 ----------------
 
 __The problem:__ When you have events that trigger animations, they can mess up 
-when the user clicks to fast.
+when the user clicks too fast.
 
 __The solution:__ Make a buffering system to ensure that animations are fired 
 serially (one after the other) and never parallel (at the same time).
