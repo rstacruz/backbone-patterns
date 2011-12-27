@@ -577,6 +577,11 @@ Things outside views
 
 Put things in your view class code as much as possible.
 
+Models should never know about views
+------------------------------------
+
+Models should always be independent of backbone views and never reference views.
+
 Event handlers outside views
 ----------------------------
 
