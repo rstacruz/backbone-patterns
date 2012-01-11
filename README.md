@@ -17,7 +17,8 @@ Preloading collections
 
 __The problem:__ Your application needs models to be available on page load.
 
-__Solution:__ Preload model instances by creating collections on page load.
+__Solution:__ Preload (or *bootstrap*) model instances by creating collections
+on page load.
 
 ### Define collections
 
