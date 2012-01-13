@@ -12,7 +12,7 @@ This document assumes that you already have some knowledge of [Backbone.js][bb],
 Model patterns
 ==============
 
-Preloading collections
+Preloading/Bootstrapping collections
 ----------------------
 
 __The problem:__ Your application needs models to be available on page load.
