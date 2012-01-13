@@ -152,7 +152,7 @@ ContactView = Backbone.View.extend({
 
     // Pass this object onto the template function.
     // This returns an HTML string.
-    var html = this.template(hash);
+    var html = this.template(dict);
 
     // Append the result to the view's element.
     $(this.el).append(html);
