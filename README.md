@@ -506,8 +506,8 @@ Naming convention
 -----------------
 
 Classes often start in uppercase letters, while instances start with lowercase
-letters. This is a throwback of the general Python and Ruby practice of naming
-constants as uppercase camel.
+letters. This is a throwback of the general Python and Ruby practice of having
+constant names start with uppercase letters.
 
 ``` javascript
 // Classes:
@@ -521,15 +521,14 @@ myAlbum
 ```
 
 For names with multiple words, JavaScript often calls for CamelCase. Using
-underscores are often discouraged, considering most JavaScript libraries already
-use CamelCase.
+underscores are discouraged in JavaScript.
 
 ``` javascript
-// Good:
+// Good (CamelCase):
 PhotoAlbum
 albumCover
 
-// Avoid:
+// Avoid (under_scores):
 photo_album
 album_cover
 ```
