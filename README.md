@@ -330,12 +330,13 @@ Buffer = {
   // to be ran.
   add: function(fn) {
     this.commands.push(fn);
-    if (this.commands.length == 1) this.next();
+    if (this.commands.length == 1) fn();
   },
 
   // Moves onto the next command in the buffer.
   next: function() {
-    if (this.commands.length) this.commands.shift()();
+    this.commands.shift();
+    if (this.commands.length) this.commands[0]();
   }
 };
 ```
