@@ -511,22 +511,21 @@ myAlbum
 </code></pre>
 
 <p>Classes often start in uppercase letters, while instances start with lowercase
-letters. This is a throwback of the general Python and Ruby practice of naming
-constants as uppercase camel.</p>
+letters. This is a throwback of the general Python and Ruby practice of having
+constant names start with uppercase letters.</p>
 
 <br class="post-pre">
 
-<pre class=" lang- prettyprint right"><code class="javascript">// Good:
+<pre class=" lang- prettyprint right"><code class="javascript">// Good (CamelCase):
 PhotoAlbum
 albumCover
 
-// Avoid:
+// Avoid (under_scores):
 photo_album
 album_cover
 </code></pre>
 <p class=" after-pre">For names with multiple words, JavaScript often calls for CamelCase. Using
-underscores are often discouraged, considering most JavaScript libraries already
-use CamelCase.</p>
+underscores are discouraged in JavaScript.</p>
 
 <br class="post-pre">
 
@@ -579,22 +578,34 @@ into their own namespaces as well.</p>
 
 <br class="post-pre">
 
-</section><section class=" after-pre h3 variation_classes_in_global"><h3 id="variation_classes_in_global" class=" after-pre">Variation: Classes in global</h3>
-<pre class=" lang- prettyprint right"><code>Models:                    window.Photo
-Collections:               window.Photos
-Views:                     window.PhotoView
-Main router:               window.Router
-Custom routers:            window.SpecialRouter
+</section></section><section class=" after-pre h2 requirejs_and_amd"><h2 id="requirejs_and_amd" class=" after-pre">RequireJS and AMD</h2>
+<pre class=" lang- prettyprint right"><code class="javascript">define(function() {
+  var Photo = require('models/photo');
+  var Photos = require('collections/photos');
+  var MenuView = require('views/menu');
+  var MainRouter = require('router/main');
+
+  // ...
+});
 </code></pre>
 
-<p>Some prefer to have classes in the global namespace. This makes typing them out
-easy: you can use <code>new Photo</code> instead of <code>new App.Photo</code>.</p>
+<p>You may adopt a <a href="http://requirejs.org/docs/whyamd.html">Asynchronous Module Definition</a>-style method of
+organization using a library like <a href="http://requirejs.org">RequireJS</a>. This will allow you
+to organize your modules in the <code>require(...)</code> way familiar to those who use
+NodeJS.</p>
+
+<p>If you adopt an AMD library, there will be no need to use namespaces for your
+JavaScript classes.</p>
+
+<p>See the <a href="http://requirejs.org">RequireJS</a> website for more information on RequireJS and
+AMD.</p>
 
 <br class="post-pre">
 
-</section></section><section class=" after-pre h2 file_naming"><h2 id="file_naming" class=" after-pre">File naming</h2>
+</section><section class=" after-pre h2 file_naming"><h2 id="file_naming" class=" after-pre">File naming</h2>
 
-<p>Most applications always seem to have 3 basic JavaScript files.</p>
+<p>For applications that do <em>not</em> use <a href="http://requirejs.org/docs/whyamd.html">Asynchronous Module Definition</a>-style
+organization, there always seem to have 3 basic JavaScript files.</p>
 
 <section class=" h3 the_main_namespace"><h3 id="the_main_namespace">The main namespace</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">// app.js
@@ -827,8 +838,8 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <ul></ul></nav><nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
 <ul>
 <li><a href="#variation_two-level_namespace">Variation: two-level namespace</a></li>
-<li><a href="#variation_classes_in_global">Variation: Classes in global</a></li>
-</ul></nav><nav class="level-2"><h3><a href="#file_naming">File naming</a></h3>
+</ul></nav><nav class="level-2"><h3><a href="#requirejs_and_amd">RequireJS and AMD</a></h3>
+<ul></ul></nav><nav class="level-2"><h3><a href="#file_naming">File naming</a></h3>
 <ul>
 <li><a href="#the_main_namespace">The main namespace</a></li>
 <li><a href="#the_individual_classes">The individual classes</a></li>
