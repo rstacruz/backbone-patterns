@@ -220,10 +220,16 @@ var html = JST['person/contact'](dict);
 
 ### Integration notes
 
-* __Rails 3.1__: Sprockets already comes with support for JST pages.
-* __Rails 3.0 and below__: consider using Sprockets an Jammit.
-* __In Sinatra__: The `sinatra-backbone` gem can take care of dynamically 
-  serving JST templates.
+* __Rails 3.1 and above__: The Rails Asset pipeline already comes with support
+  for JST pages.
+* __Rails 3.0 and below__: consider using [Sprockets][sprockets] or
+  [Jammit][jammit].
+* __In Sinatra__: The [sinatra-backbone][sinatra-backbone] gem can take care of
+  dynamically serving JST templates.
+
+[jammit]: http://documentcloud.github.com/jammit
+[sprockets]: http://getsprockets.org
+[sinatra-backbone]: http://ricostacruz.com/sinatra-backbone
 
 Partials
 --------
