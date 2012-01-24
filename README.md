@@ -468,7 +468,7 @@ option.
 
 __The solution:__ Make a sub-view with the same element.
 
-#### Solution
+###a Solution
 
 You can make 2 or more views that target the same element. This is useful when
 there are many controls in a view, but creating sub-views (with their scopes
@@ -490,8 +490,8 @@ App.ChromeView = Backbone.View.extend({
 });
 
 App.TabView = Backbone.View.extend({
-  // Notice this view has it's own events. They will not interfere with
-  ChromeView's events.
+  // Notice this view has it's own events. They will not
+  // interfere with ChromeView's events.
   events: {
     'click nav.tabs a': 'switchTab'
   },
