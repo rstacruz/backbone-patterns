@@ -467,7 +467,7 @@ option.</p>
 
 <p><strong>The solution:</strong> Make a sub-view with the same element.</p>
 
-<section class=" h4 solution"><h4>Solution</h4>
+<section class=" h3 a_solution"><h3 id="a_solution">a Solution</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
   events: {
     'click button': 'onButtonClick'
@@ -479,8 +479,8 @@ option.</p>
 });
 
 App.TabView = Backbone.View.extend({
-  // Notice this view has it's own events. They will not interfere with
-  ChromeView's events.
+  // Notice this view has it's own events. They will not
+  // interfere with ChromeView's events.
   events: {
     'click nav.tabs a': 'switchTab'
   },
@@ -820,7 +820,9 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <li><a href="#solution_1_sub_views">Solution 1: Sub views</a></li>
 <li><a href="#events">Events</a></li>
 </ul></nav><nav class="level-2"><h3><a href="#splitting_views">Splitting views</a></h3>
-<ul></ul></nav><h2><a href="#conventions">Conventions</a></h2>
+<ul>
+<li><a href="#a_solution">a Solution</a></li>
+</ul></nav><h2><a href="#conventions">Conventions</a></h2>
 <nav class="level-2"><h3><a href="#naming_convention">Naming convention</a></h3>
 <ul></ul></nav><nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
 <ul>
