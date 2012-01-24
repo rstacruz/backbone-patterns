@@ -468,8 +468,7 @@ option.
 
 __The solution:__ Make a sub-view with the same element.
 
-Solution
---------
+#### Solution
 
 You can make 2 or more views that target the same element. This is useful when
 there are many controls in a view, but creating sub-views (with their scopes
