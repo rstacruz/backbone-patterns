@@ -111,7 +111,7 @@ You can put views in an HTML `<script>` tag.
 * *Set an `id`* so we can easily refer to it.
 
 ``` html
-<script type="text/html" id="foo">
+<script type="text/html" id="template-contact">
   <div class='contact'>
     <strong><%= name %></strong>
     <span><%= email %></span>
@@ -125,10 +125,10 @@ template data. You can pass this onto Underscore's `_.template` to create a
 template function.
 
 ``` javascript
-$("#foo").text();
+$("#template-contact").text();
 //=> "<div class='contact'>\n<strong><%= name %></str..."
 
-template = _.template($("#foo").text());
+template = _.template($("#template-contact").text());
 //=> function() { ... }
 ```
 
@@ -140,7 +140,7 @@ view like so.
 ``` javascript
 ContactView = Backbone.View.extend({
   template: function() {
-    var template = _.template($("#foo").text());
+    var template = _.template($("#template-contact").text());
     return template.apply(this, arguments);
   },
 
