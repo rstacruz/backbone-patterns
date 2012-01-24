@@ -579,21 +579,40 @@ This is often done to make it easy to iterate over all available models,
     Collections:               App.Collections.Photos
     Views:                     App.Views.Photo
 
-### Variation: Classes in global
+RequireJS and AMD
+-----------------
 
-Some prefer to have classes in the global namespace. This makes typing them out
-easy: you can use `new Photo` instead of `new App.Photo`.
+You may adopt a [Asynchronous Module Definition][amd]-style method of
+organization using a library like [RequireJS][require.js]. This will allow you
+to organize your modules in the `require(...)` way familiar to those who use
+NodeJS.
 
-    Models:                    window.Photo
-    Collections:               window.Photos
-    Views:                     window.PhotoView
-    Main router:               window.Router
-    Custom routers:            window.SpecialRouter
+If you adopt an AMD library, there will be no need to use namespaces for your
+JavaScript classes.
+
+See the [RequireJS][require.js] website for more information on RequireJS and
+AMD.
+
+``` javascript
+define(function() {
+  var Photo = require('models/photo');
+  var Photos = require('collections/photos');
+  var MenuView = require('views/menu');
+  var MainRouter = require('router/main');
+
+  // ...
+});
+```
+
+[require.js]: http://requirejs.org
 
 File naming
 -----------
 
-Most applications always seem to have 3 basic JavaScript files.
+For applications that do _not_ use [Asynchronous Module Definition][amd]-style
+organization, there always seem to have 3 basic JavaScript files.
+
+[amd]: http://requirejs.org/docs/whyamd.html
 
 ### The main namespace
 
