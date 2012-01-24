@@ -105,7 +105,7 @@ difficult to maintain.</p>
 micro templating</a>.</p>
 
 <section class=" h3 defining_inline_views"><h3 id="defining_inline_views">Defining inline views</h3>
-<pre class=" lang- prettyprint right"><code class="html">&lt;script type="text/html" id="foo"&gt;
+<pre class=" lang- prettyprint right"><code class="html">&lt;script type="text/html" id="template-contact"&gt;
   &lt;div class='contact'&gt;
     &lt;strong&gt;&lt;%= name %&gt;&lt;/strong&gt;
     &lt;span&gt;&lt;%= email %&gt;&lt;/span&gt;
@@ -123,10 +123,10 @@ as JavaScript.</p></li>
 <br class="post-pre">
 
 </section><section class=" after-pre h3 using_inline_views"><h3 id="using_inline_views" class=" after-pre">Using inline views</h3>
-<pre class=" lang- prettyprint right"><code class="javascript">$("#foo").text();
+<pre class=" lang- prettyprint right"><code class="javascript">$("#template-contact").text();
 //=&gt; "&lt;div class='contact'&gt;\n&lt;strong&gt;&lt;%= name %&gt;&lt;/str..."
 
-template = _.template($("#foo").text());
+template = _.template($("#template-contact").text());
 //=&gt; function() { ... }
 </code></pre>
 
@@ -139,7 +139,7 @@ template function.</p>
 </section><section class=" after-pre h3 integrating_into_backbone"><h3 id="integrating_into_backbone" class=" after-pre">Integrating into Backbone</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">ContactView = Backbone.View.extend({
   template: function() {
-    var template = _.template($("#foo").text());
+    var template = _.template($("#template-contact").text());
     return template.apply(this, arguments);
   },
 
@@ -372,6 +372,128 @@ working, unexpected results will occur.</p>
 </code></pre>
 
 <p>This is our example from a while ago that has been modified to use the bufferer.</p>
+
+<br class="post-pre">
+
+</section></section><section class=" after-pre h2 sub_views"><h2 id="sub_views" class=" after-pre">Sub views</h2>
+
+<p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
+things in one class.</p>
+
+<p><strong>The solution:</strong> Break it apart into smaller sub-views.</p>
+
+<section class=" h3 the_situation"><h3 id="the_situation">The situation</h3>
+
+<p>This is a common occurence if you have one <em>giant</em> view that takes care of the
+entire page. View classes may become unwieldy once they get up to 200 lines.</p>
+
+</section><section class=" h3 solution_1_sub_views"><h3 id="solution_1_sub_views">Solution 1: Sub views</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
+  render: function() {
+    // Instanciate some "sub" views to handle the responsibilities of
+    // their respective elements.
+    this.sidebar = new App.SidebarView({ el: this.$(".sidebar") });
+    this.menu = new App.NavigationView({ el: this.$("nav") });
+  }
+});
+
+$(function() {
+  App.chrome = new App.ChromeView({ el: $("#chrome") });
+});
+</code></pre>
+
+<p>It may be wise to delegate some areas of the view to be the reponsibility of
+another view.</p>
+
+<p>In this example, we have a view that handles the entire application "chrome."
+Let's break apart some of it's parts on it's <code>render()</code> function. Notice that
+we're using <code>this.$()</code> to select elements inside the <code>ChromeView</code>'s element
+itself.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">App.chrome.sidebar.toggle();
+
+App.chrome.menu.expand();
+</code></pre>
+<p class=" after-pre">We will then be able to access the sub-views like so:</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 events"><h3 id="events" class=" after-pre">Events</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.SidebarView = Backbone.View.extend({
+  toggle: function() {
+    if ($(this.el).is(':visible')) {
+      $(this.el).hide();
+      this.trigger('collapse');    // &lt;==
+    } else {
+      $(this.el).show();
+      this.trigger('expand');      // &lt;==
+    }
+  },
+});
+</code></pre>
+
+<p>All Backbone objects can emit <a href="http://documentcloud.github.com/backbone/#Events">events</a>. To maintain the separation of
+responsibilities of the view classes, you may have the sub-views trigger
+events that the parent view would need (and vice versa).</p>
+
+<p>For instance, we may implement <code>SidebarView</code> to trigger events when the sidebar
+is collapsed or expanded:</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
+  render: function() {
+    this.sidebar = new App.SidebarView({ el: this.$(".sidebar") });
+
+    this.sidebar
+      .bind('collapse', this.onSidebarCollapse)
+      .bind('expand',   this.onSidebarExpand);
+
+    // ...
+  }
+});
+</code></pre>
+<p class=" after-pre">And the parent view (<code>ChromeView</code>) may listen to them like so:</p>
+
+<br class="post-pre">
+
+</section></section><section class=" after-pre h2 splitting_views"><h2 id="splitting_views" class=" after-pre">Splitting views</h2>
+
+<p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
+things in one class, and making sub-views with it's child elements is not an
+option.</p>
+
+<p><strong>The solution:</strong> Make a sub-view with the same element.</p>
+
+<section class=" h4 solution"><h4>Solution</h4>
+<pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
+  events: {
+    'click button': 'onButtonClick'
+  },
+  render: function() {
+    // Pass our own element to the other view.
+    this.tabs = new App.TabView({ el: this.el });
+  }
+});
+
+App.TabView = Backbone.View.extend({
+  // Notice this view has it's own events. They will not interfere with
+  ChromeView's events.
+  events: {
+    'click nav.tabs a': 'switchTab'
+  },
+});
+</code></pre>
+
+<p>You can make 2 or more views that target the same element. This is useful when
+there are many controls in a view, but creating sub-views (with their scopes
+limited to a set of elements in the bigger view) may be too messy, or just not
+possible.</p>
+
+<p>In this example, <code>ChromeView</code> will make a sub-view that shares the same element
+as it does.</p>
 
 <br class="post-pre">
 
@@ -692,7 +814,13 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <li><a href="#the_situation">The situation</a></li>
 <li><a href="#the_solution">The solution</a></li>
 <li><a href="#example">Example</a></li>
-</ul></nav><h2><a href="#conventions">Conventions</a></h2>
+</ul></nav><nav class="level-2"><h3><a href="#sub_views">Sub views</a></h3>
+<ul>
+<li><a href="#the_situation">The situation</a></li>
+<li><a href="#solution_1_sub_views">Solution 1: Sub views</a></li>
+<li><a href="#events">Events</a></li>
+</ul></nav><nav class="level-2"><h3><a href="#splitting_views">Splitting views</a></h3>
+<ul></ul></nav><h2><a href="#conventions">Conventions</a></h2>
 <nav class="level-2"><h3><a href="#naming_convention">Naming convention</a></h3>
 <ul></ul></nav><nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
 <ul>
