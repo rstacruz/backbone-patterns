@@ -72,7 +72,7 @@ If you use HAML, you will need use a syntax similar to this.
 
 ``` ruby
 :javascript
-  != "App.photos = new Photos(#{@photos.to_json});"
+  App.photos = new Photos(#{@photos.to_json});
 ```
 
 ### In PHP
