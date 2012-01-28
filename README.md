@@ -126,10 +126,10 @@ template data. You can pass this onto Underscore's `_.template` to create a
 template function.
 
 ``` javascript
-$("#template-contact").text();
+$("#template-contact").html();
 //=> "<div class='contact'>\n<strong><%= name %></str..."
 
-template = _.template($("#template-contact").text());
+template = _.template($("#template-contact").html());
 //=> function() { ... }
 ```
 
@@ -141,7 +141,7 @@ view like so.
 ``` javascript
 ContactView = Backbone.View.extend({
   template: function() {
-    var template = _.template($("#template-contact").text());
+    var template = _.template($("#template-contact").html());
     return template.apply(this, arguments);
   },
 
