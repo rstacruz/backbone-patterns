@@ -256,17 +256,17 @@ In this example, the function `itemTemplate` is passed onto the parameters for
 
 ``` javascript
 TasksList = Backbone.View.extend({
-  template: _.template("
-    <ul class='task_list'>
-      <% items.each(function(item) { %>
-        <%= itemTemplate(item) %>
-      <% }); %>
-    </ul>
-  "),
+  template: _.template([
+    "<ul class='task_list'>",
+      "<% items.each(function(item) { %>",
+        "<%= itemTemplate(item) %>",
+      "<% }); %>",
+    "</ul>"
+  ].join('')),
 
-  itemTemplate: _.template("
-    <li><%= name %></li>
-  "),
+  itemTemplate: _.template(
+    "<li><%= name %></li>"
+  ),
 
   render: function() {
     var html = this.template({
