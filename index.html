@@ -5,8 +5,19 @@
     <title>Backbone patterns</title>
     <link href="style.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Shanti:400|PT+Sans:400,700,700italic' rel='stylesheet' type='text/css'>
+      <script type='text/javascript'>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20473929-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
 </head>
-<body class='literate toc github'>
+<body class='literate toc github analytics'>
     <a href="https://github.com/rstacruz/backbone-patterns"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
   <div id='all'>
 
@@ -22,7 +33,8 @@ work-in-progress.</p>
 
 <p><strong>The problem:</strong> Your application needs models to be available on page load.</p>
 
-<p><strong>Solution:</strong> Preload model instances by creating collections on page load.</p>
+<p><strong>Solution:</strong> Preload (or <em>bootstrap</em>) model instances by creating collections
+on page load.</p>
 
 <section class=" h3 define_collections"><h3 id="define_collections">Define collections</h3>
 <pre class=" lang- prettyprint right"><code class="html">  &lt;body&gt;
@@ -72,8 +84,8 @@ collection of your server-side models.</p>
 <br class="post-pre">
 
 </section><section class=" after-pre h3 in_ruby_haml"><h3 id="in_ruby_haml" class=" after-pre">In Ruby (HAML)</h3>
-<pre class=" lang- prettyprint right"><code class="ruby">:javascript
-  != "App.photos = new Photos(#{@photos.to_json});"
+<pre class=" lang- prettyprint right"><code class="haml">:javascript
+  App.photos = new Photos(#{@photos.to_json});
 </code></pre>
 
 <p>If you use HAML, you will need use a syntax similar to this.</p>
@@ -123,10 +135,10 @@ as JavaScript.</p></li>
 <br class="post-pre">
 
 </section><section class=" after-pre h3 using_inline_views"><h3 id="using_inline_views" class=" after-pre">Using inline views</h3>
-<pre class=" lang- prettyprint right"><code class="javascript">$("#template-contact").text();
+<pre class=" lang- prettyprint right"><code class="javascript">$("#template-contact").html();
 //=&gt; "&lt;div class='contact'&gt;\n&lt;strong&gt;&lt;%= name %&gt;&lt;/str..."
 
-template = _.template($("#template-contact").text());
+template = _.template($("#template-contact").html());
 //=&gt; function() { ... }
 </code></pre>
 
@@ -139,7 +151,7 @@ template function.</p>
 </section><section class=" after-pre h3 integrating_into_backbone"><h3 id="integrating_into_backbone" class=" after-pre">Integrating into Backbone</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">ContactView = Backbone.View.extend({
   template: function() {
-    var template = _.template($("#template-contact").text());
+    var template = _.template($("#template-contact").html());
     return template.apply(this, arguments);
   },
 
@@ -150,7 +162,7 @@ template function.</p>
 
     // Pass this object onto the template function.
     // This returns an HTML string.
-    var html = this.template(hash);
+    var html = this.template(dict);
 
     // Append the result to the view's element.
     $(this.el).append(html);
@@ -248,17 +260,17 @@ be defined as a separate template from the list itself.</p>
 
 <section class=" h3 solution"><h3 id="solution">Solution</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">TasksList = Backbone.View.extend({
-  template: _.template("
-    &lt;ul class='task_list'&gt;
-      &lt;% items.each(function(item) { %&gt;
-        &lt;%= itemTemplate(item) %&gt;
-      &lt;% }); %&gt;
-    &lt;/ul&gt;
-  "),
+  template: _.template([
+    "&lt;ul class='task_list'&gt;",
+      "&lt;% items.each(function(item) { %&gt;",
+        "&lt;%= itemTemplate(item) %&gt;",
+      "&lt;% }); %&gt;",
+    "&lt;/ul&gt;"
+  ].join('')),
 
-  itemTemplate: _.template("
-    &lt;li&gt;&lt;%= name %&gt;&lt;/li&gt;
-  "),
+  itemTemplate: _.template(
+    "&lt;li&gt;&lt;%= name %&gt;&lt;/li&gt;"
+  ),
 
   render: function() {
     var html = this.template({
