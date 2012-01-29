@@ -18,14 +18,14 @@ work-in-progress.</p>
 
 <section class=" h1 model_patterns"><h1 id="model_patterns">Model patterns</h1>
 
-<section class=" h2 preloading_collections"><h2 id="preloading_collections">Preloading collections</h2>
+<section class=" h2 bootstrapping_data"><h2 id="bootstrapping_data">Bootstrapping data</h2>
 
 <p><strong>The problem:</strong> Your application needs models to be available on page load.</p>
 
-<p><strong>Solution:</strong> Preload (or <em>bootstrap</em>) model instances by creating collections
-on page load.</p>
+<p><strong>Solution:</strong> Bootstrap collections and models by creating collections in an
+inline <code>&lt;script&gt;</code> block.</p>
 
-<section class=" h3 define_collections"><h3 id="define_collections">Define collections</h3>
+<section class=" h3 define_collection_data"><h3 id="define_collection_data">Define collection data</h3>
 <pre class=" lang- prettyprint right"><code class="html">  &lt;body&gt;
     ...
 
@@ -41,7 +41,7 @@ on page load.</p>
   &lt;/body&gt;
 </code></pre>
 
-<p>Define your collections as an inline script in the HTML file.
+<p>Define your collection data in an inline script in the HTML file.
 If you have collections for <code>Photos</code>, you may be doing it this way:</p>
 
 <br class="post-pre">
@@ -799,9 +799,9 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <li>View helpers</li>
 </ul></section></section><aside id="toc"><h1>Backbone patterns</h1>
 <h2><a href="#model_patterns">Model patterns</a></h2>
-<nav class="level-2"><h3><a href="#preloading_collections">Preloading collections</a></h3>
+<nav class="level-2"><h3><a href="#bootstrapping_data">Bootstrapping data</a></h3>
 <ul>
-<li><a href="#define_collections">Define collections</a></li>
+<li><a href="#define_collection_data">Define collection data</a></li>
 <li><a href="#accessing_instances">Accessing instances</a></li>
 <li><a href="#in_ruby_erb">In Ruby (ERB)</a></li>
 <li><a href="#in_ruby_haml">In Ruby (HAML)</a></li>
