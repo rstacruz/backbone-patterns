@@ -5,19 +5,8 @@
     <title>Backbone patterns</title>
     <link href="style.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Shanti:400|PT+Sans:400,700,700italic' rel='stylesheet' type='text/css'>
-      <script type='text/javascript'>
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-20473929-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-      </script>
 </head>
-<body class='literate toc github analytics'>
+<body class='literate toc github'>
     <a href="https://github.com/rstacruz/backbone-patterns"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
   <div id='all'>
 
@@ -105,7 +94,7 @@ collection of your server-side models.</p>
 
 </section></section></section><section class=" after-pre h1 view_patterns"><h1 id="view_patterns" class=" after-pre">View patterns</h1>
 
-<section class=" h2 inline_views"><h2 id="inline_views">Inline views</h2>
+<section class=" h2 inline_templates"><h2 id="inline_templates">Inline templates</h2>
 
 <p><strong>The problem:</strong> if you need to use view templates in a small Backbone
 application, defining your templates in JavaScript code will be unwieldy and
@@ -116,7 +105,7 @@ difficult to maintain.</p>
 <p>This solution has been outlined by John Resig in his blog post about <a href="http://ejohn.org/blog/javascript-micro-templating/">JavaScript
 micro templating</a>.</p>
 
-<section class=" h3 defining_inline_views"><h3 id="defining_inline_views">Defining inline views</h3>
+<section class=" h3 defining_inline_templates"><h3 id="defining_inline_templates">Defining inline templates</h3>
 <pre class=" lang- prettyprint right"><code class="html">&lt;script type="text/html" id="template-contact"&gt;
   &lt;div class='contact'&gt;
     &lt;strong&gt;&lt;%= name %&gt;&lt;/strong&gt;
@@ -125,7 +114,7 @@ micro templating</a>.</p>
 &lt;/script&gt;
 </code></pre>
 
-<p>You can put views in an HTML <code>&lt;script&gt;</code> tag.</p>
+<p>You can put templates in an HTML <code>&lt;script&gt;</code> tag.</p>
 
 <ul>
 <li><p><em>Change the <code>type</code> attribute</em> to something else so it will not be interpreted
@@ -134,7 +123,7 @@ as JavaScript.</p></li>
 </ul>
 <br class="post-pre">
 
-</section><section class=" after-pre h3 using_inline_views"><h3 id="using_inline_views" class=" after-pre">Using inline views</h3>
+</section><section class=" after-pre h3 using_inline_templates"><h3 id="using_inline_templates" class=" after-pre">Using inline templates</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">$("#template-contact").html();
 //=&gt; "&lt;div class='contact'&gt;\n&lt;strong&gt;&lt;%= name %&gt;&lt;/str..."
 
@@ -142,9 +131,9 @@ template = _.template($("#template-contact").html());
 //=&gt; function() { ... }
 </code></pre>
 
-<p>In JavaScript, you can get the <code>innerText</code> of that HTML element to fetch the raw
-template data. You can pass this onto Underscore's <code>_.template</code> to create a
-template function.</p>
+<p>In JavaScript, you can get the <code>innerHTML</code> (or jQuery's <a href="http://api.jquery.com/html">.html()</a>) of that
+HTML element to fetch the raw template data. You can pass this onto Underscore's
+<code>_.template</code> to create a template function.</p>
 
 <br class="post-pre">
 
@@ -818,10 +807,10 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <li><a href="#in_ruby_haml">In Ruby (HAML)</a></li>
 <li><a href="#in_php">In PHP</a></li>
 </ul></nav><h2><a href="#view_patterns">View patterns</a></h2>
-<nav class="level-2"><h3><a href="#inline_views">Inline views</a></h3>
+<nav class="level-2"><h3><a href="#inline_templates">Inline templates</a></h3>
 <ul>
-<li><a href="#defining_inline_views">Defining inline views</a></li>
-<li><a href="#using_inline_views">Using inline views</a></li>
+<li><a href="#defining_inline_templates">Defining inline templates</a></li>
+<li><a href="#using_inline_templates">Using inline templates</a></li>
 <li><a href="#integrating_into_backbone">Integrating into Backbone</a></li>
 <li><a href="#limitations">Limitations</a></li>
 </ul></nav><nav class="level-2"><h3><a href="#jst_templates">JST templates</a></h3>
