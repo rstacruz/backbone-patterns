@@ -91,8 +91,8 @@ collection of your server-side models.
 View patterns
 =============
 
-Inline views
-------------
+Inline templates
+----------------
 
 __The problem:__ if you need to use view templates in a small Backbone
 application, defining your templates in JavaScript code will be unwieldy and
@@ -103,8 +103,8 @@ __Solution:__ You may need some view templates to be inline in the HTML page.
 This solution has been outlined by John Resig in his blog post about [JavaScript
 micro templating](http://ejohn.org/blog/javascript-micro-templating/).
 
-### Defining inline views
-You can put views in an HTML `<script>` tag.
+### Defining inline templates
+You can put templates in an HTML `<script>` tag.
 
 * *Change the `type` attribute* to something else so it will not be interpreted
   as JavaScript.
@@ -120,10 +120,12 @@ You can put views in an HTML `<script>` tag.
 </script>
 ```
 
-### Using inline views
-In JavaScript, you can get the `innerText` of that HTML element to fetch the raw
-template data. You can pass this onto Underscore's `_.template` to create a
-template function.
+### Using inline templates
+In JavaScript, you can get the `innerHTML` (or jQuery's [.html()][html]) of that
+HTML element to fetch the raw template data. You can pass this onto Underscore's
+`_.template` to create a template function.
+
+[html]: http://api.jquery.com/html
 
 ``` javascript
 $("#template-contact").html();
