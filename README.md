@@ -71,7 +71,7 @@ collection of your server-side models.
 
 If you use HAML, you will need use a syntax similar to this.
 
-``` ruby
+``` haml
 :javascript
   App.photos = new Photos(#{@photos.to_json});
 ```
