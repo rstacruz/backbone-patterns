@@ -12,17 +12,17 @@ This document assumes that you already have some knowledge of [Backbone.js][bb],
 Model patterns
 ==============
 
-Preloading collections
-----------------------
+Bootstrapping data
+------------------
 
 __The problem:__ Your application needs models to be available on page load.
 
-__Solution:__ Preload (or *bootstrap*) model instances by creating collections
-on page load.
+__Solution:__ Bootstrap collections and models by creating collections in an
+inline `<script>` block.
 
-### Define collections
+### Define collection data
 
-Define your collections as an inline script in the HTML file.
+Define your collection data in an inline script in the HTML file.
 If you have collections for `Photos`, you may be doing it this way:
 
 ``` html
