@@ -142,10 +142,7 @@ view like so.
 
 ``` javascript
 ContactView = Backbone.View.extend({
-  template: function() {
-    var template = _.template($("#template-contact").html());
-    return template.apply(this, arguments);
-  },
+  template: _.template($("#template-contact").html()),
 
   render: function() {
     // This is a dictionary object of the attributes of the models.
