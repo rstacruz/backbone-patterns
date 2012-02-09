@@ -5,8 +5,19 @@
     <title>Backbone patterns</title>
     <link href="style.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Shanti:400|PT+Sans:400,700,700italic' rel='stylesheet' type='text/css'>
+      <script type='text/javascript'>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20473929-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
 </head>
-<body class='literate toc github'>
+<body class='literate toc github analytics'>
     <a href="https://github.com/rstacruz/backbone-patterns"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
   <div id='all'>
 
@@ -283,7 +294,7 @@ template.</p>
 </section></section><section class=" after-pre h2 animation_buffer"><h2 id="animation_buffer" class=" after-pre">Animation buffer</h2>
 
 <p><strong>The problem:</strong> When you have events that trigger animations, they can mess up
-when the user clicks to fast.</p>
+when the user clicks too fast.</p>
 
 <p><strong>The solution:</strong> Make a buffering system to ensure that animations are fired
 serially (one after the other) and never parallel (at the same time).</p>
@@ -468,7 +479,7 @@ option.</p>
 
 <p><strong>The solution:</strong> Make a sub-view with the same element.</p>
 
-<section class=" h3 a_solution"><h3 id="a_solution">a Solution</h3>
+<section class=" h3 solution"><h3 id="solution">Solution</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
   events: {
     'click button': 'onButtonClick'
@@ -793,6 +804,7 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 
 <ul>
 <li>Model associations</li>
+<li>Adding events to subclasses</li>
 <li>View modes</li>
 <li>Nested views</li>
 <li>Router entry/exit</li>
@@ -833,7 +845,7 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <li><a href="#events">Events</a></li>
 </ul></nav><nav class="level-2"><h3><a href="#splitting_views">Splitting views</a></h3>
 <ul>
-<li><a href="#a_solution">a Solution</a></li>
+<li><a href="#solution">Solution</a></li>
 </ul></nav><h2><a href="#conventions">Conventions</a></h2>
 <nav class="level-2"><h3><a href="#naming_convention">Naming convention</a></h3>
 <ul></ul></nav><nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
