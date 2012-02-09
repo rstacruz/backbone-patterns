@@ -285,7 +285,7 @@ Animation buffer
 ----------------
 
 __The problem:__ When you have events that trigger animations, they can mess up
-when the user clicks to fast.
+when the user clicks too fast.
 
 __The solution:__ Make a buffering system to ensure that animations are fired
 serially (one after the other) and never parallel (at the same time).
@@ -471,7 +471,7 @@ option.
 
 __The solution:__ Make a sub-view with the same element.
 
-###a Solution
+### Solution
 
 You can make 2 or more views that target the same element. This is useful when
 there are many controls in a view, but creating sub-views (with their scopes
@@ -801,6 +801,7 @@ it's [contributors][c]. It is sponsored by my startup, [Sinefunc, Inc][sf].
 ### To do list
 
  - Model associations
+ - Adding events to subclasses
  - View modes
  - Nested views
  - Router entry/exit
