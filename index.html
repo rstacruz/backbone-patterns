@@ -174,7 +174,7 @@ view like so.</p>
 This assumes that your Backbone application is all contained in one HTML page.
 If your app spans across multiple HTML pages, and each page will be needing the
 same templates, you may be redundantly streaming the template data to the
-browser uneededly. Consider using JST templates instead.</p>
+browser unnecessarily. Consider using JST templates instead.</p>
 
 <p>Note that the given example assumes that the <code>#template-contact</code> element appears
 before you include JavaScript files, as it requires the template element to be
@@ -205,7 +205,7 @@ window.JST['person/edit'] = _.template(
 compiles your files.</p>
 
 <p>A common JST file will create the <code>JST</code> object (in the window namespace), with
-each of it's members defined as template functions. In this example, we'll use
+each of its members defined as template functions. In this example, we'll use
 Underscore's <code>_.template</code>, which returns functions.</p>
 
 <br class="post-pre">
@@ -391,13 +391,13 @@ things in one class.</p>
 
 <section class=" h3 the_situation"><h3 id="the_situation">The situation</h3>
 
-<p>This is a common occurence if you have one <em>giant</em> view that takes care of the
+<p>This is a common occurrence if you have one <em>giant</em> view that takes care of the
 entire page. View classes may become unwieldy once they get up to 200 lines.</p>
 
 </section><section class=" h3 solution_1_sub_views"><h3 id="solution_1_sub_views">Solution 1: Sub views</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
   render: function() {
-    // Instanciate some "sub" views to handle the responsibilities of
+    // Instantiate some "sub" views to handle the responsibilities of
     // their respective elements.
     this.sidebar = new App.SidebarView({ el: this.$(".sidebar") });
     this.menu = new App.NavigationView({ el: this.$("nav") });
@@ -409,11 +409,11 @@ $(function() {
 });
 </code></pre>
 
-<p>It may be wise to delegate some areas of the view to be the reponsibility of
+<p>It may be wise to delegate some areas of the view to be the responsibility of
 another view.</p>
 
 <p>In this example, we have a view that handles the entire application "chrome."
-Let's break apart some of it's parts on it's <code>render()</code> function. Notice that
+Let's break apart some of its parts on its <code>render()</code> function. Notice that
 we're using <code>this.$()</code> to select elements inside the <code>ChromeView</code>'s element
 itself.</p>
 
@@ -469,7 +469,7 @@ is collapsed or expanded:</p>
 </section></section><section class=" after-pre h2 splitting_views"><h2 id="splitting_views" class=" after-pre">Splitting views</h2>
 
 <p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
-things in one class, and making sub-views with it's child elements is not an
+things in one class, and making sub-views with its child elements is not an
 option.</p>
 
 <p><strong>The solution:</strong> Make a sub-view with the same element.</p>
@@ -486,7 +486,7 @@ option.</p>
 });
 
 App.TabView = Backbone.View.extend({
-  // Notice this view has it's own events. They will not
+  // Notice this view has its own events. They will not
   // interfere with ChromeView's events.
   events: {
     'click nav.tabs a': 'switchTab'
@@ -680,9 +680,9 @@ those new to your project.</p>
 the Backbone classes:</p>
 
 <ul>
-<li>Instanciate the default view</li>
+<li>Instantiate the default view</li>
 <li>Initialize the Backbone Router</li>
-<li>Provide options for jQuery and it's plugins</li>
+<li>Provide options for jQuery and its plugins</li>
 </ul>
 <p>This is often named <code>application.js</code> or <code>setup.js</code>.</p>
 
@@ -736,7 +736,7 @@ $(function() {
 </code></pre>
 
 <p>jQuery allows you to defer execution of code until when the DOM is fully-loaded
-with <a href="http://api.jquery.com/ready/">$(document).ready(...)</a>, or it's short form, <code>$(...)</code>. This
+with <a href="http://api.jquery.com/ready/">$(document).ready(...)</a>, or its short form, <code>$(...)</code>. This
 is useful for getting everything set up once your HTML document is ready.</p>
 
 <br class="post-pre">
@@ -801,7 +801,7 @@ beginners and advanced users alike.</li>
 License</a>.</p>
 
 <p>This document is authored and maintained by <a href="http://ricostacruz.com/">Rico Sta. Cruz</a> with help from
-it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contributors</a>. It is sponsored by my startup, <a href="http://sinefunc.com">Sinefunc, Inc</a>.</p>
+its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contributors</a>. It is sponsored by my startup, <a href="http://sinefunc.com">Sinefunc, Inc</a>.</p>
 
 <ul>
 <li>
