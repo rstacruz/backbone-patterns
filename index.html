@@ -5,19 +5,8 @@
     <title>Backbone patterns</title>
     <link href="style.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Shanti:400|PT+Sans:400,700,700italic' rel='stylesheet' type='text/css'>
-      <script type='text/javascript'>
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-20473929-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-      </script>
 </head>
-<body class='literate toc github analytics'>
+<body class='literate toc github'>
     <a href="https://github.com/rstacruz/backbone-patterns"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
   <div id='all'>
 
@@ -35,6 +24,9 @@ work-in-progress.</p>
 
 <p><strong>Solution:</strong> Bootstrap collections and models by creating collections in an
 inline <code>&lt;script&gt;</code> block.</p>
+
+<p>This is mentioned in the official Backbone documentation under the <a href="http://documentcloud.github.com/backbone/#FAQ-bootstrap">Loading
+bootstrapped models</a> section.</p>
 
 <section class=" h3 define_collection_data"><h3 id="define_collection_data">Define collection data</h3>
 <pre class=" lang- prettyprint right"><code class="html">  &lt;body&gt;
@@ -610,12 +602,17 @@ NodeJS.</p>
 <p>If you adopt an AMD library, there will be no need to use namespaces for your
 JavaScript classes.</p>
 
-<p>See the <a href="http://requirejs.org">RequireJS</a> website for more information on RequireJS and
-AMD.</p>
-
 <br class="post-pre">
 
-</section><section class=" after-pre h2 file_naming"><h2 id="file_naming" class=" after-pre">File naming</h2>
+<p class=" after-pre">For more information on RequireJS, AMD, and using it on your Backbone project,
+see:</p>
+
+<ul>
+<li>
+<a href="http://backbonetutorials.com/organizing-backbone-using-modules/">Organizing Backbone using Modules</a> (via Backbonetutorials.com)</li>
+<li>
+<a href="http://requirejs.org">RequireJS</a>'s official site</li>
+</ul></section><section class=" h2 file_naming"><h2 id="file_naming">File naming</h2>
 
 <p>For applications that do <em>not</em> use <a href="http://requirejs.org/docs/whyamd.html">Asynchronous Module Definition</a>-style
 organization, there always seem to have 3 basic JavaScript files.</p>
@@ -783,7 +780,20 @@ view class.</p>
 
 <br class="post-pre">
 
-</section></section><section class=" after-pre h1 acknowledgements"><h1 id="acknowledgements" class=" after-pre">Acknowledgements</h1>
+</section></section><section class=" after-pre h1 other_links"><h1 id="other_links" class=" after-pre">Other links</h1>
+
+<p>Other links of interest:</p>
+
+<ul>
+<li>
+<a href="http://documentcloud.github.com/backbone/">Backbone</a> official documentation</li>
+<li>
+<a href="http://backbonetutorials.com">Backbonetutorials.com</a> by Thomas Davis covers the basics of
+Backbone.js in more detail than the official docs.</li>
+<li>
+<a href="https://github.com/addyosmani/backbone-fundamentals">Backbone Fundamentals</a> by Addy Osmani is a Creative Commons book for
+beginners and advanced users alike.</li>
+</ul></section><section class=" h1 acknowledgements"><h1 id="acknowledgements">Acknowledgements</h1>
 
 <p>© 2011-2012, Rico Sta. Cruz. Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT
 License</a>.</p>
@@ -863,7 +873,8 @@ it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contrib
 <nav class="level-2"><h3><a href="#abuse">$() abuse</a></h3>
 <ul></ul></nav><nav class="level-2"><h3><a href="#things_outside_views">Things outside views</a></h3>
 <ul></ul></nav><nav class="level-2"><h3><a href="#event_handlers_outside_views">Event handlers outside views</a></h3>
-<ul></ul></nav><h2><a href="#acknowledgements">Acknowledgements</a></h2></aside></div>
+<ul></ul></nav><h2><a href="#other_links">Other links</a></h2>
+<h2><a href="#acknowledgements">Acknowledgements</a></h2></aside></div>
   <script type='text/javascript' src='http://cachedcommons.org/cache/prettify/1.0.0/javascripts/prettify-min.js'></script>
   <script>prettyPrint();</script>
 </body>
