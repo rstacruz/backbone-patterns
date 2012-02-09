@@ -297,21 +297,21 @@ serially (one after the other) and never parallel (at the same time).</p>
 <section class=" h3 the_situation"><h3 id="the_situation">The situation</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">PicturesView = Backbone.View.extend({
   events: {
-    'click .next':     'next'
+    'click .next': 'showNext'
   },
 
-  next: function() {
+  showNext: function() {
     var current = this.$(".current");
-    var next    = this.$(".current + div");
+    var nextDiv = this.$(".current + div");
 
-    if (next.length == 0) { return; }
+    if (nextDiv.length == 0) { return; }
 
     // Make the current one move to the left via jQuery.
     // This uses jQuery.fn.animate() that changes CSS values, then fires
     // the function supplied when it's done.
     current.animate({ left: -300, opacity: 0 }, function() {
       current.removeClass('.current');
-      next.addClass('.current');
+      nextDiv.addClass('.current');
     });
   }
 });
@@ -319,9 +319,9 @@ serially (one after the other) and never parallel (at the same time).</p>
 
 <p>Let's say you have this innocent code that performs an animation.</p>
 
-<p>One fundamental flaw here is that it assumes that <code>.next()</code> will only be called
-when it is not animating. When the user clicks "Next" while the animation is
-working, unexpected results will occur.</p>
+<p>One fundamental flaw here is that it assumes that <code>.showNext()</code> will only be
+called when it is not animating. When the user clicks "Next" while the animation
+is working, unexpected results will occur.</p>
 
 <br class="post-pre">
 
@@ -329,17 +329,18 @@ working, unexpected results will occur.</p>
 <pre class=" lang- prettyprint right"><code class="javascript">Buffer = {
   commands: [],
 
-  // Adds a command to the buffer, and executes it if it's the only command
-  // to be ran.
   add: function(fn) {
-    this.commands.push(fn);
-    if (this.commands.length == 1) fn();
-  },
+    // Adds a command to the buffer, and executes it if it's
+    // the only command to be ran.
+    var commands = this.commands;
+    commands.push(fn);
+    if (this.commands.length == 1) fn(next);
 
-  // Moves onto the next command in the buffer.
-  next: function() {
-    this.commands.shift();
-    if (this.commands.length) this.commands[0]();
+    // Moves onto the next command in the buffer.
+    function next() {
+      commands.shift();
+      if (commands.length) commands[0](next);
+    }
   }
 };
 </code></pre>
@@ -350,7 +351,8 @@ working, unexpected results will occur.</p>
 <li>
 <code>add(fn)</code> which adds a given function to the buffer, and</li>
 <li>
-<code>next()</code> which moves onto the next command.</li>
+<code>next()</code> which moves onto the next command. This is passed onto the functions
+when they are called.</li>
 </ul>
 <p>To use this, put your animations inside an anonymous function to be passed onto
 <code>add()</code>. Be sure to trigger <code>next()</code> when the animations are done.</p>
@@ -358,21 +360,21 @@ working, unexpected results will occur.</p>
 <br class="post-pre">
 
 </section><section class=" after-pre h3 example"><h3 id="example" class=" after-pre">Example</h3>
-<pre class=" lang- prettyprint right"><code class="javascript">next: function() {
+<pre class=" lang- prettyprint right"><code class="javascript">showNext: function() {
   var current = this.$(".current");
-  var next    = this.$(".current + div");
+  var nextDiv = this.$(".current + div");
 
-  if (next.length == 0) { return; }
+  if (nextDiv.length == 0) { return; }
 
-  // Ensure that the animation will not happen while another animation is
-  // ongoing.
-  Buffer.add(function() {
+  // Ensure that the animation will not happen while another
+  // animation is ongoing.
+  Buffer.add(function(next) {
     current.animate({ left: -300, opacity: 0 }, function() {
       current.removeClass('.current');
-      next.addClass('.current');
+      nextDiv.addClass('.current');
 
       // Trigger the next animation.
-      Buffer.next();
+      next();
     });
   });
 }
@@ -382,7 +384,16 @@ working, unexpected results will occur.</p>
 
 <br class="post-pre">
 
-</section></section><section class=" after-pre h2 sub_views"><h2 id="sub_views" class=" after-pre">Sub views</h2>
+</section><section class=" after-pre h3 variations"><h3 id="variations" class=" after-pre">Variations</h3>
+
+<p>You can make the <code>Buffer</code> object into a class that you can instantiate. This
+lets you have multiple buffers as you need. This way, you can have a buffer for
+each view instance.</p>
+
+<p>jQuery also provides a very similar function, <a href="http://api.jquery.com/queue/">jQuery.fn.queue()</a>. This
+may be adequate for most simple animations.</p>
+
+</section></section><section class=" h2 sub_views"><h2 id="sub_views">Sub views</h2>
 
 <p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
 things in one class.</p>
@@ -852,6 +863,7 @@ its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contribu
 <li><a href="#the_situation">The situation</a></li>
 <li><a href="#the_solution">The solution</a></li>
 <li><a href="#example">Example</a></li>
+<li><a href="#variations">Variations</a></li>
 </ul></nav><nav class="level-2"><h3><a href="#sub_views">Sub views</a></h3>
 <ul>
 <li><a href="#the_situation">The situation</a></li>
