@@ -1,11 +1,14 @@
 # [Backbone patterns](http://ricostacruz.com/backbone-patterns)
 
-This is a document with best practices in Backbone. This is a massive
-work-in-progress.
+Here, I try to document the good practices that our team has learned along the
+way building [Backbone][bb] applications.
+
+### Assumptions
 
 This document assumes that you already have some knowledge of [Backbone.js][bb],
 [jQuery][jq], and of course, JavaScript itself.
 
+[rsc]: http://ricostacruz.com/
 [bb]: http://documentcloud.github.com/backbone/
 [jq]: http://jquery.com/
 
