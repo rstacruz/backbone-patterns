@@ -149,11 +149,8 @@ HTML element to fetch the raw template data. You can pass this onto Underscore's
 <br class="post-pre">
 
 </section><section class=" after-pre h3 integrating_into_backbone"><h3 id="integrating_into_backbone" class=" after-pre">Integrating into Backbone</h3>
-<pre class=" lang- prettyprint right"><code class="javascript">ContactView = Backbone.View.extend({
-  template: function() {
-    var template = _.template($("#template-contact").html());
-    return template.apply(this, arguments);
-  },
+<pre class=" lang- prettyprint right"><code class="javascript">var ContactView = Backbone.View.extend({
+  template: _.template($("#template-contact").html()),
 
   render: function() {
     // This is a dictionary object of the attributes of the models.
@@ -169,7 +166,7 @@ HTML element to fetch the raw template data. You can pass this onto Underscore's
 
     // ...
   }
-})
+});
 </code></pre>
 
 <p>In practice, you will most likely be using this in the <code>render()</code> method of a
@@ -184,6 +181,10 @@ This assumes that your Backbone application is all contained in one HTML page.
 If your app spans across multiple HTML pages, and each page will be needing the
 same templates, you may be redundantly streaming the template data to the
 browser uneededly. Consider using JST templates instead.</p>
+
+<p>Note that the given example assumes that the <code>#template-contact</code> element appears
+before you include JavaScript files, as it requires the template element to be
+accessible before the class is defined.</p>
 
 </section></section><section class=" h2 jst_templates"><h2 id="jst_templates">JST templates</h2>
 
