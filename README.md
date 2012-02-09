@@ -141,7 +141,7 @@ In practice, you will most likely be using this in the `render()` method of a
 view like so.
 
 ``` javascript
-ContactView = Backbone.View.extend({
+var ContactView = Backbone.View.extend({
   template: _.template($("#template-contact").html()),
 
   render: function() {
@@ -158,7 +158,7 @@ ContactView = Backbone.View.extend({
 
     // ...
   }
-})
+});
 ```
 
 ### Limitations
@@ -168,6 +168,10 @@ This assumes that your Backbone application is all contained in one HTML page.
 If your app spans across multiple HTML pages, and each page will be needing the
 same templates, you may be redundantly streaming the template data to the
 browser uneededly. Consider using JST templates instead.
+
+Note that the given example assumes that the `#template-contact` element appears
+before you include JavaScript files, as it requires the template element to be
+accessible before the class is defined.
 
 JST templates
 -------------
