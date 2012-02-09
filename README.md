@@ -20,6 +20,9 @@ __The problem:__ Your application needs models to be available on page load.
 __Solution:__ Bootstrap collections and models by creating collections in an
 inline `<script>` block.
 
+This is mentioned in the official Backbone documentation under the [Loading
+bootstrapped models][bb.bootstrap] section.
+
 ### Define collection data
 
 Define your collection data in an inline script in the HTML file.
@@ -87,6 +90,7 @@ collection of your server-side models.
 </script>
 ```
 
+[bb.bootstrap]: http://documentcloud.github.com/backbone/#FAQ-bootstrap
 
 View patterns
 =============
