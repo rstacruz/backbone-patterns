@@ -174,7 +174,7 @@ __Single-page apps only.__
 This assumes that your Backbone application is all contained in one HTML page.
 If your app spans across multiple HTML pages, and each page will be needing the
 same templates, you may be redundantly streaming the template data to the
-browser uneededly. Consider using JST templates instead.
+browser unnecessarily. Consider using JST templates instead.
 
 Note that the given example assumes that the `#template-contact` element appears
 before you include JavaScript files, as it requires the template element to be
@@ -195,7 +195,7 @@ Your app will need to serve a _dynamically-created_ JavaScript file that
 compiles your files.
 
 A common JST file will create the `JST` object (in the window namespace), with
-each of it's members defined as template functions. In this example, we'll use
+each of its members defined as template functions. In this example, we'll use
 Underscore's `_.template`, which returns functions.
 
 ``` javascript
@@ -393,23 +393,23 @@ __The solution:__ Break it apart into smaller sub-views.
 
 ### The situation
 
-This is a common occurence if you have one _giant_ view that takes care of the
+This is a common occurrence if you have one _giant_ view that takes care of the
 entire page. View classes may become unwieldy once they get up to 200 lines.
 
 ### Solution 1: Sub views
 
-It may be wise to delegate some areas of the view to be the reponsibility of
+It may be wise to delegate some areas of the view to be the responsibility of
 another view.
 
 In this example, we have a view that handles the entire application "chrome."
-Let's break apart some of it's parts on it's `render()` function. Notice that
+Let's break apart some of its parts on its `render()` function. Notice that
 we're using `this.$()` to select elements inside the `ChromeView`'s element
 itself.
 
 ``` javascript
 App.ChromeView = Backbone.View.extend({
   render: function() {
-    // Instanciate some "sub" views to handle the responsibilities of
+    // Instantiate some "sub" views to handle the responsibilities of
     // their respective elements.
     this.sidebar = new App.SidebarView({ el: this.$(".sidebar") });
     this.menu = new App.NavigationView({ el: this.$("nav") });
@@ -474,7 +474,7 @@ Splitting views
 ---------------
 
 __The problem:__ Your view code is starting to bloat as it tries to do too many
-things in one class, and making sub-views with it's child elements is not an
+things in one class, and making sub-views with its child elements is not an
 option.
 
 __The solution:__ Make a sub-view with the same element.
@@ -501,7 +501,7 @@ App.ChromeView = Backbone.View.extend({
 });
 
 App.TabView = Backbone.View.extend({
-  // Notice this view has it's own events. They will not
+  // Notice this view has its own events. They will not
   // interfere with ChromeView's events.
   events: {
     'click nav.tabs a': 'switchTab'
@@ -667,9 +667,9 @@ App.PhotoView = Backbone.View.extend({
 This is the file where you do miscellaneous things that do not belong in any of
 the Backbone classes:
 
-* Instanciate the default view
+* Instantiate the default view
 * Initialize the Backbone Router
-* Provide options for jQuery and it's plugins
+* Provide options for jQuery and its plugins
 
 This is often named `application.js` or `setup.js`.
 
@@ -727,7 +727,7 @@ $() abuse
 ---------
 
 jQuery allows you to defer execution of code until when the DOM is fully-loaded
-with [$(document).ready(...)][jquery.ready], or it's short form, `$(...)`. This
+with [$(document).ready(...)][jquery.ready], or its short form, `$(...)`. This
 is useful for getting everything set up once your HTML document is ready.
 
 [jquery.ready]: http://api.jquery.com/ready/
@@ -814,7 +814,7 @@ Acknowledgements
 License](http://www.opensource.org/licenses/mit-license.php).
 
 This document is authored and maintained by [Rico Sta. Cruz][rsc] with help from
-it's [contributors][c]. It is sponsored by my startup, [Sinefunc, Inc][sf].
+its [contributors][c]. It is sponsored by my startup, [Sinefunc, Inc][sf].
 
  * [My website](http://ricostacruz.com) (ricostacruz.com)
  * [Sinefunc, Inc.](http://sinefunc.com) (sinefunc.com)
