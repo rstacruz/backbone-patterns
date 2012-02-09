@@ -593,9 +593,6 @@ NodeJS.
 If you adopt an AMD library, there will be no need to use namespaces for your
 JavaScript classes.
 
-See the [RequireJS][require.js] website for more information on RequireJS and
-AMD.
-
 ``` javascript
 define(function() {
   var Photo = require('models/photo');
@@ -607,7 +604,14 @@ define(function() {
 });
 ```
 
+For more information on RequireJS, AMD, and using it on your Backbone project,
+see:
+
+ * [Organizing Backbone using Modules][bbt.modules] (via Backbonetutorials.com)
+ * [RequireJS][require.js]'s official site
+
 [require.js]: http://requirejs.org
+[bbt.modules]: http://backbonetutorials.com/organizing-backbone-using-modules/
 
 File naming
 -----------

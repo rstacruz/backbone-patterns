@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Backbone patterns</title>
+    <link href="style.css" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Shanti:400|PT+Sans:400,700,700italic' rel='stylesheet' type='text/css'>
+</head>
+<body class='literate'>
+  <div id='all'>
+
+<hgroup class="header"><h1 id="backbone_patterns"><a href="http://ricostacruz.com/backbone-patterns">Backbone patterns</a></h1></hgroup><p class=" brief">This is a document with best practices in Backbone. This is a massive
+work-in-progress.</p>
+
+<p>This document assumes that you already have some knowledge of <a href="http://documentcloud.github.com/backbone/">Backbone.js</a>,
+<a href="http://jquery.com/">jQuery</a>, and of course, JavaScript itself.</p>
+
+<section class=" h1 model_patterns"><h1 id="model_patterns">Model patterns</h1>
+
+<section class=" h2 bootstrapping_data"><h2 id="bootstrapping_data">Bootstrapping data</h2>
+
+<p><strong>The problem:</strong> Your application needs models to be available on page load.</p>
+
+<p><strong>Solution:</strong> Bootstrap collections and models by creating collections in an
+inline <code>&lt;script&gt;</code> block.</p>
+
+<section class=" h3 define_collection_data"><h3 id="define_collection_data">Define collection data</h3>
+<pre class=" lang- prettyprint right"><code class="html">  &lt;body&gt;
+    ...
+
+    &lt;script&gt;
+      App.photos = new Photos([
+        { id: 2, name: "My dog", filename: "IMG_0392.jpg" },
+        { id: 3, name: "Our house", filename: "IMG_0393.jpg" },
+        { id: 4, name: "My favorite food", filename: "IMG_0394.jpg" },
+        { id: 5, name: "His bag", filename: "IMG_0394.jpg" },
+        ...
+      ]);
+    &lt;/script&gt;
+  &lt;/body&gt;
+</code></pre>
+
+<p>Define your collection data in an inline script in the HTML file.
+If you have collections for <code>Photos</code>, you may be doing it this way:</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 accessing_instances"><h3 id="accessing_instances" class=" after-pre">Accessing instances</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">// Gets by ID
+var photo = App.photos.get(2);
+
+// Gets a bunch of photos based on criteria
+var photo = App.photos.select(function(photo) {
+  return photo.filename.match(/^IMG/);
+});
+</code></pre>
+
+<p>To get a single <code>Photo</code>, instead of creating a <code>Photo</code> instance and using
+<code>fetch()</code>, simply pluck it from the giant collection.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 in_ruby_erb"><h3 id="in_ruby_erb" class=" after-pre">In Ruby (ERB)</h3>
+<pre class=" lang- prettyprint right"><code class="html">&lt;script&gt;
+  App.photos = new Photos(&lt;%= @photos.to_json %&gt;);
+&lt;/script&gt;
+</code></pre>
+
+<p>In your server-side templates, you will probably be using <code>to_json</code> on a
+collection of your server-side models.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 in_ruby_haml"><h3 id="in_ruby_haml" class=" after-pre">In Ruby (HAML)</h3>
+<pre class=" lang- prettyprint right"><code class="haml">:javascript
+  App.photos = new Photos(#{@photos.to_json});
+</code></pre>
+
+<p>If you use HAML, you will need use a syntax similar to this.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 in_php"><h3 id="in_php" class=" after-pre">In PHP</h3>
+<pre class=" lang- prettyprint right"><code class="php">&lt;script&gt;
+  App.photos = new Photos(&lt;?php echo json_encode($photos); ?&gt;);
+&lt;/script&gt;
+</code></pre>
+
+<p>In your server-side templates, you will probably be using <code>json_encode()</code> on a
+collection of your server-side models.</p>
+
+<br class="post-pre">
+
+</section></section></section><section class=" after-pre h1 view_patterns"><h1 id="view_patterns" class=" after-pre">View patterns</h1>
+
+<section class=" h2 inline_templates"><h2 id="inline_templates">Inline templates</h2>
+
+<p><strong>The problem:</strong> if you need to use view templates in a small Backbone
+application, defining your templates in JavaScript code will be unwieldy and
+difficult to maintain.</p>
+
+<p><strong>Solution:</strong> You may need some view templates to be inline in the HTML page.</p>
+
+<p>This solution has been outlined by John Resig in his blog post about <a href="http://ejohn.org/blog/javascript-micro-templating/">JavaScript
+micro templating</a>.</p>
+
+<section class=" h3 defining_inline_templates"><h3 id="defining_inline_templates">Defining inline templates</h3>
+<pre class=" lang- prettyprint right"><code class="html">&lt;script type="text/html" id="template-contact"&gt;
+  &lt;div class='contact'&gt;
+    &lt;strong&gt;&lt;%= name %&gt;&lt;/strong&gt;
+    &lt;span&gt;&lt;%= email %&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>You can put templates in an HTML <code>&lt;script&gt;</code> tag.</p>
+
+<ul>
+<li><p><em>Change the <code>type</code> attribute</em> to something else so it will not be interpreted
+as JavaScript.</p></li>
+<li><p><em>Set an <code>id</code></em> so we can easily refer to it.</p></li>
+</ul>
+<br class="post-pre">
+
+</section><section class=" after-pre h3 using_inline_templates"><h3 id="using_inline_templates" class=" after-pre">Using inline templates</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">$("#template-contact").html();
+//=&gt; "&lt;div class='contact'&gt;\n&lt;strong&gt;&lt;%= name %&gt;&lt;/str..."
+
+template = _.template($("#template-contact").html());
+//=&gt; function() { ... }
+</code></pre>
+
+<p>In JavaScript, you can get the <code>innerHTML</code> (or jQuery's <a href="http://api.jquery.com/html">.html()</a>) of that
+HTML element to fetch the raw template data. You can pass this onto Underscore's
+<code>_.template</code> to create a template function.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 integrating_into_backbone"><h3 id="integrating_into_backbone" class=" after-pre">Integrating into Backbone</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">var ContactView = Backbone.View.extend({
+  template: _.template($("#template-contact").html()),
+
+  render: function() {
+    // This is a dictionary object of the attributes of the models.
+    // =&gt; { name: "Jason", email: "j.smith@gmail.com" }
+    var dict = this.model.toJSON();
+
+    // Pass this object onto the template function.
+    // This returns an HTML string.
+    var html = this.template(dict);
+
+    // Append the result to the view's element.
+    $(this.el).append(html);
+
+    // ...
+  }
+});
+</code></pre>
+
+<p>In practice, you will most likely be using this in the <code>render()</code> method of a
+view like so.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 limitations"><h3 id="limitations" class=" after-pre">Limitations</h3>
+
+<p><strong>Single-page apps only.</strong>
+This assumes that your Backbone application is all contained in one HTML page.
+If your app spans across multiple HTML pages, and each page will be needing the
+same templates, you may be redundantly streaming the template data to the
+browser uneededly. Consider using JST templates instead.</p>
+
+<p>Note that the given example assumes that the <code>#template-contact</code> element appears
+before you include JavaScript files, as it requires the template element to be
+accessible before the class is defined.</p>
+
+</section></section><section class=" h2 jst_templates"><h2 id="jst_templates">JST templates</h2>
+
+<p><strong>The problem:</strong> if you need to use view templates in a small-to-large Backbone
+application, defining your templates in JavaScript code will be unwieldy and
+difficult to maintain.</p>
+
+<p><strong>Solution:</strong> You may need put the templates in a JavaScript file.</p>
+
+<section class=" h3 the_structure"><h3 id="the_structure">The structure</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">// http://myapp.com/javascripts/jst.js
+window.JST = {};
+
+window.JST['person/contact'] = _.template(
+    "&lt;div class='contact'&gt;&lt;%= name %&gt; ..."
+);
+
+window.JST['person/edit'] = _.template(
+    "&lt;form method='post'&gt;&lt;input type..."
+);
+</code></pre>
+
+<p>Your app will need to serve a <em>dynamically-created</em> JavaScript file that
+compiles your files.</p>
+
+<p>A common JST file will create the <code>JST</code> object (in the window namespace), with
+each of it's members defined as template functions. In this example, we'll use
+Underscore's <code>_.template</code>, which returns functions.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="html">&lt;script src="http://myapp.com/javascripts/jst.js"&gt;&lt;/script&gt;
+</code></pre>
+<p class=" after-pre">You will then need to link to this JavaScript page in your HTML.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 using_jst_templates"><h3 id="using_jst_templates" class=" after-pre">Using JST templates</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">var html = JST['person/edit']();
+
+var dict = { name: "Jason", email: "j.smith@gmail.com" };
+var html = JST['person/contact'](dict);
+</code></pre>
+
+<p>In your JavaScript code, simply access the JST object's members to access the
+views.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 integration_notes"><h3 id="integration_notes" class=" after-pre">Integration notes</h3>
+
+<ul>
+<li>
+<strong>Rails 3.1 and above</strong>: The Rails Asset pipeline already comes with support
+for JST pages.</li>
+<li>
+<strong>Rails 3.0 and below</strong>: consider using <a href="http://getsprockets.org">Sprockets</a> or
+<a href="http://documentcloud.github.com/jammit">Jammit</a>.</li>
+<li>
+<strong>In Sinatra</strong>: The <a href="http://ricostacruz.com/sinatra-backbone">sinatra-backbone</a> gem can take care of
+dynamically serving JST templates.</li>
+</ul></section></section><section class=" h2 partials"><h2 id="partials">Partials</h2>
+
+<p><strong>The problem:</strong> there may be parts of HTML templates that can be reused in many
+parts of the application. Defining them more than once is not DRY, which may
+make your application less maintainable.</p>
+
+<p><strong>Solution:</strong> separating these snippets into partials.</p>
+
+<p>Partials are templates that are meant to be used <em>inside</em> other templates.</p>
+
+<p>One typical use of partials is for lists where the template for list items may
+be defined as a separate template from the list itself.</p>
+
+<section class=" h3 solution"><h3 id="solution">Solution</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">TasksList = Backbone.View.extend({
+  template: _.template([
+    "&lt;ul class='task_list'&gt;",
+      "&lt;% items.each(function(item) { %&gt;",
+        "&lt;%= itemTemplate(item) %&gt;",
+      "&lt;% }); %&gt;",
+    "&lt;/ul&gt;"
+  ].join('')),
+
+  itemTemplate: _.template(
+    "&lt;li&gt;&lt;%= name %&gt;&lt;/li&gt;"
+  ),
+
+  render: function() {
+    var html = this.template({
+      items: tasks /* a collection */,
+      itemTemplate: this.itemTemplate
+    });
+
+    $(this.el).append(html);
+  }
+});
+</code></pre>
+
+<p>You can pass the template function for the partial as a parameter to the first 
+template.</p>
+
+<p>In this example, the function <code>itemTemplate</code> is passed onto the parameters for 
+<code>template()</code>.</p>
+
+<br class="post-pre">
+
+</section></section><section class=" after-pre h2 animation_buffer"><h2 id="animation_buffer" class=" after-pre">Animation buffer</h2>
+
+<p><strong>The problem:</strong> When you have events that trigger animations, they can mess up
+when the user clicks too fast.</p>
+
+<p><strong>The solution:</strong> Make a buffering system to ensure that animations are fired
+serially (one after the other) and never parallel (at the same time).</p>
+
+<section class=" h3 the_situation"><h3 id="the_situation">The situation</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">PicturesView = Backbone.View.extend({
+  events: {
+    'click .next':     'next'
+  },
+
+  next: function() {
+    var current = this.$(".current");
+    var next    = this.$(".current + div");
+
+    if (next.length == 0) { return; }
+
+    // Make the current one move to the left via jQuery.
+    // This uses jQuery.fn.animate() that changes CSS values, then fires
+    // the function supplied when it's done.
+    current.animate({ left: -300, opacity: 0 }, function() {
+      current.removeClass('.current');
+      next.addClass('.current');
+    });
+  }
+});
+</code></pre>
+
+<p>Let's say you have this innocent code that performs an animation.</p>
+
+<p>One fundamental flaw here is that it assumes that <code>.next()</code> will only be called
+when it is not animating. When the user clicks "Next" while the animation is
+working, unexpected results will occur.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 the_solution"><h3 id="the_solution" class=" after-pre">The solution</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">Buffer = {
+  commands: [],
+
+  // Adds a command to the buffer, and executes it if it's the only command
+  // to be ran.
+  add: function(fn) {
+    this.commands.push(fn);
+    if (this.commands.length == 1) fn();
+  },
+
+  // Moves onto the next command in the buffer.
+  next: function() {
+    this.commands.shift();
+    if (this.commands.length) this.commands[0]();
+  }
+};
+</code></pre>
+
+<p>Here's a simple buffering solution. It provides two commands:</p>
+
+<ul>
+<li>
+<code>add(fn)</code> which adds a given function to the buffer, and</li>
+<li>
+<code>next()</code> which moves onto the next command.</li>
+</ul>
+<p>To use this, put your animations inside an anonymous function to be passed onto
+<code>add()</code>. Be sure to trigger <code>next()</code> when the animations are done.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 example"><h3 id="example" class=" after-pre">Example</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">next: function() {
+  var current = this.$(".current");
+  var next    = this.$(".current + div");
+
+  if (next.length == 0) { return; }
+
+  // Ensure that the animation will not happen while another animation is
+  // ongoing.
+  Buffer.add(function() {
+    current.animate({ left: -300, opacity: 0 }, function() {
+      current.removeClass('.current');
+      next.addClass('.current');
+
+      // Trigger the next animation.
+      Buffer.next();
+    });
+  });
+}
+</code></pre>
+
+<p>This is our example from a while ago that has been modified to use the bufferer.</p>
+
+<br class="post-pre">
+
+</section></section><section class=" after-pre h2 sub_views"><h2 id="sub_views" class=" after-pre">Sub views</h2>
+
+<p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
+things in one class.</p>
+
+<p><strong>The solution:</strong> Break it apart into smaller sub-views.</p>
+
+<section class=" h3 the_situation"><h3 id="the_situation">The situation</h3>
+
+<p>This is a common occurence if you have one <em>giant</em> view that takes care of the
+entire page. View classes may become unwieldy once they get up to 200 lines.</p>
+
+</section><section class=" h3 solution_1_sub_views"><h3 id="solution_1_sub_views">Solution 1: Sub views</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
+  render: function() {
+    // Instanciate some "sub" views to handle the responsibilities of
+    // their respective elements.
+    this.sidebar = new App.SidebarView({ el: this.$(".sidebar") });
+    this.menu = new App.NavigationView({ el: this.$("nav") });
+  }
+});
+
+$(function() {
+  App.chrome = new App.ChromeView({ el: $("#chrome") });
+});
+</code></pre>
+
+<p>It may be wise to delegate some areas of the view to be the reponsibility of
+another view.</p>
+
+<p>In this example, we have a view that handles the entire application "chrome."
+Let's break apart some of it's parts on it's <code>render()</code> function. Notice that
+we're using <code>this.$()</code> to select elements inside the <code>ChromeView</code>'s element
+itself.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">App.chrome.sidebar.toggle();
+
+App.chrome.menu.expand();
+</code></pre>
+<p class=" after-pre">We will then be able to access the sub-views like so:</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 events"><h3 id="events" class=" after-pre">Events</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.SidebarView = Backbone.View.extend({
+  toggle: function() {
+    if ($(this.el).is(':visible')) {
+      $(this.el).hide();
+      this.trigger('collapse');    // &lt;==
+    } else {
+      $(this.el).show();
+      this.trigger('expand');      // &lt;==
+    }
+  },
+});
+</code></pre>
+
+<p>All Backbone objects can emit <a href="http://documentcloud.github.com/backbone/#Events">events</a>. To maintain the separation of
+responsibilities of the view classes, you may have the sub-views trigger
+events that the parent view would need (and vice versa).</p>
+
+<p>For instance, we may implement <code>SidebarView</code> to trigger events when the sidebar
+is collapsed or expanded:</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
+  render: function() {
+    this.sidebar = new App.SidebarView({ el: this.$(".sidebar") });
+
+    this.sidebar
+      .bind('collapse', this.onSidebarCollapse)
+      .bind('expand',   this.onSidebarExpand);
+
+    // ...
+  }
+});
+</code></pre>
+<p class=" after-pre">And the parent view (<code>ChromeView</code>) may listen to them like so:</p>
+
+<br class="post-pre">
+
+</section></section><section class=" after-pre h2 splitting_views"><h2 id="splitting_views" class=" after-pre">Splitting views</h2>
+
+<p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
+things in one class, and making sub-views with it's child elements is not an
+option.</p>
+
+<p><strong>The solution:</strong> Make a sub-view with the same element.</p>
+
+<section class=" h3 solution"><h3 id="solution">Solution</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
+  events: {
+    'click button': 'onButtonClick'
+  },
+  render: function() {
+    // Pass our own element to the other view.
+    this.tabs = new App.TabView({ el: this.el });
+  }
+});
+
+App.TabView = Backbone.View.extend({
+  // Notice this view has it's own events. They will not
+  // interfere with ChromeView's events.
+  events: {
+    'click nav.tabs a': 'switchTab'
+  },
+});
+</code></pre>
+
+<p>You can make 2 or more views that target the same element. This is useful when
+there are many controls in a view, but creating sub-views (with their scopes
+limited to a set of elements in the bigger view) may be too messy, or just not
+possible.</p>
+
+<p>In this example, <code>ChromeView</code> will make a sub-view that shares the same element
+as it does.</p>
+
+<br class="post-pre">
+
+</section></section></section><section class=" after-pre h1 conventions"><h1 id="conventions" class=" after-pre">Conventions</h1>
+
+<section class=" h2 naming_convention"><h2 id="naming_convention">Naming convention</h2>
+<pre class=" lang- prettyprint right"><code class="javascript">// Classes:
+Photo
+Album
+Author
+
+// Instances:
+photo
+myAlbum
+</code></pre>
+
+<p>Classes often start in uppercase letters, while instances start with lowercase
+letters. This is a throwback of the general Python and Ruby practice of having
+constant names start with uppercase letters.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">// Good (CamelCase):
+PhotoAlbum
+albumCover
+
+// Avoid (under_scores):
+photo_album
+album_cover
+</code></pre>
+<p class=" after-pre">For names with multiple words, JavaScript often calls for CamelCase. Using
+underscores are discouraged in JavaScript.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h2 namespace_convention"><h2 id="namespace_convention" class=" after-pre">Namespace convention</h2>
+<pre class=" lang- prettyprint right"><code class="javascript">window.App = {
+    ...
+};
+</code></pre>
+
+<p>The convention we use puts everything in one <code>App</code> namespace to keep things
+organized properly.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">App.Photo = Backbone.Model.extend({
+    ...
+};
+</code></pre>
+<p class=" after-pre">Subsequent models, views, and other classes will be made in this namespace.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code>Models:                    App.Photo
+Collections:               App.Photos
+Views:                     App.PhotoView
+Main router:               App.Router
+Custom routers:            App.SpecialRouter
+
+Router instance:           App.router
+View instances:            App.photoView
+Singleton model instances: App.photo
+Collection instances:      App.photos
+</code></pre>
+<p class=" after-pre">Some people prefer to use namespaces based on their app's name. Consider, say,
+<code>BF.Photo</code> (instead of <code>App.Photo</code>) if your application name is "Bacefook."</p>
+
+<br class="post-pre">
+
+<section class=" after-pre h3 variation_two-level_namespace"><h3 id="variation_two-level_namespace" class=" after-pre">Variation: two-level namespace</h3>
+<pre class=" lang- prettyprint right"><code>Models:                    App.Models.Photo
+Collections:               App.Collections.Photos
+Views:                     App.Views.Photo
+</code></pre>
+
+<p>Some people prefer a verbose two-level version where the classes are divided
+into their own namespaces as well.</p>
+
+<p>This is often done to make it easy to iterate over all available models,
+     collections, and views.</p>
+
+<br class="post-pre">
+
+</section></section><section class=" after-pre h2 requirejs_and_amd"><h2 id="requirejs_and_amd" class=" after-pre">RequireJS and AMD</h2>
+<pre class=" lang- prettyprint right"><code class="javascript">define(function() {
+  var Photo = require('models/photo');
+  var Photos = require('collections/photos');
+  var MenuView = require('views/menu');
+  var MainRouter = require('router/main');
+
+  // ...
+});
+</code></pre>
+
+<p>You may adopt a <a href="http://requirejs.org/docs/whyamd.html">Asynchronous Module Definition</a>-style method of
+organization using a library like <a href="http://requirejs.org">RequireJS</a>. This will allow you
+to organize your modules in the <code>require(...)</code> way familiar to those who use
+NodeJS.</p>
+
+<p>If you adopt an AMD library, there will be no need to use namespaces for your
+JavaScript classes.</p>
+
+<p>Fr more information on RequireJS, AMD, and using it on your Backbone project,
+see:</p>
+
+<ul>
+<li>
+<a href="http://backbonetutorials.com/organizing-backbone-using-modules/">Organizing Backbone using Modules</a> (via Backbonetutorials.com)</li>
+<li>
+<a href="http://requirejs.org">RequireJS</a>'s official site</li>
+</ul>
+<br class="post-pre">
+
+</section><section class=" after-pre h2 file_naming"><h2 id="file_naming" class=" after-pre">File naming</h2>
+
+<p>For applications that do <em>not</em> use <a href="http://requirejs.org/docs/whyamd.html">Asynchronous Module Definition</a>-style
+organization, there always seem to have 3 basic JavaScript files.</p>
+
+<section class=" h3 the_main_namespace"><h3 id="the_main_namespace">The main namespace</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">// app.js
+window.App = {
+    ...
+};
+</code></pre>
+
+<p>This is often <code>app.js</code>, which defines the basic namespace.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 the_individual_classes"><h3 id="the_individual_classes" class=" after-pre">The individual classes</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">// app/photoview.js
+App.PhotoView = Backbone.View.extend({
+    ...
+});
+</code></pre>
+
+<p>If you use the namespacing method outlined earlier in this document, there are 2
+common naming conventions for individual classes:</p>
+
+<ul>
+<li><p>Name the files as the exact class name they contain. For instance,
+<code>App.PhotoView</code> should be stored as <code>app/photoview.js</code>.</p></li>
+<li><p>Place each of the class types in their own folders. For instance,
+the <code>PhotoView</code> may be defined as <code>app/views/photoview.js</code>, or
+<code>views/photoview.js</code>.</p></li>
+</ul>
+<p>In this approach, <strong>avoid</strong> putting code in the files other than the actual
+class it defines. This makes your convention predictable for the benefit of
+those new to your project.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 the_setup_glue_code_file"><h3 id="the_setup_glue_code_file" class=" after-pre">The setup/glue code file</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">$(function() {
+  // Set up some options for jQuery and plugins.
+  $(document).ajaxError(function() {
+    alert("There was an error.");
+  });
+
+  // Provide options for your plugins.
+  $("a[rel~=lightbox]").click(function() {
+    $(this).openAsLightbox();
+  });
+
+  Backbone.emulateJSON = true;
+
+  // Initialize Backbone views.
+  App.chromeView = new App.ChromeView({ el: $("body") });
+  App.router = new App.Router;
+
+  // Initialize the Backbone router.
+  Backbone.history.start();
+});
+</code></pre>
+
+<p>This is the file where you do miscellaneous things that do not belong in any of
+the Backbone classes:</p>
+
+<ul>
+<li>Instanciate the default view</li>
+<li>Initialize the Backbone Router</li>
+<li>Provide options for jQuery and it's plugins</li>
+</ul>
+<p>This is often named <code>application.js</code> or <code>setup.js</code>.</p>
+
+<p>In larger projects, this can span multiple files. Don't be afraid to refactor it
+to multiple files.</p>
+
+<p>This is often the only place you will want to put the onload hook
+<code>$(function() { ... })</code>.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 load_order"><h3 id="load_order" class=" after-pre">Load order</h3>
+<pre class=" lang- prettyprint right"><code class="html">&lt;script src="javascripts/app.js"&gt;&lt;/script&gt;
+&lt;script src="javascripts/app/photo.js"&gt;&lt;/script&gt;
+&lt;script src="javascripts/app/photoview.js"&gt;&lt;/script&gt;
+&lt;script src="javascripts/app/photos.js"&gt;&lt;/script&gt;
+&lt;script src="javascripts/setup.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Consider loading them in this order:</p>
+
+<ul>
+<li>
+<code>app.js</code> (the namespace)</li>
+<li>
+<code>app/*.js</code> (individual classes)</li>
+<li>
+<code>setup.js</code> (the glue)</li>
+</ul>
+<br class="post-pre">
+
+</section></section></section><section class=" after-pre h1 anti-patterns"><h1 id="anti-patterns" class=" after-pre">Anti-patterns</h1>
+
+<p>Here are a few common practices that I believe should generally be avoided.</p>
+
+<section class=" h2 abuse"><h2 id="abuse">$() abuse</h2>
+<pre class=" lang- prettyprint right"><code class="javascript">$(document).ready(function() {
+  // Initialize the router.
+  App.router = new App.MainRouter;
+
+  // Initialize the main view.
+  App.dashboard = new App.Dashboard({ ... });
+
+  // and so on...
+});
+
+// Or its shorter form:
+$(function() {
+  // ...
+});
+</code></pre>
+
+<p>jQuery allows you to defer execution of code until when the DOM is fully-loaded
+with <a href="http://api.jquery.com/ready/">$(document).ready(...)</a>, or it's short form, <code>$(...)</code>. This
+is useful for getting everything set up once your HTML document is ready.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">// AVOID this:
+$(function() {
+  App.PhotoView = Backbone.View.extend({
+    ...
+  });
+});
+</code></pre>
+<p class=" after-pre">A common anti-pattern is to put class definitions (for views, models, and such)
+inside these blocks. They are not necessary.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">// Consider instead:
+App.PhotoView = Backbone.View.extend({
+  ...
+});
+</code></pre>
+<p class=" after-pre">Your classes should be ready before the HTML DOM is. This will save you from
+running into problems later where certain classes may not be available at
+certain parts of your application.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h2 things_outside_views"><h2 id="things_outside_views" class=" after-pre">Things outside views</h2>
+
+<p>Put things in your view class code as much as possible.</p>
+
+</section><section class=" h2 event_handlers_outside_views"><h2 id="event_handlers_outside_views">Event handlers outside views</h2>
+<pre class=" lang- prettyprint right"><code class="javascript">App.PhotoView = Backbone.View.extend({
+  ...
+});
+
+// AVOID this!
+$("a.photo").click(function() { ... });
+</code></pre>
+
+<p>Every time you make an event handler outside a view class, consider making a new
+view class.</p>
+
+<br class="post-pre">
+
+</section></section><section class=" after-pre h1 acknowledgements"><h1 id="acknowledgements" class=" after-pre">Acknowledgements</h1>
+
+<p>© 2011-2012, Rico Sta. Cruz. Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT
+License</a>.</p>
+
+<p>This document is authored and maintained by <a href="http://ricostacruz.com">Rico Sta. Cruz</a> with help from
+it's <a href="http://github.com/rstacruz/backbone-patterns/contributors">contributors</a>. It is sponsored by my startup, <a href="http://sinefunc.com">Sinefunc, Inc</a>.</p>
+
+<ul>
+<li>
+<a href="http://ricostacruz.com">My website</a> (ricostacruz.com)</li>
+<li>
+<a href="http://sinefunc.com">Sinefunc, Inc.</a> (sinefunc.com)</li>
+<li>
+<a href="http://github.com/rstacruz">Github</a> (@rstacruz)</li>
+<li>
+<a href="http://twitter.com/rstacruz">Twitter</a> (@rstacruz)</li>
+</ul>
+<section class=" h3 to_do_list"><h3 id="to_do_list">To do list</h3>
+
+<ul>
+<li>Model associations</li>
+<li>Adding events to subclasses</li>
+<li>View modes</li>
+<li>Nested views</li>
+<li>Router entry/exit</li>
+<li>View helpers</li>
+</ul></section></section></div>
+  <script type='text/javascript' src='http://cachedcommons.org/cache/prettify/1.0.0/javascripts/prettify-min.js'></script>
+  <script>prettyPrint();</script>
+</body>
+</html>
