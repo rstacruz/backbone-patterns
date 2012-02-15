@@ -509,6 +509,67 @@ App.TabView = Backbone.View.extend({
 });
 ```
 
+Mixin patterns
+==============
+
+__The problem:__ Sometimes you have the same functionality for multiple objects and it doesn't
+make sense to wrap your objects in a parent object. For example, if you have
+two views that share methods but don't -- and shouldn't -- have a shared
+parent view.
+
+``` javascript
+ParentView = Backbone.View.extend({
+...
+});
+
+ChildView1 = ParentView.extend({
+...
+});
+
+ChildView2 = ParentView.extend({
+...
+});
+```
+
+__The solution:__ For this scenario, it's appropriate to use a mixin.
+
+Define a mixin.
+
+``` javascript
+App.Mixins.Navigation = {
+  
+  toggle: function() {...},
+  
+  open: function() {...},
+  
+  close: function() {...}
+  
+};
+```
+
+Extend your objects with your mixin.
+
+``` javascript
+App.Menu = Backbone.View.extend({
+...
+/* I too need to know how to toggle, open, and close! */
+});
+
+_.extend(App.Views.Menu.prototype, App.Mixins.Navigation);
+
+App.Tabs = Backbone.View.extend({
+...
+/* I need to know how to toggle, open, and close! */
+});
+
+_.extend(App.Views.Tabs.prototype, App.Mixins.Navigation);
+
+```
+
+The prototypes for you views now both have the methods defined in your mixin.
+Now all of your new <code>App.Tabs</code> and <code>App.Menu</code> views can
+<code>this.toggle()</code>, <code>this.open()</code>, <code>this.close()</code>.
+
 Conventions
 ===========
 
