@@ -515,6 +515,117 @@ as it does.</p>
 
 <br class="post-pre">
 
+</section></section></section><section class=" after-pre h1 general_patterns"><h1 id="general_patterns" class=" after-pre">General patterns</h1>
+
+<section class=" h2 mixins"><h2 id="mixins">Mixins</h2>
+
+<p><strong>The problem:</strong> Sometimes you have the same functionality for multiple objects and it doesn't
+make sense to wrap your objects in a parent object. For example, if you have
+two views that share methods but don't -- and shouldn't -- have a shared
+parent view.</p>
+
+<p><strong>The solution:</strong> For this scenario, it's appropriate to use a mixin.</p>
+
+<section class=" h3 defining_mixins"><h3 id="defining_mixins">Defining mixins</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.Mixins.Navigation = {
+
+  toggle: function() { /* ... */ },
+
+  open: function() { /*... */ },
+
+  close: function() { /* ... */ }
+
+};
+</code></pre>
+
+<p>You can define an object that has attributes and methods that can be shared
+across different classes. This is called a <a href="http://en.wikipedia.org/wiki/Mixin">mixin</a>.</p>
+
+<p>You can define a mixin as a regular object literal with functions in it.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 using_mixins"><h3 id="using_mixins" class=" after-pre">Using mixins</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.Menu = Backbone.View.extend({
+  // I need to know how to toggle, open, and close!
+});
+
+_.extend(App.Views.Menu.prototype, App.Mixins.Navigation);
+
+App.Tabs = Backbone.View.extend({
+  // I too need to know how to toggle, open, and close!
+});
+
+_.extend(App.Views.Tabs.prototype, App.Mixins.Navigation);
+
+</code></pre>
+
+<p>You may then extend your classes with these mixins. You can use Underscore's
+<a href="http://documentcloud.github.com/underscore/#extend">_.extend</a> function to attach these to your class prototypes.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 alternative_syntax"><h3 id="alternative_syntax" class=" after-pre">Alternative syntax</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.Views.Menu = Backbone.View.extend(
+  _.extend({}, App.Mixins.Navigation, {
+  // View methods here.
+}));
+
+App.Views.Tabs = Backbone.View.extend(
+  _.extend({}, App.Mixins.Navigation, {
+  // View methods here.
+}));
+</code></pre>
+
+<p>The above presents two caveats, which can be problematic in some situations:</p>
+
+<ul>
+<li><p>Your attributes and methods in your mixin will <em>override</em> the methods you
+define in the class itself (via <code>Backbone.View.extend</code>). Ideally, it should be
+the other way around.</p></li>
+<li><p>The <code>_.extend(...)</code> line is after all the methods you've defined in the
+class, and can easily be neglected by developers new to your project.</p></li>
+</ul>
+<p>To remedy this, you can use this alterative syntax. This will let you write
+methods and attributes in your class that will override the mixin's default
+behavior.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 result"><h3 id="result" class=" after-pre">Result</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">var tabs = new App.Views.Tabs;
+
+// These will call the methods you've defined
+// in App.Mixins.Navigation.
+tabs.toggle();
+tabs.open();
+tabs.close();
+</code></pre>
+
+<p>The prototypes for your views now both have the methods defined in your mixin.
+New <code>App.Views.Tabs</code> and <code>App.Views.Menu</code> instances will now be able to respond
+to <code>.toggle()</code>, <code>.open()</code> and <code>.close()</code>.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 models_and_routers"><h3 id="models_and_routers" class=" after-pre">Models and routers</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">// Router
+App.PageRouter = Backbone.Router.extend(
+  _.extend({}, App.Mixins.HasSettings, {
+  // View methods here.
+}));
+
+// Model
+App.Widget = Backbone.Model.extend(
+  _.extend({}, App.Mixins.IsDeletable, {
+  // View methods here.
+}));
+</code></pre>
+
+<p>You can also use mixins in Models and Routers as well.</p>
+
+<br class="post-pre">
+
 </section></section></section><section class=" after-pre h1 conventions"><h1 id="conventions" class=" after-pre">Conventions</h1>
 
 <section class=" h2 naming_convention"><h2 id="naming_convention">Naming convention</h2>
@@ -872,6 +983,14 @@ its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contribu
 </ul></nav><nav class="level-2"><h3><a href="#splitting_views">Splitting views</a></h3>
 <ul>
 <li><a href="#solution">Solution</a></li>
+</ul></nav><h2><a href="#general_patterns">General patterns</a></h2>
+<nav class="level-2"><h3><a href="#mixins">Mixins</a></h3>
+<ul>
+<li><a href="#defining_mixins">Defining mixins</a></li>
+<li><a href="#using_mixins">Using mixins</a></li>
+<li><a href="#alternative_syntax">Alternative syntax</a></li>
+<li><a href="#result">Result</a></li>
+<li><a href="#models_and_routers">Models and routers</a></li>
 </ul></nav><h2><a href="#conventions">Conventions</a></h2>
 <nav class="level-2"><h3><a href="#naming_convention">Naming convention</a></h3>
 <ul></ul></nav><nav class="level-2"><h3><a href="#namespace_convention">Namespace convention</a></h3>
