@@ -483,14 +483,17 @@ App.ChromeView = Backbone.View.extend({
 });
 ```
 
-Splitting views
----------------
+Delegate views
+--------------
 
 __The problem:__ Your view code is starting to bloat as it tries to do too many
 things in one class, and making sub-views with its child elements is not an
 option.
 
-__The solution:__ Make a sub-view with the same element.
+__The solution:__ Make a sub-view with the same element. This will allow you to
+[delegate][delegate] certain responsibilities to another view class.
+
+[delegate]: http://en.wikipedia.org/wiki/Delegation_pattern
 
 ### Solution
 
