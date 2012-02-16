@@ -477,13 +477,14 @@ is collapsed or expanded:</p>
 
 <br class="post-pre">
 
-</section></section><section class=" after-pre h2 splitting_views"><h2 id="splitting_views" class=" after-pre">Splitting views</h2>
+</section></section><section class=" after-pre h2 delegate_views"><h2 id="delegate_views" class=" after-pre">Delegate views</h2>
 
 <p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
 things in one class, and making sub-views with its child elements is not an
 option.</p>
 
-<p><strong>The solution:</strong> Make a sub-view with the same element.</p>
+<p><strong>The solution:</strong> Make a sub-view with the same element. This will allow you to
+<a href="http://en.wikipedia.org/wiki/Delegation_pattern">delegate</a> certain responsibilities to another view class.</p>
 
 <section class=" h3 solution"><h3 id="solution">Solution</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
@@ -980,7 +981,7 @@ its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contribu
 <li><a href="#the_situation">The situation</a></li>
 <li><a href="#solution_1_sub_views">Solution 1: Sub views</a></li>
 <li><a href="#events">Events</a></li>
-</ul></nav><nav class="level-2"><h3><a href="#splitting_views">Splitting views</a></h3>
+</ul></nav><nav class="level-2"><h3><a href="#delegate_views">Delegate views</a></h3>
 <ul>
 <li><a href="#solution">Solution</a></li>
 </ul></nav><h2><a href="#general_patterns">General patterns</a></h2>
