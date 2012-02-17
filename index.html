@@ -619,12 +619,16 @@ _.extend(App.Views.Tabs.prototype, App.Mixins.Navigation);
 </section><section class=" after-pre h3 alternative_syntax"><h3 id="alternative_syntax" class=" after-pre">Alternative syntax</h3>
 <pre class=" lang- prettyprint right"><code class="javascript">App.Views.Menu = Backbone.View.extend(
   _.extend({}, App.Mixins.Navigation, {
-  // View methods here.
+
+  // (Methods and attributes here)
+
 }));
 
 App.Views.Tabs = Backbone.View.extend(
   _.extend({}, App.Mixins.Navigation, {
-  // View methods here.
+
+  // (Methods and attributes here)
+
 }));
 </code></pre>
 
@@ -663,13 +667,17 @@ to <code>.toggle()</code>, <code>.open()</code> and <code>.close()</code>.</p>
 <pre class=" lang- prettyprint right"><code class="javascript">// Router
 App.PageRouter = Backbone.Router.extend(
   _.extend({}, App.Mixins.HasSettings, {
-  // View methods here.
+
+  // (Methods and attributes here)
+
 }));
 
 // Model
 App.Widget = Backbone.Model.extend(
   _.extend({}, App.Mixins.IsDeletable, {
-  // View methods here.
+
+  // (Methods and attributes here)
+
 }));
 </code></pre>
 
