@@ -258,10 +258,10 @@ be defined as a separate template from the list itself.
 
 ### Solution
 
-You can pass the template function for the partial as a parameter to the first 
+You can pass the template function for the partial as a parameter to the first
 template.
 
-In this example, the function `itemTemplate` is passed onto the parameters for 
+In this example, the function `itemTemplate` is passed onto the parameters for
 `template()`.
 
 ``` javascript
@@ -617,35 +617,9 @@ You may then extend your classes with these mixins. You can use Underscore's
 [mixin]: http://en.wikipedia.org/wiki/Mixin
 [extend]: http://documentcloud.github.com/underscore/#extend
 
-``` javascript
-App.Menu = Backbone.View.extend({
-  // I need to know how to toggle, open, and close!
-});
+#### Preferred syntax
 
-_.extend(App.Views.Menu.prototype, App.Mixins.Navigation);
-
-App.Tabs = Backbone.View.extend({
-  // I too need to know how to toggle, open, and close!
-});
-
-_.extend(App.Views.Tabs.prototype, App.Mixins.Navigation);
-
-```
-
-### Alternative syntax
-
-The above presents two caveats, which can be problematic in some situations:
-
-  * Your attributes and methods in your mixin will *override* the methods you
-  define in the class itself (via `Backbone.View.extend`). Ideally, it should be
-  the other way around.
-
-  * The `_.extend(...)` line is after all the methods you've defined in the
-  class, and can easily be neglected by developers new to your project.
-
-To remedy this, you can use this alterative syntax. This will let you write
-methods and attributes in your class that will override the mixin's default
-behavior.
+This approach will let you write methods and attributes in your class that will override the mixin's default behavior.
 
 ``` javascript
 App.Views.Menu = Backbone.View.extend(
@@ -661,6 +635,36 @@ App.Views.Tabs = Backbone.View.extend(
   // (Methods and attributes here)
 
 }));
+```
+
+#### Alternative syntax
+
+An alternate syntax is presented below. Take note, however, there are two caveats with this approach which can be problematic in some situations:
+
+  1. Your attributes and methods in your mixin will *override* the methods you
+  define in the class itself (via `Backbone.View.extend`). Ideally, it should be
+  the other way around.
+
+  2. The `_.extend(...)` line is after all the methods you've defined in the
+  class, and can easily be neglected by developers new to your project.
+
+
+``` javascript
+App.Menu = Backbone.View.extend({
+
+  // (Methods and attributes here)
+
+});
+
+_.extend(App.Views.Menu.prototype, App.Mixins.Navigation);
+
+App.Tabs = Backbone.View.extend({
+
+  // (Methods and attributes here)
+
+});
+
+_.extend(App.Views.Tabs.prototype, App.Mixins.Navigation);
 ```
 
 ### Result
@@ -679,14 +683,14 @@ tabs.open();
 tabs.close();
 ```
 
-### Models and routers
+### Collections, models, and routers
 
-You can also use mixins in Models and Routers as well.
+You can also use mixins on Collections, Models, and Routers.
 
 ``` javascript
-// Router
-App.PageRouter = Backbone.Router.extend(
-  _.extend({}, App.Mixins.HasSettings, {
+// Collection
+App.Users = Backbone.Collection.extend(
+  _.extend({}, App.Mixins.AreNavigable, {
 
   // (Methods and attributes here)
 
@@ -695,6 +699,14 @@ App.PageRouter = Backbone.Router.extend(
 // Model
 App.Widget = Backbone.Model.extend(
   _.extend({}, App.Mixins.IsDeletable, {
+
+  // (Methods and attributes here)
+
+}));
+
+// Router
+App.PageRouter = Backbone.Router.extend(
+  _.extend({}, App.Mixins.HasSettings, {
 
   // (Methods and attributes here)
 
