@@ -522,8 +522,60 @@ App.TabView = Backbone.View.extend({
   events: {
     'click nav.tabs a': 'switchTab'
   },
+
+  switchTo: function(tab) {
+    // ...
+  },
+
+  hide: function() {
+    // ...
+  }
 });
 ```
+
+### Using delegate views
+
+You can delegate some functionality to the sub-view. In this example, we can
+write the (potentially long) code for hiding tabs in the `TabView`, making
+`ChromeView` easier to maintain and manage.
+
+``` javascript
+App.ChromeView = Backbone.View.extend({
+  // ...
+
+  goFullscreen: function() {
+    this.tabs.hide();
+  }
+});
+```
+
+You may also provide publicly-accessible methods to `TabView` that will be meant
+to be accessed outside of `ChromeView`.
+
+``` javascript
+var chrome = new App.ChromeView;
+chrome.tabs.switchTo('home');
+```
+
+### Variation: private delegate views
+
+You can also make delegate views *private* by design: that is, it shouldn't be
+used outside the parent view (`ChromeView` in our example).
+
+As JavaScript lacks true private attributes, you can set prefix it with an
+underscore to signify that it's private and is not part of it's public
+interface. (This is a practice taken from Python's [official style
+guide][pep8].)
+
+``` javascript
+App.ChromeView = Backbone.View.extend({
+  render: function() {
+    this._tabs = new App.TabView({ el: this.el });
+  }
+});
+```
+
+[pep8]: http://www.python.org/dev/peps/pep-0008/
 
 General patterns
 ================
