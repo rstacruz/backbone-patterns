@@ -503,6 +503,14 @@ App.TabView = Backbone.View.extend({
   events: {
     'click nav.tabs a': 'switchTab'
   },
+
+  switchTo: function(tab) {
+    // ...
+  },
+
+  hide: function() {
+    // ...
+  }
 });
 </code></pre>
 
@@ -513,6 +521,48 @@ possible.</p>
 
 <p>In this example, <code>ChromeView</code> will make a sub-view that shares the same element
 as it does.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 using_delegate_views"><h3 id="using_delegate_views" class=" after-pre">Using delegate views</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
+  // ...
+
+  goFullscreen: function() {
+    this.tabs.hide();
+  }
+});
+</code></pre>
+
+<p>You can delegate some functionality to the sub-view. In this example, we can
+write the (potentially long) code for hiding tabs in the <code>TabView</code>, making
+<code>ChromeView</code> easier to maintain and manage.</p>
+
+<br class="post-pre">
+
+<pre class=" lang- prettyprint right"><code class="javascript">var chrome = new App.ChromeView;
+chrome.tabs.switchTo('home');
+</code></pre>
+<p class=" after-pre">You may also provide publicly-accessible methods to <code>TabView</code> that will be meant
+to be accessed outside of <code>ChromeView</code>.</p>
+
+<br class="post-pre">
+
+</section><section class=" after-pre h3 variation_private_delegate_views"><h3 id="variation_private_delegate_views" class=" after-pre">Variation: private delegate views</h3>
+<pre class=" lang- prettyprint right"><code class="javascript">App.ChromeView = Backbone.View.extend({
+  render: function() {
+    this._tabs = new App.TabView({ el: this.el });
+  }
+});
+</code></pre>
+
+<p>You can also make delegate views <em>private</em> by design: that is, it shouldn't be
+used outside the parent view (<code>ChromeView</code> in our example).</p>
+
+<p>As JavaScript lacks true private attributes, you can set prefix it with an
+underscore to signify that it's private and is not part of it's public
+interface. (This is a practice taken from Python's <a href="http://www.python.org/dev/peps/pep-0008/">official style
+guide</a>.)</p>
 
 <br class="post-pre">
 
@@ -923,7 +973,7 @@ beginners and advanced users alike.</li>
 <p>© 2011-2012, Rico Sta. Cruz. Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT
 License</a>.</p>
 
-<p>This document is authored and maintained by <a href="http://ricostacruz.com/">Rico Sta. Cruz</a> with help from
+<p>This document is authored and maintained by <a href="http://ricostacruz.com">Rico Sta. Cruz</a> with help from
 its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contributors</a>. It is sponsored by my startup, <a href="http://sinefunc.com">Sinefunc, Inc</a>.</p>
 
 <ul>
@@ -984,6 +1034,8 @@ its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contribu
 </ul></nav><nav class="level-2"><h3><a href="#delegate_views">Delegate views</a></h3>
 <ul>
 <li><a href="#solution">Solution</a></li>
+<li><a href="#using_delegate_views">Using delegate views</a></li>
+<li><a href="#variation_private_delegate_views">Variation: private delegate views</a></li>
 </ul></nav><h2><a href="#general_patterns">General patterns</a></h2>
 <nav class="level-2"><h3><a href="#mixins">Mixins</a></h3>
 <ul>
