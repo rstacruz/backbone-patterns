@@ -650,12 +650,16 @@ behavior.
 ``` javascript
 App.Views.Menu = Backbone.View.extend(
   _.extend({}, App.Mixins.Navigation, {
-  // View methods here.
+
+  // (Methods and attributes here)
+
 }));
 
 App.Views.Tabs = Backbone.View.extend(
   _.extend({}, App.Mixins.Navigation, {
-  // View methods here.
+
+  // (Methods and attributes here)
+
 }));
 ```
 
@@ -683,13 +687,17 @@ You can also use mixins in Models and Routers as well.
 // Router
 App.PageRouter = Backbone.Router.extend(
   _.extend({}, App.Mixins.HasSettings, {
-  // View methods here.
+
+  // (Methods and attributes here)
+
 }));
 
 // Model
 App.Widget = Backbone.Model.extend(
   _.extend({}, App.Mixins.IsDeletable, {
-  // View methods here.
+
+  // (Methods and attributes here)
+
 }));
 ```
 
