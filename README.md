@@ -1,11 +1,14 @@
 # [Backbone patterns](http://ricostacruz.com/backbone-patterns)
 
-This is a document with best practices in Backbone. This is a massive
-work-in-progress.
+Here, I try to document the good practices that our team has learned along the
+way building [Backbone][bb] applications.
+
+### Assumptions
 
 This document assumes that you already have some knowledge of [Backbone.js][bb],
 [jQuery][jq], and of course, JavaScript itself.
 
+[rsc]: http://ricostacruz.com/
 [bb]: http://documentcloud.github.com/backbone/
 [jq]: http://jquery.com/
 
@@ -18,6 +21,9 @@ __The problem:__ Your application needs models to be available on page load.
 
 __Solution:__ Bootstrap collections and models by creating collections in an
 inline `<script>` block.
+
+This is mentioned in the official Backbone documentation under the [Loading
+bootstrapped models][bb.bootstrap] section.
 
 ### Define collection data
 
@@ -86,6 +92,7 @@ collection of your server-side models.
 </script>
 ```
 
+[bb.bootstrap]: http://documentcloud.github.com/backbone/#FAQ-bootstrap
 
 View patterns
 =============
@@ -140,11 +147,8 @@ In practice, you will most likely be using this in the `render()` method of a
 view like so.
 
 ``` javascript
-ContactView = Backbone.View.extend({
-  template: function() {
-    var template = _.template($("#template-contact").html());
-    return template.apply(this, arguments);
-  },
+var ContactView = Backbone.View.extend({
+  template: _.template($("#template-contact").html()),
 
   render: function() {
     // This is a dictionary object of the attributes of the models.
@@ -160,7 +164,7 @@ ContactView = Backbone.View.extend({
 
     // ...
   }
-})
+});
 ```
 
 ### Limitations
@@ -169,7 +173,11 @@ __Single-page apps only.__
 This assumes that your Backbone application is all contained in one HTML page.
 If your app spans across multiple HTML pages, and each page will be needing the
 same templates, you may be redundantly streaming the template data to the
-browser uneededly. Consider using JST templates instead.
+browser unnecessarily. Consider using JST templates instead.
+
+Note that the given example assumes that the `#template-contact` element appears
+before you include JavaScript files, as it requires the template element to be
+accessible before the class is defined.
 
 JST templates
 -------------
@@ -186,7 +194,7 @@ Your app will need to serve a _dynamically-created_ JavaScript file that
 compiles your files.
 
 A common JST file will create the `JST` object (in the window namespace), with
-each of it's members defined as template functions. In this example, we'll use
+each of its members defined as template functions. In this example, we'll use
 Underscore's `_.template`, which returns functions.
 
 ``` javascript
@@ -283,7 +291,11 @@ TasksList = Backbone.View.extend({
 Animation buffer
 ----------------
 
+<<<<<<< HEAD
 __The problem:__ When you have events that trigger animations, they can mess up 
+=======
+__The problem:__ When you have events that trigger animations, they can mess up
+>>>>>>> upstream/master
 when the user clicks too fast.
 
 __The solution:__ Make a buffering system to ensure that animations are fired
@@ -293,28 +305,28 @@ serially (one after the other) and never parallel (at the same time).
 
 Let's say you have this innocent code that performs an animation.
 
-One fundamental flaw here is that it assumes that `.next()` will only be called
-when it is not animating. When the user clicks "Next" while the animation is
-working, unexpected results will occur.
+One fundamental flaw here is that it assumes that `.showNext()` will only be
+called when it is not animating. When the user clicks "Next" while the animation
+is working, unexpected results will occur.
 
 ``` javascript
 PicturesView = Backbone.View.extend({
   events: {
-    'click .next':     'next'
+    'click .next': 'showNext'
   },
 
-  next: function() {
+  showNext: function() {
     var current = this.$(".current");
-    var next    = this.$(".current + div");
+    var nextDiv = this.$(".current + div");
 
-    if (next.length == 0) { return; }
+    if (nextDiv.length == 0) { return; }
 
     // Make the current one move to the left via jQuery.
     // This uses jQuery.fn.animate() that changes CSS values, then fires
     // the function supplied when it's done.
     current.animate({ left: -300, opacity: 0 }, function() {
       current.removeClass('.current');
-      next.addClass('.current');
+      nextDiv.addClass('.current');
     });
   }
 });
@@ -325,7 +337,8 @@ PicturesView = Backbone.View.extend({
 Here's a simple buffering solution. It provides two commands:
 
  * `add(fn)` which adds a given function to the buffer, and
- * `next()` which moves onto the next command.
+ * `next()` which moves onto the next command. This is passed onto the functions
+ when they are called.
 
 To use this, put your animations inside an anonymous function to be passed onto
 `add()`. Be sure to trigger `next()` when the animations are done.
@@ -334,17 +347,18 @@ To use this, put your animations inside an anonymous function to be passed onto
 Buffer = {
   commands: [],
 
-  // Adds a command to the buffer, and executes it if it's the only command
-  // to be ran.
   add: function(fn) {
-    this.commands.push(fn);
-    if (this.commands.length == 1) fn();
-  },
+    // Adds a command to the buffer, and executes it if it's
+    // the only command to be ran.
+    var commands = this.commands;
+    commands.push(fn);
+    if (this.commands.length == 1) fn(next);
 
-  // Moves onto the next command in the buffer.
-  next: function() {
-    this.commands.shift();
-    if (this.commands.length) this.commands[0]();
+    // Moves onto the next command in the buffer.
+    function next() {
+      commands.shift();
+      if (commands.length) commands[0](next);
+    }
   }
 };
 ```
@@ -354,25 +368,36 @@ Buffer = {
 This is our example from a while ago that has been modified to use the bufferer.
 
 ``` javascript
-next: function() {
+showNext: function() {
   var current = this.$(".current");
-  var next    = this.$(".current + div");
+  var nextDiv = this.$(".current + div");
 
-  if (next.length == 0) { return; }
+  if (nextDiv.length == 0) { return; }
 
-  // Ensure that the animation will not happen while another animation is
-  // ongoing.
-  Buffer.add(function() {
+  // Ensure that the animation will not happen while another
+  // animation is ongoing.
+  Buffer.add(function(next) {
     current.animate({ left: -300, opacity: 0 }, function() {
       current.removeClass('.current');
-      next.addClass('.current');
+      nextDiv.addClass('.current');
 
       // Trigger the next animation.
-      Buffer.next();
+      next();
     });
   });
 }
 ```
+
+### Variations
+
+You can make the `Buffer` object into a class that you can instantiate. This
+lets you have multiple buffers as you need. This way, you can have a buffer for
+each view instance.
+
+jQuery also provides a very similar function, [jQuery.fn.queue()][queue]. This
+may be adequate for most simple animations.
+
+[queue]: http://api.jquery.com/queue/
 
 Sub views
 ---------
@@ -384,23 +409,23 @@ __The solution:__ Break it apart into smaller sub-views.
 
 ### The situation
 
-This is a common occurence if you have one _giant_ view that takes care of the
+This is a common occurrence if you have one _giant_ view that takes care of the
 entire page. View classes may become unwieldy once they get up to 200 lines.
 
 ### Solution 1: Sub views
 
-It may be wise to delegate some areas of the view to be the reponsibility of
+It may be wise to delegate some areas of the view to be the responsibility of
 another view.
 
 In this example, we have a view that handles the entire application "chrome."
-Let's break apart some of it's parts on it's `render()` function. Notice that
+Let's break apart some of its parts on its `render()` function. Notice that
 we're using `this.$()` to select elements inside the `ChromeView`'s element
 itself.
 
 ``` javascript
 App.ChromeView = Backbone.View.extend({
   render: function() {
-    // Instanciate some "sub" views to handle the responsibilities of
+    // Instantiate some "sub" views to handle the responsibilities of
     // their respective elements.
     this.sidebar = new App.SidebarView({ el: this.$(".sidebar") });
     this.menu = new App.NavigationView({ el: this.$("nav") });
@@ -461,16 +486,19 @@ App.ChromeView = Backbone.View.extend({
 });
 ```
 
-Splitting views
----------------
+Delegate views
+--------------
 
 __The problem:__ Your view code is starting to bloat as it tries to do too many
-things in one class, and making sub-views with it's child elements is not an
+things in one class, and making sub-views with its child elements is not an
 option.
 
-__The solution:__ Make a sub-view with the same element.
+__The solution:__ Make a sub-view with the same element. This will allow you to
+[delegate][delegate] certain responsibilities to another view class.
 
-###a Solution
+[delegate]: http://en.wikipedia.org/wiki/Delegation_pattern
+
+### Solution
 
 You can make 2 or more views that target the same element. This is useful when
 there are many controls in a view, but creating sub-views (with their scopes
@@ -492,12 +520,188 @@ App.ChromeView = Backbone.View.extend({
 });
 
 App.TabView = Backbone.View.extend({
-  // Notice this view has it's own events. They will not
+  // Notice this view has its own events. They will not
   // interfere with ChromeView's events.
   events: {
     'click nav.tabs a': 'switchTab'
   },
+
+  switchTo: function(tab) {
+    // ...
+  },
+
+  hide: function() {
+    // ...
+  }
 });
+```
+
+### Using delegate views
+
+You can delegate some functionality to the sub-view. In this example, we can
+write the (potentially long) code for hiding tabs in the `TabView`, making
+`ChromeView` easier to maintain and manage.
+
+``` javascript
+App.ChromeView = Backbone.View.extend({
+  // ...
+
+  goFullscreen: function() {
+    this.tabs.hide();
+  }
+});
+```
+
+You may also provide publicly-accessible methods to `TabView` that will be meant
+to be accessed outside of `ChromeView`.
+
+``` javascript
+var chrome = new App.ChromeView;
+chrome.tabs.switchTo('home');
+```
+
+### Variation: private delegate views
+
+You can also make delegate views *private* by design: that is, it shouldn't be
+used outside the parent view (`ChromeView` in our example).
+
+As JavaScript lacks true private attributes, you can set prefix it with an
+underscore to signify that it's private and is not part of it's public
+interface. (This is a practice taken from Python's [official style
+guide][pep8].)
+
+``` javascript
+App.ChromeView = Backbone.View.extend({
+  render: function() {
+    this._tabs = new App.TabView({ el: this.el });
+  }
+});
+```
+
+[pep8]: http://www.python.org/dev/peps/pep-0008/
+
+General patterns
+================
+
+Mixins
+------
+
+__The problem:__ Sometimes you have the same functionality for multiple objects and it doesn't
+make sense to wrap your objects in a parent object. For example, if you have
+two views that share methods but don't -- and shouldn't -- have a shared
+parent view.
+
+__The solution:__ For this scenario, it's appropriate to use a mixin.
+
+### Defining mixins
+
+You can define an object that has attributes and methods that can be shared
+across different classes. This is called a [mixin][mixin].
+
+You can define a mixin as a regular object literal with functions in it.
+
+``` javascript
+App.Mixins.Navigation = {
+
+  toggle: function() { /* ... */ },
+
+  open: function() { /*... */ },
+
+  close: function() { /* ... */ }
+
+};
+```
+
+### Using mixins
+
+You may then extend your classes with these mixins. You can use Underscore's
+[_.extend][extend] function to attach these to your class prototypes.
+
+[mixin]: http://en.wikipedia.org/wiki/Mixin
+[extend]: http://documentcloud.github.com/underscore/#extend
+
+``` javascript
+App.Menu = Backbone.View.extend({
+  // I need to know how to toggle, open, and close!
+});
+
+_.extend(App.Views.Menu.prototype, App.Mixins.Navigation);
+
+App.Tabs = Backbone.View.extend({
+  // I too need to know how to toggle, open, and close!
+});
+
+_.extend(App.Views.Tabs.prototype, App.Mixins.Navigation);
+
+```
+
+### Alternative syntax
+
+The above presents two caveats, which can be problematic in some situations:
+
+  * Your attributes and methods in your mixin will *override* the methods you
+  define in the class itself (via `Backbone.View.extend`). Ideally, it should be
+  the other way around.
+
+  * The `_.extend(...)` line is after all the methods you've defined in the
+  class, and can easily be neglected by developers new to your project.
+
+To remedy this, you can use this alterative syntax. This will let you write
+methods and attributes in your class that will override the mixin's default
+behavior.
+
+``` javascript
+App.Views.Menu = Backbone.View.extend(
+  _.extend({}, App.Mixins.Navigation, {
+
+  // (Methods and attributes here)
+
+}));
+
+App.Views.Tabs = Backbone.View.extend(
+  _.extend({}, App.Mixins.Navigation, {
+
+  // (Methods and attributes here)
+
+}));
+```
+
+### Result
+
+The prototypes for your views now both have the methods defined in your mixin.
+New `App.Views.Tabs` and `App.Views.Menu` instances will now be able to respond
+to `.toggle()`, `.open()` and `.close()`.
+
+``` javascript
+var tabs = new App.Views.Tabs;
+
+// These will call the methods you've defined
+// in App.Mixins.Navigation.
+tabs.toggle();
+tabs.open();
+tabs.close();
+```
+
+### Models and routers
+
+You can also use mixins in Models and Routers as well.
+
+``` javascript
+// Router
+App.PageRouter = Backbone.Router.extend(
+  _.extend({}, App.Mixins.HasSettings, {
+
+  // (Methods and attributes here)
+
+}));
+
+// Model
+App.Widget = Backbone.Model.extend(
+  _.extend({}, App.Mixins.IsDeletable, {
+
+  // (Methods and attributes here)
+
+}));
 ```
 
 Conventions
@@ -591,9 +795,6 @@ NodeJS.
 If you adopt an AMD library, there will be no need to use namespaces for your
 JavaScript classes.
 
-See the [RequireJS][require.js] website for more information on RequireJS and
-AMD.
-
 ``` javascript
 define(function() {
   var Photo = require('models/photo');
@@ -605,7 +806,14 @@ define(function() {
 });
 ```
 
+For more information on RequireJS, AMD, and using it on your Backbone project,
+see:
+
+ * [Organizing Backbone using Modules][bbt.modules] (via Backbonetutorials.com)
+ * [RequireJS][require.js]'s official site
+
 [require.js]: http://requirejs.org
+[bbt.modules]: http://backbonetutorials.com/organizing-backbone-using-modules/
 
 File naming
 -----------
@@ -654,9 +862,9 @@ App.PhotoView = Backbone.View.extend({
 This is the file where you do miscellaneous things that do not belong in any of
 the Backbone classes:
 
-* Instanciate the default view
+* Instantiate the default view
 * Initialize the Backbone Router
-* Provide options for jQuery and it's plugins
+* Provide options for jQuery and its plugins
 
 This is often named `application.js` or `setup.js`.
 
@@ -714,7 +922,7 @@ $() abuse
 ---------
 
 jQuery allows you to defer execution of code until when the DOM is fully-loaded
-with [$(document).ready(...)][jquery.ready], or it's short form, `$(...)`. This
+with [$(document).ready(...)][jquery.ready], or its short form, `$(...)`. This
 is useful for getting everything set up once your HTML document is ready.
 
 [jquery.ready]: http://api.jquery.com/ready/
@@ -784,6 +992,21 @@ App.PhotoView = Backbone.View.extend({
 $("a.photo").click(function() { ... });
 ```
 
+Other links
+===========
+
+Other links of interest:
+
+* [Backbone][backbone] official documentation
+* [Backbonetutorials.com][bbtutorials] by Thomas Davis covers the basics of
+  Backbone.js in more detail than the official docs.
+* [Backbone Fundamentals][bbfund] by Addy Osmani is a Creative Commons book for
+  beginners and advanced users alike.
+
+[backbone]: http://documentcloud.github.com/backbone/
+[bbtutorials]: http://backbonetutorials.com
+[bbfund]: https://github.com/addyosmani/backbone-fundamentals
+
 Acknowledgements
 ================
 
@@ -791,7 +1014,7 @@ Acknowledgements
 License](http://www.opensource.org/licenses/mit-license.php).
 
 This document is authored and maintained by [Rico Sta. Cruz][rsc] with help from
-it's [contributors][c]. It is sponsored by my startup, [Sinefunc, Inc][sf].
+its [contributors][c]. It is sponsored by my startup, [Sinefunc, Inc][sf].
 
  * [My website](http://ricostacruz.com) (ricostacruz.com)
  * [Sinefunc, Inc.](http://sinefunc.com) (sinefunc.com)
@@ -805,6 +1028,7 @@ it's [contributors][c]. It is sponsored by my startup, [Sinefunc, Inc][sf].
 ### To do list
 
  - Model associations
+ - Adding events to subclasses
  - View modes
  - Nested views
  - Router entry/exit
