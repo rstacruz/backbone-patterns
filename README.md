@@ -95,7 +95,7 @@ collection of your server-side models.
 
 ### In CFML 
 
-For CFML (Adobe ColdFusion and open source engines Railo and OpenBD)
+For CFML (Adobe ColdFusion and open source engines Railo and OpenBD) you will use SerializeJSON().
 
 ``` cfml
 <script>
