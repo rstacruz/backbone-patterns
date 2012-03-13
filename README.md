@@ -93,6 +93,16 @@ collection of your server-side models.
 </script>
 ```
 
+### In CFML 
+
+For CFML (Adobe ColdFusion and open source engines Railo and OpenBD)
+
+``` cfml
+<script>
+  App.photos = new Photos(#serializeJSON(photos)#);
+</script>
+```
+
 [bb.bootstrap]: http://documentcloud.github.com/backbone/#FAQ-bootstrap
 
 View patterns
