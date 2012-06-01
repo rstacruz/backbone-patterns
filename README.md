@@ -618,13 +618,13 @@ You may then extend your classes with these mixins. You can use Underscore's
 [extend]: http://documentcloud.github.com/underscore/#extend
 
 ``` javascript
-App.Menu = Backbone.View.extend({
+App.Views.Menu = Backbone.View.extend({
   // I need to know how to toggle, open, and close!
 });
 
 _.extend(App.Views.Menu.prototype, App.Mixins.Navigation);
 
-App.Tabs = Backbone.View.extend({
+App.Views.Tabs = Backbone.View.extend({
   // I too need to know how to toggle, open, and close!
 });
 
