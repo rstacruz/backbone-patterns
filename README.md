@@ -258,10 +258,10 @@ be defined as a separate template from the list itself.
 
 ### Solution
 
-You can pass the template function for the partial as a parameter to the first 
+You can pass the template function for the partial as a parameter to the first
 template.
 
-In this example, the function `itemTemplate` is passed onto the parameters for 
+In this example, the function `itemTemplate` is passed onto the parameters for
 `template()`.
 
 ``` javascript
@@ -576,6 +576,26 @@ App.ChromeView = Backbone.View.extend({
 ```
 
 [pep8]: http://www.python.org/dev/peps/pep-0008/
+
+### Variation: closure-scoped sub/delegate views
+
+In addition to making the instance of a sub or delegate view "private" by prepending an underscore to the variable name, you can also make the view definition, instance, or both private by scoping it within a closure with the parent view.
+
+``` javascript
+(function() {
+  var TabView = Backbone.View.extend(/* ... */); // TabView is not accessible outside the closure
+  var tabs = new TabView; // tabs is not accessible outside the closure
+  App.ChromeView = Backbone.View.extend({
+    render: function() {
+      tabView.setElement(this.el);
+    }
+  });
+})();
+```
+
+Pattern originally described at [Egeste.NET][egeste_closure_scope]
+
+[egeste_closure_scope]: http://egeste.net/blog/2012/10/20/backbone-pattern-closure-scoped-sub-views/
 
 General patterns
 ================
