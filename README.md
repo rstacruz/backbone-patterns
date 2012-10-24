@@ -593,9 +593,74 @@ In addition to making the instance of a sub or delegate view "private" by prepen
 })();
 ```
 
-Pattern originally described at [Egeste.NET][egeste_closure_scope]
+Variation originally described at [Egeste.NET][egeste_closure_scope]
 
 [egeste_closure_scope]: http://egeste.net/blog/2012/10/20/backbone-pattern-closure-scoped-sub-views/
+
+Update chaining
+---------------
+
+__The problem:__ How do you render a view to present all the information in its model, and only update specific elements as the model’s attributes change so that you don't have to completely re-render the view every time the model changes?
+
+__The solution:__ Create an update function for every model attribute you're going to present in the view, and have it return the view so it can be chained with other update functions.
+
+``` javascript
+App.ChromeView = Backbone.View.extend({
+  initialize: function() {
+    this.model
+      .on('change:foo', this.updateFoo, this)
+      .on('change:bar', this.updateBar, this)
+  },
+  render: function() {
+    this.$el.html(/* ... */)
+    this.$('input.foo').datepicker(/* ... */)
+    return this
+      .updateFoo()
+      .updateBar()
+  },
+  updateFoo: function() {
+    this.$('input.foo').val(this.model.get('foo'))
+    return this
+  },
+  updateBar: function() {
+    this.$('.bar').text(this.model.get('bar'))
+    return this
+  }
+})
+```
+
+Pattern originally described at [Egeste.NET][egeste_update_chaining]
+
+[egeste_update_chaining]: http://egeste.net/blog/2012/10/24/backbone-pattern-chain-able-update-functions/
+
+### Variation: chaining updates within updates for attributes with relationships to other attributes
+
+In the event that a model attribute changes that has implications for some other portion of the view, or possibly some relationship with another model attribute, you can chain the updates within each other. For example, if foo changing means that something in bar’s update function should execute, simply have foo execute & return the updateBar function.
+
+``` javascript
+App.ChromeView = Backbone.View.extend({
+  initialize: function() {
+    this.model
+      .on('change:foo', this.updateFoo, this)
+      .on('change:bar', this.updateBar, this)
+  },
+  render: function() {
+    this.$el.html(/* ... */)
+    this.$('input.foo').datepicker(/* ... */)
+    return this.updateFoo()
+  },
+  updateFoo: function() {
+    this.$('input.foo').val(this.model.get('foo'))
+    return this.updateBar()
+  },
+  updateBar: function() {
+    this.$('.bar').text(this.model.get('bar'))
+    return this
+  }
+})
+```
+
+Variation originally described at [Egeste.NET][egeste_update_chaining]
 
 General patterns
 ================
