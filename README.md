@@ -793,7 +793,7 @@ If you adopt an AMD library, there will be no need to use namespaces for your
 JavaScript classes.
 
 ``` javascript
-define(function() {
+define(function(require) {
   var Photo = require('models/photo');
   var Photos = require('collections/photos');
   var MenuView = require('views/menu');
