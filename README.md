@@ -816,7 +816,7 @@ File naming
 -----------
 
 For applications that do _not_ use [Asynchronous Module Definition][amd]-style
-organization, there always seem to have 3 basic JavaScript files.
+organization, there always seem to be 3 basic JavaScript files.
 
 [amd]: http://requirejs.org/docs/whyamd.html
 
