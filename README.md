@@ -58,7 +58,7 @@ var photo = App.photos.get(2);
 
 // Gets a bunch of photos based on criteria
 var photo = App.photos.select(function(photo) {
-  return photo.filename.match(/^IMG/);
+  return photo.get('filename').match(/^IMG/);
 });
 ```
 
