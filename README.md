@@ -14,7 +14,6 @@ This document assumes that you already have some knowledge of [Backbone.js][bb],
 
 Model patterns
 ==============
-
 Bootstrapping data
 ------------------
 
@@ -292,7 +291,11 @@ TasksList = Backbone.View.extend({
 Animation buffer
 ----------------
 
+<<<<<<< HEAD
+__The problem:__ When you have events that trigger animations, they can mess up 
+=======
 __The problem:__ When you have events that trigger animations, they can mess up
+>>>>>>> upstream/master
 when the user clicks too fast.
 
 __The solution:__ Make a buffering system to ensure that animations are fired
@@ -968,6 +971,11 @@ Things outside views
 --------------------
 
 Put things in your view class code as much as possible.
+
+Models should never know about views
+------------------------------------
+
+Models should always be independent of backbone views and never reference views.
 
 Event handlers outside views
 ----------------------------
