@@ -161,7 +161,7 @@ var ContactView = Backbone.View.extend({
     var html = this.template(dict);
 
     // Append the result to the view's element.
-    $(this.el).append(html);
+    this.$el.append(html);
 
     // ...
   }
@@ -284,7 +284,7 @@ TasksList = Backbone.View.extend({
       itemTemplate: this.itemTemplate
     });
 
-    $(this.el).append(html);
+    this.$el.append(html);
   }
 });
 ```
@@ -456,11 +456,11 @@ is collapsed or expanded:
 ``` javascript
 App.SidebarView = Backbone.View.extend({
   toggle: function() {
-    if ($(this.el).is(':visible')) {
-      $(this.el).hide();
+    if (this.$el.is(':visible')) {
+      this.$el.hide();
       this.trigger('collapse');    // <==
     } else {
-      $(this.el).show();
+      this.$el).show();
       this.trigger('expand');      // <==
     }
   },
