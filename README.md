@@ -523,7 +523,7 @@ App.TabView = Backbone.View.extend({
     'click nav.tabs a': 'switchTab'
   },
 
-  switchTo: function(tab) {
+  switchTab: function(tab) {
     // ...
   },
 
