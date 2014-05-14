@@ -93,6 +93,16 @@ collection of your server-side models.
 </script>
 ```
 
+### In C# (Razor)
+
+In your Razor view, you may parse your server side models into JSON using `Json.Encode()`.
+
+```
+<script>
+  App.photos = new Photos(@Html.Raw(Json.Encode(photos)))
+</script>
+```
+
 [bb.bootstrap]: http://documentcloud.github.com/backbone/#FAQ-bootstrap
 
 View patterns
