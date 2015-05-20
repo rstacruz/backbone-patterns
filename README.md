@@ -67,9 +67,17 @@ var photo = App.photos.select(function(photo) {
 In your server-side templates, you will probably be using `to_json` on a
 collection of your server-side models.
 
+**Standard Ruby**
 ``` html
 <script>
   App.photos = new Photos(<%= @photos.to_json %>);
+</script>
+```
+
+**Ruby on Rails**
+``` html
+<script>
+  App.photos = new Photos(<%= @photos.to_json.html_safe %>);
 </script>
 ```
 
@@ -90,6 +98,16 @@ collection of your server-side models.
 ``` php
 <script>
   App.photos = new Photos(<?php echo json_encode($photos); ?>);
+</script>
+```
+
+### In C# (Razor)
+
+In your Razor view, you may parse your server side models into JSON using `Json.Encode()`.
+
+```
+<script>
+  App.photos = new Photos(@Html.Raw(Json.Encode(photos)))
 </script>
 ```
 
@@ -258,10 +276,10 @@ be defined as a separate template from the list itself.
 
 ### Solution
 
-You can pass the template function for the partial as a parameter to the first 
+You can pass the template function for the partial as a parameter to the first
 template.
 
-In this example, the function `itemTemplate` is passed onto the parameters for 
+In this example, the function `itemTemplate` is passed onto the parameters for
 `template()`.
 
 ``` javascript
