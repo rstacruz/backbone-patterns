@@ -55,6 +55,14 @@ collection of your server-side models.
 </script>
 ```
 
+On Rails, you may need to use the `.html_safe` method.
+
+``` html
+<script>
+  App.photos = new Photos(<%= @photos.to_json.html_safe %>);
+</script>
+```
+
 ## In Ruby (HAML)
 
 If you use HAML, you will need use a syntax similar to this.
@@ -75,5 +83,14 @@ collection of your server-side models.
 </script>
 ```
 
-[bb.bootstrap]: http://documentcloud.github.com/backbone/#FAQ-bootstrap
+## In C# (Razor)
 
+In your Razor view, you may parse your server side models into JSON using `Json.Encode()`.
+
+```
+<script>
+  App.photos = new Photos(@Html.Raw(Json.Encode(photos)))
+</script>
+```
+
+[bb.bootstrap]: http://documentcloud.github.com/backbone/#FAQ-bootstrap
