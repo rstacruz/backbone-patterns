@@ -287,14 +287,7 @@
             "title": "Event handlers outside views",
             "source": "docs/event-handlers-outside-views.md",
             "url": "event-handlers-outside-views.html",
-            "slug": "event-handlers-outside-views",
-            "headings": [
-              {
-                "title": "Event handlers outside views",
-                "depth": 2,
-                "id": "event-handlers-outside-views"
-              }
-            ]
+            "slug": "event-handlers-outside-views"
           }
         ]
       },
@@ -555,14 +548,7 @@
     "event-handlers-outside-views.html": {
       "source": "docs/event-handlers-outside-views.md",
       "title": "Event handlers outside views",
-      "slug": "event-handlers-outside-views",
-      "headings": [
-        {
-          "title": "Event handlers outside views",
-          "depth": 2,
-          "id": "event-handlers-outside-views"
-        }
-      ]
+      "slug": "event-handlers-outside-views"
     },
     "other-links.html": {
       "source": "docs/other-links.md",
