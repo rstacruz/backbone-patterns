@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
+    <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
+    <script src="assets/script.js?t=2bcc4b59"></script>
+    <title>Sub-views</title>
+    <meta name="viewport" content="width=device-width">
+    <script>
+      if (false || window.location.hostname.indexOf("ricostacruz.com") === window.location.hostname.length - 15) {
+        (function(d,o,c,p,r,e,s){d['GoogleAnalyticsObject']=r;d[r]=d[r]||function(){(d[r].q=d[r].q||[]).push(arguments)},d[r].l=1*new Date();e=o.createElement(c),s=o.getElementsByTagName(c)[0];e.async=1;e.src=p;s.parentNode.insertBefore(e,s)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create',"UA-20473929-1",'auto')
+      }
+    </script>
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="body page-subviews">
+        <div class="header-nav">
+          <div class="right"><a href="https://github.com/rstacruz/backbone-patterns" data-title="rstacruz/backbone-patterns" class="iconlink">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="sub-views">Sub-views</h1>
+<p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
+things in one class.</p>
+<p><strong>The solution:</strong> Break it apart into smaller sub-views.</p>
+<h2 id="the-situation">The situation</h2>
+<p>This is a common occurrence if you have one <em>giant</em> view that takes care of the
+entire page. View classes may become unwieldy once they get up to 200 lines.</p>
+<h2 id="solution-1:-sub-views">Solution 1: Sub views</h2>
+<p>It may be wise to delegate some areas of the view to be the responsibility of
+another view.</p>
+<p>In this example, we have a view that handles the entire application &#x201C;chrome.&#x201D;
+Let&#x2019;s break apart some of its parts on its <code>render()</code> function. Notice that
+we&#x2019;re using <code>this.$()</code> to select elements inside the <code>ChromeView</code>&apos;s element
+itself.</p>
+<pre><code class="lang-javascript">App.ChromeView = Backbone.View.extend({
+  render: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-c">// Instantiate some &quot;sub&quot; views to handle the responsibilities of</span>
+    <span class="pl-c">// their respective elements.</span>
+    <span class="pl-k">this</span>.sidebar = <span class="pl-k">new</span> App.SidebarView({ el: <span class="pl-k">this</span>.$(<span class="pl-s">&quot;.sidebar&quot;</span>) });
+    <span class="pl-k">this</span>.menu = <span class="pl-k">new</span> App.NavigationView({ el: <span class="pl-k">this</span>.$(<span class="pl-s">&quot;nav&quot;</span>) });
+  }
+});
+
+$(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+  App.chrome = <span class="pl-k">new</span> App.ChromeView({ el: $(<span class="pl-s">&quot;#chrome&quot;</span>) });
+});
+</code></pre>
+<p>We will then be able to access the sub-views like so:</p>
+<pre><code class="lang-javascript">App.chrome.sidebar.toggle();
+
+App.chrome.menu.expand();
+</code></pre>
+<h2 id="events">Events</h2>
+<p>All Backbone objects can emit <a href="http://documentcloud.github.com/backbone/#Events">events</a>. To maintain the separation of
+responsibilities of the view classes, you may have the sub-views trigger
+events that the parent view would need (and vice versa).</p>
+<p>For instance, we may implement <code>SidebarView</code> to trigger events when the sidebar
+is collapsed or expanded:</p>
+<pre><code class="lang-javascript">App.SidebarView = Backbone.View.extend({
+  toggle: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">if</span> ($(<span class="pl-k">this</span>.el).is(<span class="pl-s">&apos;:visible&apos;</span>)) {
+      $(<span class="pl-k">this</span>.el).hide();
+      <span class="pl-k">this</span>.trigger(<span class="pl-s">&apos;collapse&apos;</span>);    <span class="pl-c">// &lt;==</span>
+    } <span class="pl-k">else</span> {
+      $(<span class="pl-k">this</span>.el).show();
+      <span class="pl-k">this</span>.trigger(<span class="pl-s">&apos;expand&apos;</span>);      <span class="pl-c">// &lt;==</span>
+    }
+  },
+});
+</code></pre>
+<p>And the parent view (<code>ChromeView</code>) may listen to them like so:</p>
+<pre><code class="lang-javascript">App.ChromeView = Backbone.View.extend({
+  render: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">this</span>.sidebar = <span class="pl-k">new</span> App.SidebarView({ el: <span class="pl-k">this</span>.$(<span class="pl-s">&quot;.sidebar&quot;</span>) });
+
+    <span class="pl-k">this</span>.sidebar
+      .bind(<span class="pl-s">&apos;collapse&apos;</span>, <span class="pl-k">this</span>.onSidebarCollapse)
+      .bind(<span class="pl-s">&apos;expand&apos;</span>,   <span class="pl-k">this</span>.onSidebarExpand);
+
+    <span class="pl-c">// ...</span>
+  }
+});
+</code></pre>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="animation-buffer.html"><span class="title">Animation buffer</span></a></div>
+          <div class="right"><a href="delegate-views.html"><span class="label">Next: </span><span class="title">Delegate views</span></a></div>
+        </div>
+      </div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">Backbone Patterns</a>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Model patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="bootstrapping-data.html" class="link title  link-bootstrapping-data">Bootstrapping data</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">View patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="inline-templates.html" class="link title  link-inline-templates">Inline templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="jst-templates.html" class="link title  link-jst-templates">JST templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="partials.html" class="link title  link-partials">Partials</a>
+                </li>
+                <li class="menu-item -level-2"><a href="animation-buffer.html" class="link title  link-animation-buffer">Animation buffer</a>
+                </li>
+                <li class="menu-item -level-2"><a href="subviews.html" class="link title -active link-subviews">Sub-views</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a href="#the-situation" class="hlink link-the-situation">The situation</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#solution-1:-sub-views" class="hlink link-solution-1:-sub-views">Solution 1: Sub views</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#events" class="hlink link-events">Events</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item -level-2"><a href="delegate-views.html" class="link title  link-delegate-views">Delegate views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">General patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="mixins.html" class="link title  link-mixins">Mixins</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Conventions</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="naming-convention.html" class="link title  link-naming-convention">Naming convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="namespace-convention.html" class="link title  link-namespace-convention">Namespace convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="requirejs-and-amd.html" class="link title  link-requirejs-and-amd">RequireJS and AMD</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Anti-patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="document-ready-abuse.html" class="link title  link-document-ready-abuse">document.ready abuse</a>
+                </li>
+                <li class="menu-item -level-2"><a href="things-outside-views.html" class="link title  link-things-outside-views">Things outside views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="event-handlers-outside-views.html" class="link title  link-event-handlers-outside-views">Event handlers outside views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1"><a href="other-links.html" class="link title  link-other-links">Other links</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </body>
+</html>

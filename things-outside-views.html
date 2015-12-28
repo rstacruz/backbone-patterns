@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
     <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
     <script src="assets/script.js?t=2bcc4b59"></script>
-    <title>Backbone Patterns</title>
+    <title>Things outside views</title>
     <meta name="viewport" content="width=device-width">
     <script>
       if (false || window.location.hostname.indexOf("ricostacruz.com") === window.location.hostname.length - 15) {
@@ -17,84 +17,25 @@
   <body class="-menu-visible">
     <div class="doc-layout">
       <div class="toggle menu-toggle js-menu-toggle"></div>
-      <div class="body page-index">
+      <div class="body page-things-outside-views">
         <div class="header-nav">
           <div class="right"><a href="https://github.com/rstacruz/backbone-patterns" data-title="rstacruz/backbone-patterns" class="iconlink">
               <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
           </div>
         </div>
-        <div class="markdown-body"><h1 class="massive-header -with-tagline" id="backbonepatterns">Backbone<br>Patterns</h1>
-<blockquote>
-<p>Building apps with Backbone.js</p>
-</blockquote>
-<p>Here, I try to document the good practices that our team has learned along the
-way building <a href="http://documentcloud.github.com/backbone/">Backbone</a> applications. This document assumes that you already
-have some knowledge of <a href="http://documentcloud.github.com/backbone/">Backbone.js</a>, <a href="http://jquery.com/">jQuery</a>, and of course,
-JavaScript itself.</p>
-<h2 id="table-of-contents">Table of contents</h2>
-<ul>
-<li>Model patterns
-<ul>
-<li><a href="bootstrapping-data.html">Bootstrapping data</a></li>
-</ul>
-</li>
-<li>View patterns
-<ul>
-<li><a href="inline-templates.html">Inline templates</a></li>
-<li><a href="jst-templates.html">JST templates</a></li>
-<li><a href="partials.html">Partials</a></li>
-<li><a href="animation-buffer.html">Animation buffer</a></li>
-<li><a href="subviews.html">Sub-views</a></li>
-<li><a href="delegate-views.html">Delegate views</a></li>
-</ul>
-</li>
-<li>General patterns
-<ul>
-<li><a href="mixins.html">Mixins</a></li>
-</ul>
-</li>
-<li>Conventions
-<ul>
-<li><a href="naming-convention.html">Naming convention</a></li>
-<li><a href="namespace-convention.html">Namespace convention</a></li>
-<li><a href="requirejs-and-amd.html">RequireJS and AMD</a></li>
-</ul>
-</li>
-<li>Anti-patterns
-<ul>
-<li><a href="document-ready-abuse.html">document.ready abuse</a></li>
-<li><a href="things-outside-views.html">Things outside views</a></li>
-<li><a href="event-handlers-outside-views.html">Event handlers outside views</a></li>
-</ul>
-</li>
-<li><a href="other-links.html">Other links</a></li>
-</ul>
-<h2 id="thanks">Thanks</h2>
-<p>&#xA9; 2011-2016, Rico Sta. Cruz. Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT
-License</a>.</p>
-<p>This document is authored and maintained by <a href="http://ricostacruz.com">Rico Sta. Cruz</a> with help from
-its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contributors</a>.</p>
-<ul>
-<li><a href="http://ricostacruz.com">My website</a> (<a href="http://ricostacruz.com">ricostacruz.com</a>)</li>
-<li><a href="http://github.com/rstacruz">Github</a> (@rstacruz)</li>
-<li><a href="http://twitter.com/rstacruz">Twitter</a> (@rstacruz)</li>
-</ul>
+        <div class="markdown-body"><h1 id="things-outside-views">Things outside views</h1>
+<p>Put things in your view class code as much as possible.</p>
 
         </div>
         <div class="footer-nav">
-          <div class="right"><a href="bootstrapping-data.html"><span class="label">Next: </span><span class="title">Bootstrapping data</span></a></div>
+          <div class="left"><a href="document-ready-abuse.html"><span class="title">document.ready abuse</span></a></div>
+          <div class="right"><a href="event-handlers-outside-views.html"><span class="label">Next: </span><span class="title">Event handlers outside views</span></a></div>
         </div>
       </div>
       <div class="menu toc-menu">
         <li class="menu-item -level-0 -parent">
           <ul class="submenu">
-            <li class="menu-item -level-1"><a href="index.html" class="link title -active link-index">Backbone Patterns</a>
-              <ul class="headings heading-list">
-                <li class="heading-item -depth-2"><a href="#table-of-contents" class="hlink link-table-of-contents">Table of contents</a>
-                </li>
-                <li class="heading-item -depth-2"><a href="#thanks" class="hlink link-thanks">Thanks</a>
-                </li>
-              </ul>
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">Backbone Patterns</a>
             </li>
             <li class="menu-item -level-1 -parent"><span class="title">Model patterns</span>
               <ul class="submenu">
@@ -138,7 +79,7 @@ its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contribu
               <ul class="submenu">
                 <li class="menu-item -level-2"><a href="document-ready-abuse.html" class="link title  link-document-ready-abuse">document.ready abuse</a>
                 </li>
-                <li class="menu-item -level-2"><a href="things-outside-views.html" class="link title  link-things-outside-views">Things outside views</a>
+                <li class="menu-item -level-2"><a href="things-outside-views.html" class="link title -active link-things-outside-views">Things outside views</a>
                 </li>
                 <li class="menu-item -level-2"><a href="event-handlers-outside-views.html" class="link title  link-event-handlers-outside-views">Event handlers outside views</a>
                 </li>

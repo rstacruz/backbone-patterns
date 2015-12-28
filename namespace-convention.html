@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
     <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
     <script src="assets/script.js?t=2bcc4b59"></script>
-    <title>Backbone Patterns</title>
+    <title>Namespace convention</title>
     <meta name="viewport" content="width=device-width">
     <script>
       if (false || window.location.hostname.indexOf("ricostacruz.com") === window.location.hostname.length - 15) {
@@ -17,84 +17,57 @@
   <body class="-menu-visible">
     <div class="doc-layout">
       <div class="toggle menu-toggle js-menu-toggle"></div>
-      <div class="body page-index">
+      <div class="body page-namespace-convention">
         <div class="header-nav">
           <div class="right"><a href="https://github.com/rstacruz/backbone-patterns" data-title="rstacruz/backbone-patterns" class="iconlink">
               <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
           </div>
         </div>
-        <div class="markdown-body"><h1 class="massive-header -with-tagline" id="backbonepatterns">Backbone<br>Patterns</h1>
-<blockquote>
-<p>Building apps with Backbone.js</p>
-</blockquote>
-<p>Here, I try to document the good practices that our team has learned along the
-way building <a href="http://documentcloud.github.com/backbone/">Backbone</a> applications. This document assumes that you already
-have some knowledge of <a href="http://documentcloud.github.com/backbone/">Backbone.js</a>, <a href="http://jquery.com/">jQuery</a>, and of course,
-JavaScript itself.</p>
-<h2 id="table-of-contents">Table of contents</h2>
-<ul>
-<li>Model patterns
-<ul>
-<li><a href="bootstrapping-data.html">Bootstrapping data</a></li>
-</ul>
-</li>
-<li>View patterns
-<ul>
-<li><a href="inline-templates.html">Inline templates</a></li>
-<li><a href="jst-templates.html">JST templates</a></li>
-<li><a href="partials.html">Partials</a></li>
-<li><a href="animation-buffer.html">Animation buffer</a></li>
-<li><a href="subviews.html">Sub-views</a></li>
-<li><a href="delegate-views.html">Delegate views</a></li>
-</ul>
-</li>
-<li>General patterns
-<ul>
-<li><a href="mixins.html">Mixins</a></li>
-</ul>
-</li>
-<li>Conventions
-<ul>
-<li><a href="naming-convention.html">Naming convention</a></li>
-<li><a href="namespace-convention.html">Namespace convention</a></li>
-<li><a href="requirejs-and-amd.html">RequireJS and AMD</a></li>
-</ul>
-</li>
-<li>Anti-patterns
-<ul>
-<li><a href="document-ready-abuse.html">document.ready abuse</a></li>
-<li><a href="things-outside-views.html">Things outside views</a></li>
-<li><a href="event-handlers-outside-views.html">Event handlers outside views</a></li>
-</ul>
-</li>
-<li><a href="other-links.html">Other links</a></li>
-</ul>
-<h2 id="thanks">Thanks</h2>
-<p>&#xA9; 2011-2016, Rico Sta. Cruz. Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT
-License</a>.</p>
-<p>This document is authored and maintained by <a href="http://ricostacruz.com">Rico Sta. Cruz</a> with help from
-its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contributors</a>.</p>
-<ul>
-<li><a href="http://ricostacruz.com">My website</a> (<a href="http://ricostacruz.com">ricostacruz.com</a>)</li>
-<li><a href="http://github.com/rstacruz">Github</a> (@rstacruz)</li>
-<li><a href="http://twitter.com/rstacruz">Twitter</a> (@rstacruz)</li>
-</ul>
+        <div class="markdown-body"><h1 id="namespace-convention">Namespace convention</h1>
+<p>The convention we use puts everything in one <code>App</code> namespace to keep things
+organized properly.</p>
+<pre><code class="lang-javascript"><span class="pl-c1">window</span>.App = {
+    ...
+};
+</code></pre>
+<p>Subsequent models, views, and other classes will be made in this namespace.</p>
+<pre><code class="lang-javascript">App.Photo = Backbone.Model.extend({
+    ...
+};
+</code></pre>
+<p>Some people prefer to use namespaces based on their app&#x2019;s name. Consider, say,
+<code>BF.Photo</code> (instead of <code>App.Photo</code>) if your application name is &#x201C;Bacefook.&#x201D;</p>
+<pre><code>Models:                    App.Photo
+Collections:               App.Photos
+Views:                     App.PhotoView
+Main router:               App.Router
+Custom routers:            App.SpecialRouter
+
+Router instance:           App.router
+View instances:            App.photoView
+Singleton model instances: App.photo
+Collection instances:      App.photos
+</code></pre>
+<h3 id="variation:-two-level-namespace">Variation: two-level namespace</h3>
+<p>Some people prefer a verbose two-level version where the classes are divided
+into their own namespaces as well.</p>
+<p>This is often done to make it easy to iterate over all available models,
+collections, and views.</p>
+<pre><code>Models:                    App.Models.Photo
+Collections:               App.Collections.Photos
+Views:                     App.Views.Photo
+</code></pre>
 
         </div>
         <div class="footer-nav">
-          <div class="right"><a href="bootstrapping-data.html"><span class="label">Next: </span><span class="title">Bootstrapping data</span></a></div>
+          <div class="left"><a href="naming-convention.html"><span class="title">Naming convention</span></a></div>
+          <div class="right"><a href="requirejs-and-amd.html"><span class="label">Next: </span><span class="title">RequireJS and AMD</span></a></div>
         </div>
       </div>
       <div class="menu toc-menu">
         <li class="menu-item -level-0 -parent">
           <ul class="submenu">
-            <li class="menu-item -level-1"><a href="index.html" class="link title -active link-index">Backbone Patterns</a>
-              <ul class="headings heading-list">
-                <li class="heading-item -depth-2"><a href="#table-of-contents" class="hlink link-table-of-contents">Table of contents</a>
-                </li>
-                <li class="heading-item -depth-2"><a href="#thanks" class="hlink link-thanks">Thanks</a>
-                </li>
-              </ul>
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">Backbone Patterns</a>
             </li>
             <li class="menu-item -level-1 -parent"><span class="title">Model patterns</span>
               <ul class="submenu">
@@ -128,7 +101,11 @@ its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contribu
               <ul class="submenu">
                 <li class="menu-item -level-2"><a href="naming-convention.html" class="link title  link-naming-convention">Naming convention</a>
                 </li>
-                <li class="menu-item -level-2"><a href="namespace-convention.html" class="link title  link-namespace-convention">Namespace convention</a>
+                <li class="menu-item -level-2"><a href="namespace-convention.html" class="link title -active link-namespace-convention">Namespace convention</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-3"><a href="#variation:-two-level-namespace" class="hlink link-variation:-two-level-namespace">Variation: two-level namespace</a>
+                    </li>
+                  </ul>
                 </li>
                 <li class="menu-item -level-2"><a href="requirejs-and-amd.html" class="link title  link-requirejs-and-amd">RequireJS and AMD</a>
                 </li>

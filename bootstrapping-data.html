@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
+    <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
+    <script src="assets/script.js?t=2bcc4b59"></script>
+    <title>Bootstrapping data</title>
+    <meta name="viewport" content="width=device-width">
+    <script>
+      if (false || window.location.hostname.indexOf("ricostacruz.com") === window.location.hostname.length - 15) {
+        (function(d,o,c,p,r,e,s){d['GoogleAnalyticsObject']=r;d[r]=d[r]||function(){(d[r].q=d[r].q||[]).push(arguments)},d[r].l=1*new Date();e=o.createElement(c),s=o.getElementsByTagName(c)[0];e.async=1;e.src=p;s.parentNode.insertBefore(e,s)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create',"UA-20473929-1",'auto')
+      }
+    </script>
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="body page-bootstrapping-data">
+        <div class="header-nav">
+          <div class="right"><a href="https://github.com/rstacruz/backbone-patterns" data-title="rstacruz/backbone-patterns" class="iconlink">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="bootstrapping-data">Bootstrapping data</h1>
+<p><strong>The problem:</strong> Your application needs models to be available on page load.</p>
+<p><strong>Solution:</strong> Bootstrap collections and models by creating collections in an
+inline <code>&lt;script&gt;</code> block.</p>
+<p>This is mentioned in the official Backbone documentation under the <a href="http://documentcloud.github.com/backbone/#FAQ-bootstrap">Loading
+bootstrapped models</a> section.</p>
+<h2 id="define-collection-data">Define collection data</h2>
+<p>Define your collection data in an inline script in the HTML file.
+If you have collections for <code>Photos</code>, you may be doing it this way:</p>
+<pre><code class="lang-html">  <span class="hljs-tag">&lt;<span class="pl-ent">body</span>&gt;</span>
+    ...
+
+    <span class="hljs-tag">&lt;<span class="pl-ent">script</span>&gt;</span><span class="actionscript">
+      App.photos = <span class="pl-k">new</span> Photos([
+        { id: <span class="hljs-number">2</span>, name: <span class="pl-s">&quot;My dog&quot;</span>, filename: <span class="pl-s">&quot;IMG_0392.jpg&quot;</span> },
+        { id: <span class="hljs-number">3</span>, name: <span class="pl-s">&quot;Our house&quot;</span>, filename: <span class="pl-s">&quot;IMG_0393.jpg&quot;</span> },
+        { id: <span class="hljs-number">4</span>, name: <span class="pl-s">&quot;My favorite food&quot;</span>, filename: <span class="pl-s">&quot;IMG_0394.jpg&quot;</span> },
+        { id: <span class="hljs-number">5</span>, name: <span class="pl-s">&quot;His bag&quot;</span>, filename: <span class="pl-s">&quot;IMG_0394.jpg&quot;</span> },
+        ...
+      ]);
+    </span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="pl-ent">body</span>&gt;</span>
+</code></pre>
+<h2 id="accessing-instances">Accessing instances</h2>
+<p>To get a single <code>Photo</code>, instead of creating a <code>Photo</code> instance and using
+<code>fetch()</code>, simply pluck it from the giant collection.</p>
+<pre><code class="lang-javascript"><span class="pl-c">// Gets by ID</span>
+<span class="pl-k">var</span> photo = App.photos.get(<span class="hljs-number">2</span>);
+
+<span class="pl-c">// Gets a bunch of photos based on criteria</span>
+<span class="pl-k">var</span> photo = App.photos.select(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params">photo</span>) </span>{
+  <span class="pl-k">return</span> photo.filename.match(<span class="hljs-regexp">/^IMG/</span>);
+});
+</code></pre>
+<h2 id="in-ruby-(erb)">In Ruby (ERB)</h2>
+<p>In your server-side templates, you will probably be using <code>to_json</code> on a
+collection of your server-side models.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span>&gt;</span><span class="actionscript">
+  App.photos = <span class="pl-k">new</span> Photos(&lt;%= @photos.to_json %&gt;);
+</span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
+</code></pre>
+<h2 id="in-ruby-(haml)">In Ruby (HAML)</h2>
+<p>If you use HAML, you will need use a syntax similar to this.</p>
+<pre><code class="lang-haml">:javascript
+  App.photos = new Photos(#{<span class="ruby"><span class="hljs-variable">@photos</span>.to_json}</span>);
+</code></pre>
+<h2 id="in-php">In PHP</h2>
+<p>In your server-side templates, you will probably be using <code>json_encode()</code> on a
+collection of your server-side models.</p>
+<pre><code class="lang-php">&lt;script&gt;
+  App.photos = <span class="pl-k">new</span> Photos(<span class="hljs-preprocessor">&lt;?php</span> <span class="pl-k">echo</span> json_encode(<span class="hljs-variable">$photos</span>); <span class="hljs-preprocessor">?&gt;</span>);
+&lt;/script&gt;
+</code></pre>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="index.html"><span class="title">Backbone Patterns</span></a></div>
+          <div class="right"><a href="inline-templates.html"><span class="label">Next: </span><span class="title">Inline templates</span></a></div>
+        </div>
+      </div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">Backbone Patterns</a>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Model patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="bootstrapping-data.html" class="link title -active link-bootstrapping-data">Bootstrapping data</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a href="#define-collection-data" class="hlink link-define-collection-data">Define collection data</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#accessing-instances" class="hlink link-accessing-instances">Accessing instances</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#in-ruby-(erb)" class="hlink link-in-ruby-(erb)">In Ruby (ERB)</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#in-ruby-(haml)" class="hlink link-in-ruby-(haml)">In Ruby (HAML)</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#in-php" class="hlink link-in-php">In PHP</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">View patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="inline-templates.html" class="link title  link-inline-templates">Inline templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="jst-templates.html" class="link title  link-jst-templates">JST templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="partials.html" class="link title  link-partials">Partials</a>
+                </li>
+                <li class="menu-item -level-2"><a href="animation-buffer.html" class="link title  link-animation-buffer">Animation buffer</a>
+                </li>
+                <li class="menu-item -level-2"><a href="subviews.html" class="link title  link-subviews">Sub-views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="delegate-views.html" class="link title  link-delegate-views">Delegate views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">General patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="mixins.html" class="link title  link-mixins">Mixins</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Conventions</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="naming-convention.html" class="link title  link-naming-convention">Naming convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="namespace-convention.html" class="link title  link-namespace-convention">Namespace convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="requirejs-and-amd.html" class="link title  link-requirejs-and-amd">RequireJS and AMD</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Anti-patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="document-ready-abuse.html" class="link title  link-document-ready-abuse">document.ready abuse</a>
+                </li>
+                <li class="menu-item -level-2"><a href="things-outside-views.html" class="link title  link-things-outside-views">Things outside views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="event-handlers-outside-views.html" class="link title  link-event-handlers-outside-views">Event handlers outside views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1"><a href="other-links.html" class="link title  link-other-links">Other links</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </body>
+</html>

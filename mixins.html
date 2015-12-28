@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
+    <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
+    <script src="assets/script.js?t=2bcc4b59"></script>
+    <title>Mixins</title>
+    <meta name="viewport" content="width=device-width">
+    <script>
+      if (false || window.location.hostname.indexOf("ricostacruz.com") === window.location.hostname.length - 15) {
+        (function(d,o,c,p,r,e,s){d['GoogleAnalyticsObject']=r;d[r]=d[r]||function(){(d[r].q=d[r].q||[]).push(arguments)},d[r].l=1*new Date();e=o.createElement(c),s=o.getElementsByTagName(c)[0];e.async=1;e.src=p;s.parentNode.insertBefore(e,s)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create',"UA-20473929-1",'auto')
+      }
+    </script>
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="body page-mixins">
+        <div class="header-nav">
+          <div class="right"><a href="https://github.com/rstacruz/backbone-patterns" data-title="rstacruz/backbone-patterns" class="iconlink">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="mixins">Mixins</h1>
+<p><strong>The problem:</strong> Sometimes you have the same functionality for multiple objects and it doesn&#x2019;t
+make sense to wrap your objects in a parent object. For example, if you have
+two views that share methods but don&#x2019;t &#x2013; and shouldn&#x2019;t &#x2013; have a shared
+parent view.</p>
+<p><strong>The solution:</strong> For this scenario, it&#x2019;s appropriate to use a mixin.</p>
+<h2 id="defining-mixins">Defining mixins</h2>
+<p>You can define an object that has attributes and methods that can be shared
+across different classes. This is called a <a href="http://en.wikipedia.org/wiki/Mixin">mixin</a>.</p>
+<p>You can define a mixin as a regular object literal with functions in it.</p>
+<pre><code class="lang-javascript">App.Mixins.Navigation = {
+
+  toggle: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{ <span class="pl-c">/* ... */</span> },
+
+  open: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{ <span class="pl-c">/*... */</span> },
+
+  close: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{ <span class="pl-c">/* ... */</span> }
+
+};
+</code></pre>
+<h2 id="using-mixins">Using mixins</h2>
+<p>You may then extend your classes with these mixins. You can use Underscore&#x2019;s
+<a href="http://documentcloud.github.com/underscore/#extend">_.extend</a> function to attach these to your class prototypes.</p>
+<pre><code class="lang-javascript">App.Views.Menu = Backbone.View.extend({
+  <span class="pl-c">// I need to know how to toggle, open, and close!</span>
+});
+
+_.extend(App.Views.Menu.prototype, App.Mixins.Navigation);
+
+App.Views.Tabs = Backbone.View.extend({
+  <span class="pl-c">// I too need to know how to toggle, open, and close!</span>
+});
+
+_.extend(App.Views.Tabs.prototype, App.Mixins.Navigation);
+
+</code></pre>
+<h2 id="alternative-syntax">Alternative syntax</h2>
+<p>The above presents two caveats, which can be problematic in some situations:</p>
+<ul>
+<li>
+<p>Your attributes and methods in your mixin will <em>override</em> the methods you
+define in the class itself (via <code>Backbone.View.extend</code>). Ideally, it should be
+the other way around.</p>
+</li>
+<li>
+<p>The <code>_.extend(...)</code> line is after all the methods you&#x2019;ve defined in the
+class, and can easily be neglected by developers new to your project.</p>
+</li>
+</ul>
+<p>To remedy this, you can use this alterative syntax. This will let you write
+methods and attributes in your class that will override the mixin&#x2019;s default
+behavior.</p>
+<pre><code class="lang-javascript">App.Views.Menu = Backbone.View.extend(
+  _.extend({}, App.Mixins.Navigation, {
+
+  <span class="pl-c">// (Methods and attributes here)</span>
+
+}));
+
+App.Views.Tabs = Backbone.View.extend(
+  _.extend({}, App.Mixins.Navigation, {
+
+  <span class="pl-c">// (Methods and attributes here)</span>
+
+}));
+</code></pre>
+<h2 id="result">Result</h2>
+<p>The prototypes for your views now both have the methods defined in your mixin.
+New <code>App.Views.Tabs</code> and <code>App.Views.Menu</code> instances will now be able to respond
+to <code>.toggle()</code>, <code>.open()</code> and <code>.close()</code>.</p>
+<pre><code class="lang-javascript"><span class="pl-k">var</span> tabs = <span class="pl-k">new</span> App.Views.Tabs;
+
+<span class="pl-c">// These will call the methods you&apos;ve defined</span>
+<span class="pl-c">// in App.Mixins.Navigation.</span>
+tabs.toggle();
+tabs.open();
+tabs.close();
+</code></pre>
+<h2 id="models-and-routers">Models and routers</h2>
+<p>You can also use mixins in Models and Routers as well.</p>
+<pre><code class="lang-javascript"><span class="pl-c">// Router</span>
+App.PageRouter = Backbone.Router.extend(
+  _.extend({}, App.Mixins.HasSettings, {
+
+  <span class="pl-c">// (Methods and attributes here)</span>
+
+}));
+
+<span class="pl-c">// Model</span>
+App.Widget = Backbone.Model.extend(
+  _.extend({}, App.Mixins.IsDeletable, {
+
+  <span class="pl-c">// (Methods and attributes here)</span>
+
+}));
+</code></pre>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="delegate-views.html"><span class="title">Delegate views</span></a></div>
+          <div class="right"><a href="naming-convention.html"><span class="label">Next: </span><span class="title">Naming convention</span></a></div>
+        </div>
+      </div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">Backbone Patterns</a>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Model patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="bootstrapping-data.html" class="link title  link-bootstrapping-data">Bootstrapping data</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">View patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="inline-templates.html" class="link title  link-inline-templates">Inline templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="jst-templates.html" class="link title  link-jst-templates">JST templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="partials.html" class="link title  link-partials">Partials</a>
+                </li>
+                <li class="menu-item -level-2"><a href="animation-buffer.html" class="link title  link-animation-buffer">Animation buffer</a>
+                </li>
+                <li class="menu-item -level-2"><a href="subviews.html" class="link title  link-subviews">Sub-views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="delegate-views.html" class="link title  link-delegate-views">Delegate views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">General patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="mixins.html" class="link title -active link-mixins">Mixins</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a href="#defining-mixins" class="hlink link-defining-mixins">Defining mixins</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#using-mixins" class="hlink link-using-mixins">Using mixins</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#alternative-syntax" class="hlink link-alternative-syntax">Alternative syntax</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#result" class="hlink link-result">Result</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#models-and-routers" class="hlink link-models-and-routers">Models and routers</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Conventions</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="naming-convention.html" class="link title  link-naming-convention">Naming convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="namespace-convention.html" class="link title  link-namespace-convention">Namespace convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="requirejs-and-amd.html" class="link title  link-requirejs-and-amd">RequireJS and AMD</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Anti-patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="document-ready-abuse.html" class="link title  link-document-ready-abuse">document.ready abuse</a>
+                </li>
+                <li class="menu-item -level-2"><a href="things-outside-views.html" class="link title  link-things-outside-views">Things outside views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="event-handlers-outside-views.html" class="link title  link-event-handlers-outside-views">Event handlers outside views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1"><a href="other-links.html" class="link title  link-other-links">Other links</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </body>
+</html>

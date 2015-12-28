@@ -1,0 +1,592 @@
+{
+  "toc": {
+    "sections": [
+      {
+        "title": "Backbone Patterns",
+        "source": "README.md",
+        "url": "index.html",
+        "slug": "index",
+        "headings": [
+          {
+            "title": "Table of contents",
+            "depth": 2,
+            "id": "table-of-contents"
+          },
+          {
+            "title": "Thanks",
+            "depth": 2,
+            "id": "thanks"
+          }
+        ]
+      },
+      {
+        "title": "Model patterns",
+        "sections": [
+          {
+            "title": "Bootstrapping data",
+            "source": "docs/bootstrapping-data.md",
+            "url": "bootstrapping-data.html",
+            "slug": "bootstrapping-data",
+            "headings": [
+              {
+                "title": "Define collection data",
+                "depth": 2,
+                "id": "define-collection-data"
+              },
+              {
+                "title": "Accessing instances",
+                "depth": 2,
+                "id": "accessing-instances"
+              },
+              {
+                "title": "In Ruby (ERB)",
+                "depth": 2,
+                "id": "in-ruby-(erb)"
+              },
+              {
+                "title": "In Ruby (HAML)",
+                "depth": 2,
+                "id": "in-ruby-(haml)"
+              },
+              {
+                "title": "In PHP",
+                "depth": 2,
+                "id": "in-php"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "View patterns",
+        "sections": [
+          {
+            "title": "Inline templates",
+            "source": "docs/inline-templates.md",
+            "url": "inline-templates.html",
+            "slug": "inline-templates",
+            "headings": [
+              {
+                "title": "Defining inline templates",
+                "depth": 2,
+                "id": "defining-inline-templates"
+              },
+              {
+                "title": "Using inline templates",
+                "depth": 2,
+                "id": "using-inline-templates"
+              },
+              {
+                "title": "Integrating into Backbone",
+                "depth": 2,
+                "id": "integrating-into-backbone"
+              },
+              {
+                "title": "Limitations",
+                "depth": 2,
+                "id": "limitations"
+              }
+            ]
+          },
+          {
+            "title": "JST templates",
+            "source": "docs/jst-templates.md",
+            "url": "jst-templates.html",
+            "slug": "jst-templates",
+            "headings": [
+              {
+                "title": "The structure",
+                "depth": 2,
+                "id": "the-structure"
+              },
+              {
+                "title": "Using JST templates",
+                "depth": 2,
+                "id": "using-jst-templates"
+              },
+              {
+                "title": "Integration notes",
+                "depth": 2,
+                "id": "integration-notes"
+              }
+            ]
+          },
+          {
+            "title": "Partials",
+            "source": "docs/partials.md",
+            "url": "partials.html",
+            "slug": "partials",
+            "headings": [
+              {
+                "title": "Solution",
+                "depth": 2,
+                "id": "solution"
+              }
+            ]
+          },
+          {
+            "title": "Animation buffer",
+            "source": "docs/animation-buffer.md",
+            "url": "animation-buffer.html",
+            "slug": "animation-buffer",
+            "headings": [
+              {
+                "title": "The situation",
+                "depth": 2,
+                "id": "the-situation"
+              },
+              {
+                "title": "The solution",
+                "depth": 2,
+                "id": "the-solution"
+              },
+              {
+                "title": "Example",
+                "depth": 2,
+                "id": "example"
+              },
+              {
+                "title": "Variations",
+                "depth": 2,
+                "id": "variations"
+              }
+            ]
+          },
+          {
+            "title": "Sub-views",
+            "source": "docs/subviews.md",
+            "url": "subviews.html",
+            "slug": "subviews",
+            "headings": [
+              {
+                "title": "The situation",
+                "depth": 2,
+                "id": "the-situation"
+              },
+              {
+                "title": "Solution 1: Sub views",
+                "depth": 2,
+                "id": "solution-1:-sub-views"
+              },
+              {
+                "title": "Events",
+                "depth": 2,
+                "id": "events"
+              }
+            ]
+          },
+          {
+            "title": "Delegate views",
+            "source": "docs/delegate-views.md",
+            "url": "delegate-views.html",
+            "slug": "delegate-views",
+            "headings": [
+              {
+                "title": "Solution",
+                "depth": 2,
+                "id": "solution"
+              },
+              {
+                "title": "Using delegate views",
+                "depth": 2,
+                "id": "using-delegate-views"
+              },
+              {
+                "title": "Variation: private delegate views",
+                "depth": 2,
+                "id": "variation:-private-delegate-views"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "General patterns",
+        "sections": [
+          {
+            "title": "Mixins",
+            "source": "docs/mixins.md",
+            "url": "mixins.html",
+            "slug": "mixins",
+            "headings": [
+              {
+                "title": "Defining mixins",
+                "depth": 2,
+                "id": "defining-mixins"
+              },
+              {
+                "title": "Using mixins",
+                "depth": 2,
+                "id": "using-mixins"
+              },
+              {
+                "title": "Alternative syntax",
+                "depth": 2,
+                "id": "alternative-syntax"
+              },
+              {
+                "title": "Result",
+                "depth": 2,
+                "id": "result"
+              },
+              {
+                "title": "Models and routers",
+                "depth": 2,
+                "id": "models-and-routers"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Conventions",
+        "sections": [
+          {
+            "title": "Naming convention",
+            "source": "docs/naming-convention.md",
+            "url": "naming-convention.html",
+            "slug": "naming-convention"
+          },
+          {
+            "title": "Namespace convention",
+            "source": "docs/namespace-convention.md",
+            "url": "namespace-convention.html",
+            "slug": "namespace-convention",
+            "headings": [
+              {
+                "title": "Variation: two-level namespace",
+                "depth": 3,
+                "id": "variation:-two-level-namespace"
+              }
+            ]
+          },
+          {
+            "title": "RequireJS and AMD",
+            "source": "docs/requirejs-and-amd.md",
+            "url": "requirejs-and-amd.html",
+            "slug": "requirejs-and-amd"
+          }
+        ]
+      },
+      {
+        "title": "Anti-patterns",
+        "sections": [
+          {
+            "title": "document.ready abuse",
+            "source": "docs/document-ready-abuse.md",
+            "url": "document-ready-abuse.html",
+            "slug": "document-ready-abuse"
+          },
+          {
+            "title": "Things outside views",
+            "source": "docs/things-outside-views.md",
+            "url": "things-outside-views.html",
+            "slug": "things-outside-views"
+          },
+          {
+            "title": "Event handlers outside views",
+            "source": "docs/event-handlers-outside-views.md",
+            "url": "event-handlers-outside-views.html",
+            "slug": "event-handlers-outside-views",
+            "headings": [
+              {
+                "title": "Event handlers outside views",
+                "depth": 2,
+                "id": "event-handlers-outside-views"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Other links",
+        "source": "docs/other-links.md",
+        "url": "other-links.html",
+        "slug": "other-links"
+      }
+    ]
+  },
+  "index": {
+    "index.html": {
+      "source": "README.md",
+      "title": "Backbone Patterns",
+      "slug": "index",
+      "headings": [
+        {
+          "title": "Table of contents",
+          "depth": 2,
+          "id": "table-of-contents"
+        },
+        {
+          "title": "Thanks",
+          "depth": 2,
+          "id": "thanks"
+        }
+      ]
+    },
+    "bootstrapping-data.html": {
+      "source": "docs/bootstrapping-data.md",
+      "title": "Bootstrapping data",
+      "slug": "bootstrapping-data",
+      "headings": [
+        {
+          "title": "Define collection data",
+          "depth": 2,
+          "id": "define-collection-data"
+        },
+        {
+          "title": "Accessing instances",
+          "depth": 2,
+          "id": "accessing-instances"
+        },
+        {
+          "title": "In Ruby (ERB)",
+          "depth": 2,
+          "id": "in-ruby-(erb)"
+        },
+        {
+          "title": "In Ruby (HAML)",
+          "depth": 2,
+          "id": "in-ruby-(haml)"
+        },
+        {
+          "title": "In PHP",
+          "depth": 2,
+          "id": "in-php"
+        }
+      ]
+    },
+    "inline-templates.html": {
+      "source": "docs/inline-templates.md",
+      "title": "Inline templates",
+      "slug": "inline-templates",
+      "headings": [
+        {
+          "title": "Defining inline templates",
+          "depth": 2,
+          "id": "defining-inline-templates"
+        },
+        {
+          "title": "Using inline templates",
+          "depth": 2,
+          "id": "using-inline-templates"
+        },
+        {
+          "title": "Integrating into Backbone",
+          "depth": 2,
+          "id": "integrating-into-backbone"
+        },
+        {
+          "title": "Limitations",
+          "depth": 2,
+          "id": "limitations"
+        }
+      ]
+    },
+    "jst-templates.html": {
+      "source": "docs/jst-templates.md",
+      "title": "JST templates",
+      "slug": "jst-templates",
+      "headings": [
+        {
+          "title": "The structure",
+          "depth": 2,
+          "id": "the-structure"
+        },
+        {
+          "title": "Using JST templates",
+          "depth": 2,
+          "id": "using-jst-templates"
+        },
+        {
+          "title": "Integration notes",
+          "depth": 2,
+          "id": "integration-notes"
+        }
+      ]
+    },
+    "partials.html": {
+      "source": "docs/partials.md",
+      "title": "Partials",
+      "slug": "partials",
+      "headings": [
+        {
+          "title": "Solution",
+          "depth": 2,
+          "id": "solution"
+        }
+      ]
+    },
+    "animation-buffer.html": {
+      "source": "docs/animation-buffer.md",
+      "title": "Animation buffer",
+      "slug": "animation-buffer",
+      "headings": [
+        {
+          "title": "The situation",
+          "depth": 2,
+          "id": "the-situation"
+        },
+        {
+          "title": "The solution",
+          "depth": 2,
+          "id": "the-solution"
+        },
+        {
+          "title": "Example",
+          "depth": 2,
+          "id": "example"
+        },
+        {
+          "title": "Variations",
+          "depth": 2,
+          "id": "variations"
+        }
+      ]
+    },
+    "subviews.html": {
+      "source": "docs/subviews.md",
+      "title": "Sub-views",
+      "slug": "subviews",
+      "headings": [
+        {
+          "title": "The situation",
+          "depth": 2,
+          "id": "the-situation"
+        },
+        {
+          "title": "Solution 1: Sub views",
+          "depth": 2,
+          "id": "solution-1:-sub-views"
+        },
+        {
+          "title": "Events",
+          "depth": 2,
+          "id": "events"
+        }
+      ]
+    },
+    "delegate-views.html": {
+      "source": "docs/delegate-views.md",
+      "title": "Delegate views",
+      "slug": "delegate-views",
+      "headings": [
+        {
+          "title": "Solution",
+          "depth": 2,
+          "id": "solution"
+        },
+        {
+          "title": "Using delegate views",
+          "depth": 2,
+          "id": "using-delegate-views"
+        },
+        {
+          "title": "Variation: private delegate views",
+          "depth": 2,
+          "id": "variation:-private-delegate-views"
+        }
+      ]
+    },
+    "mixins.html": {
+      "source": "docs/mixins.md",
+      "title": "Mixins",
+      "slug": "mixins",
+      "headings": [
+        {
+          "title": "Defining mixins",
+          "depth": 2,
+          "id": "defining-mixins"
+        },
+        {
+          "title": "Using mixins",
+          "depth": 2,
+          "id": "using-mixins"
+        },
+        {
+          "title": "Alternative syntax",
+          "depth": 2,
+          "id": "alternative-syntax"
+        },
+        {
+          "title": "Result",
+          "depth": 2,
+          "id": "result"
+        },
+        {
+          "title": "Models and routers",
+          "depth": 2,
+          "id": "models-and-routers"
+        }
+      ]
+    },
+    "naming-convention.html": {
+      "source": "docs/naming-convention.md",
+      "title": "Naming convention",
+      "slug": "naming-convention"
+    },
+    "namespace-convention.html": {
+      "source": "docs/namespace-convention.md",
+      "title": "Namespace convention",
+      "slug": "namespace-convention",
+      "headings": [
+        {
+          "title": "Variation: two-level namespace",
+          "depth": 3,
+          "id": "variation:-two-level-namespace"
+        }
+      ]
+    },
+    "requirejs-and-amd.html": {
+      "source": "docs/requirejs-and-amd.md",
+      "title": "RequireJS and AMD",
+      "slug": "requirejs-and-amd"
+    },
+    "document-ready-abuse.html": {
+      "source": "docs/document-ready-abuse.md",
+      "title": "document.ready abuse",
+      "slug": "document-ready-abuse"
+    },
+    "things-outside-views.html": {
+      "source": "docs/things-outside-views.md",
+      "title": "Things outside views",
+      "slug": "things-outside-views"
+    },
+    "event-handlers-outside-views.html": {
+      "source": "docs/event-handlers-outside-views.md",
+      "title": "Event handlers outside views",
+      "slug": "event-handlers-outside-views",
+      "headings": [
+        {
+          "title": "Event handlers outside views",
+          "depth": 2,
+          "id": "event-handlers-outside-views"
+        }
+      ]
+    },
+    "other-links.html": {
+      "source": "docs/other-links.md",
+      "title": "Other links",
+      "slug": "other-links"
+    }
+  },
+  "sources": {
+    "README.md": "index.html",
+    "docs/bootstrapping-data.md": "bootstrapping-data.html",
+    "docs/inline-templates.md": "inline-templates.html",
+    "docs/jst-templates.md": "jst-templates.html",
+    "docs/partials.md": "partials.html",
+    "docs/animation-buffer.md": "animation-buffer.html",
+    "docs/subviews.md": "subviews.html",
+    "docs/delegate-views.md": "delegate-views.html",
+    "docs/mixins.md": "mixins.html",
+    "docs/naming-convention.md": "naming-convention.html",
+    "docs/namespace-convention.md": "namespace-convention.html",
+    "docs/requirejs-and-amd.md": "requirejs-and-amd.html",
+    "docs/document-ready-abuse.md": "document-ready-abuse.html",
+    "docs/things-outside-views.md": "things-outside-views.html",
+    "docs/event-handlers-outside-views.md": "event-handlers-outside-views.html",
+    "docs/other-links.md": "other-links.html",
+    "docs/docpress.json": "docpress.json"
+  }
+}

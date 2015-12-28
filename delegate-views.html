@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
+    <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
+    <script src="assets/script.js?t=2bcc4b59"></script>
+    <title>Delegate views</title>
+    <meta name="viewport" content="width=device-width">
+    <script>
+      if (false || window.location.hostname.indexOf("ricostacruz.com") === window.location.hostname.length - 15) {
+        (function(d,o,c,p,r,e,s){d['GoogleAnalyticsObject']=r;d[r]=d[r]||function(){(d[r].q=d[r].q||[]).push(arguments)},d[r].l=1*new Date();e=o.createElement(c),s=o.getElementsByTagName(c)[0];e.async=1;e.src=p;s.parentNode.insertBefore(e,s)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create',"UA-20473929-1",'auto')
+      }
+    </script>
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="body page-delegate-views">
+        <div class="header-nav">
+          <div class="right"><a href="https://github.com/rstacruz/backbone-patterns" data-title="rstacruz/backbone-patterns" class="iconlink">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="delegate-views">Delegate views</h1>
+<p><strong>The problem:</strong> Your view code is starting to bloat as it tries to do too many
+things in one class, and making sub-views with its child elements is not an
+option.</p>
+<p><strong>The solution:</strong> Make a sub-view with the same element. This will allow you to
+<a href="http://en.wikipedia.org/wiki/Delegation_pattern">delegate</a> certain responsibilities to another view class.</p>
+<h2 id="solution">Solution</h2>
+<p>You can make 2 or more views that target the same element. This is useful when
+there are many controls in a view, but creating sub-views (with their scopes
+limited to a set of elements in the bigger view) may be too messy, or just not
+possible.</p>
+<p>In this example, <code>ChromeView</code> will make a sub-view that shares the same element
+as it does.</p>
+<pre><code class="lang-javascript">App.ChromeView = Backbone.View.extend({
+  events: {
+    <span class="pl-s">&apos;click button&apos;</span>: <span class="pl-s">&apos;onButtonClick&apos;</span>
+  },
+  render: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-c">// Pass our own element to the other view.</span>
+    <span class="pl-k">this</span>.tabs = <span class="pl-k">new</span> App.TabView({ el: <span class="pl-k">this</span>.el });
+  }
+});
+
+App.TabView = Backbone.View.extend({
+  <span class="pl-c">// Notice this view has its own events. They will not</span>
+  <span class="pl-c">// interfere with ChromeView&apos;s events.</span>
+  events: {
+    <span class="pl-s">&apos;click nav.tabs a&apos;</span>: <span class="pl-s">&apos;switchTab&apos;</span>
+  },
+
+  switchTo: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params">tab</span>) </span>{
+    <span class="pl-c">// ...</span>
+  },
+
+  hide: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-c">// ...</span>
+  }
+});
+</code></pre>
+<h2 id="using-delegate-views">Using delegate views</h2>
+<p>You can delegate some functionality to the sub-view. In this example, we can
+write the (potentially long) code for hiding tabs in the <code>TabView</code>, making
+<code>ChromeView</code> easier to maintain and manage.</p>
+<pre><code class="lang-javascript">App.ChromeView = Backbone.View.extend({
+  <span class="pl-c">// ...</span>
+
+  goFullscreen: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">this</span>.tabs.hide();
+  }
+});
+</code></pre>
+<p>You may also provide publicly-accessible methods to <code>TabView</code> that will be meant
+to be accessed outside of <code>ChromeView</code>.</p>
+<pre><code class="lang-javascript"><span class="pl-k">var</span> chrome = <span class="pl-k">new</span> App.ChromeView;
+chrome.tabs.switchTo(<span class="pl-s">&apos;home&apos;</span>);
+</code></pre>
+<h2 id="variation:-private-delegate-views">Variation: private delegate views</h2>
+<p>You can also make delegate views <em>private</em> by design: that is, it shouldn&#x2019;t be
+used outside the parent view (<code>ChromeView</code> in our example).</p>
+<p>As JavaScript lacks true private attributes, you can set prefix it with an
+underscore to signify that it&#x2019;s private and is not part of it&#x2019;s public
+interface. (This is a practice taken from Python&#x2019;s <a href="http://www.python.org/dev/peps/pep-0008/">official style
+guide</a>.)</p>
+<pre><code class="lang-javascript">App.ChromeView = Backbone.View.extend({
+  render: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">this</span>._tabs = <span class="pl-k">new</span> App.TabView({ el: <span class="pl-k">this</span>.el });
+  }
+});
+</code></pre>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="subviews.html"><span class="title">Sub-views</span></a></div>
+          <div class="right"><a href="mixins.html"><span class="label">Next: </span><span class="title">Mixins</span></a></div>
+        </div>
+      </div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">Backbone Patterns</a>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Model patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="bootstrapping-data.html" class="link title  link-bootstrapping-data">Bootstrapping data</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">View patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="inline-templates.html" class="link title  link-inline-templates">Inline templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="jst-templates.html" class="link title  link-jst-templates">JST templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="partials.html" class="link title  link-partials">Partials</a>
+                </li>
+                <li class="menu-item -level-2"><a href="animation-buffer.html" class="link title  link-animation-buffer">Animation buffer</a>
+                </li>
+                <li class="menu-item -level-2"><a href="subviews.html" class="link title  link-subviews">Sub-views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="delegate-views.html" class="link title -active link-delegate-views">Delegate views</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a href="#solution" class="hlink link-solution">Solution</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#using-delegate-views" class="hlink link-using-delegate-views">Using delegate views</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#variation:-private-delegate-views" class="hlink link-variation:-private-delegate-views">Variation: private delegate views</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">General patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="mixins.html" class="link title  link-mixins">Mixins</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Conventions</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="naming-convention.html" class="link title  link-naming-convention">Naming convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="namespace-convention.html" class="link title  link-namespace-convention">Namespace convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="requirejs-and-amd.html" class="link title  link-requirejs-and-amd">RequireJS and AMD</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Anti-patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="document-ready-abuse.html" class="link title  link-document-ready-abuse">document.ready abuse</a>
+                </li>
+                <li class="menu-item -level-2"><a href="things-outside-views.html" class="link title  link-things-outside-views">Things outside views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="event-handlers-outside-views.html" class="link title  link-event-handlers-outside-views">Event handlers outside views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1"><a href="other-links.html" class="link title  link-other-links">Other links</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </body>
+</html>

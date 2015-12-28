@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
     <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
     <script src="assets/script.js?t=2bcc4b59"></script>
-    <title>Backbone Patterns</title>
+    <title>Partials</title>
     <meta name="viewport" content="width=device-width">
     <script>
       if (false || window.location.hostname.indexOf("ricostacruz.com") === window.location.hostname.length - 15) {
@@ -17,84 +17,59 @@
   <body class="-menu-visible">
     <div class="doc-layout">
       <div class="toggle menu-toggle js-menu-toggle"></div>
-      <div class="body page-index">
+      <div class="body page-partials">
         <div class="header-nav">
           <div class="right"><a href="https://github.com/rstacruz/backbone-patterns" data-title="rstacruz/backbone-patterns" class="iconlink">
               <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
           </div>
         </div>
-        <div class="markdown-body"><h1 class="massive-header -with-tagline" id="backbonepatterns">Backbone<br>Patterns</h1>
-<blockquote>
-<p>Building apps with Backbone.js</p>
-</blockquote>
-<p>Here, I try to document the good practices that our team has learned along the
-way building <a href="http://documentcloud.github.com/backbone/">Backbone</a> applications. This document assumes that you already
-have some knowledge of <a href="http://documentcloud.github.com/backbone/">Backbone.js</a>, <a href="http://jquery.com/">jQuery</a>, and of course,
-JavaScript itself.</p>
-<h2 id="table-of-contents">Table of contents</h2>
-<ul>
-<li>Model patterns
-<ul>
-<li><a href="bootstrapping-data.html">Bootstrapping data</a></li>
-</ul>
-</li>
-<li>View patterns
-<ul>
-<li><a href="inline-templates.html">Inline templates</a></li>
-<li><a href="jst-templates.html">JST templates</a></li>
-<li><a href="partials.html">Partials</a></li>
-<li><a href="animation-buffer.html">Animation buffer</a></li>
-<li><a href="subviews.html">Sub-views</a></li>
-<li><a href="delegate-views.html">Delegate views</a></li>
-</ul>
-</li>
-<li>General patterns
-<ul>
-<li><a href="mixins.html">Mixins</a></li>
-</ul>
-</li>
-<li>Conventions
-<ul>
-<li><a href="naming-convention.html">Naming convention</a></li>
-<li><a href="namespace-convention.html">Namespace convention</a></li>
-<li><a href="requirejs-and-amd.html">RequireJS and AMD</a></li>
-</ul>
-</li>
-<li>Anti-patterns
-<ul>
-<li><a href="document-ready-abuse.html">document.ready abuse</a></li>
-<li><a href="things-outside-views.html">Things outside views</a></li>
-<li><a href="event-handlers-outside-views.html">Event handlers outside views</a></li>
-</ul>
-</li>
-<li><a href="other-links.html">Other links</a></li>
-</ul>
-<h2 id="thanks">Thanks</h2>
-<p>&#xA9; 2011-2016, Rico Sta. Cruz. Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT
-License</a>.</p>
-<p>This document is authored and maintained by <a href="http://ricostacruz.com">Rico Sta. Cruz</a> with help from
-its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contributors</a>.</p>
-<ul>
-<li><a href="http://ricostacruz.com">My website</a> (<a href="http://ricostacruz.com">ricostacruz.com</a>)</li>
-<li><a href="http://github.com/rstacruz">Github</a> (@rstacruz)</li>
-<li><a href="http://twitter.com/rstacruz">Twitter</a> (@rstacruz)</li>
-</ul>
+        <div class="markdown-body"><h1 id="partials">Partials</h1>
+<p><strong>The problem:</strong> there may be parts of HTML templates that can be reused in many
+parts of the application. Defining them more than once is not DRY, which may
+make your application less maintainable.</p>
+<p><strong>Solution:</strong> separating these snippets into partials.</p>
+<p>Partials are templates that are meant to be used <em>inside</em> other templates.</p>
+<p>One typical use of partials is for lists where the template for list items may
+be defined as a separate template from the list itself.</p>
+<h2 id="solution">Solution</h2>
+<p>You can pass the template function for the partial as a parameter to the first
+template.</p>
+<p>In this example, the function <code>itemTemplate</code> is passed onto the parameters for
+<code>template()</code>.</p>
+<pre><code class="lang-javascript">TasksList = Backbone.View.extend({
+  template: _.template([
+    <span class="pl-s">&quot;&lt;ul class=&apos;task_list&apos;&gt;&quot;</span>,
+      <span class="pl-s">&quot;&lt;% items.each(function(item) { %&gt;&quot;</span>,
+        <span class="pl-s">&quot;&lt;%= itemTemplate(item) %&gt;&quot;</span>,
+      <span class="pl-s">&quot;&lt;% }); %&gt;&quot;</span>,
+    <span class="pl-s">&quot;&lt;/ul&gt;&quot;</span>
+  ].join(<span class="pl-s">&apos;&apos;</span>)),
+
+  itemTemplate: _.template(
+    <span class="pl-s">&quot;&lt;li&gt;&lt;%= name %&gt;&lt;/li&gt;&quot;</span>
+  ),
+
+  render: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">var</span> html = <span class="pl-k">this</span>.template({
+      items: tasks <span class="pl-c">/* a collection */</span>,
+      itemTemplate: <span class="pl-k">this</span>.itemTemplate
+    });
+
+    $(<span class="pl-k">this</span>.el).append(html);
+  }
+});
+</code></pre>
 
         </div>
         <div class="footer-nav">
-          <div class="right"><a href="bootstrapping-data.html"><span class="label">Next: </span><span class="title">Bootstrapping data</span></a></div>
+          <div class="left"><a href="jst-templates.html"><span class="title">JST templates</span></a></div>
+          <div class="right"><a href="animation-buffer.html"><span class="label">Next: </span><span class="title">Animation buffer</span></a></div>
         </div>
       </div>
       <div class="menu toc-menu">
         <li class="menu-item -level-0 -parent">
           <ul class="submenu">
-            <li class="menu-item -level-1"><a href="index.html" class="link title -active link-index">Backbone Patterns</a>
-              <ul class="headings heading-list">
-                <li class="heading-item -depth-2"><a href="#table-of-contents" class="hlink link-table-of-contents">Table of contents</a>
-                </li>
-                <li class="heading-item -depth-2"><a href="#thanks" class="hlink link-thanks">Thanks</a>
-                </li>
-              </ul>
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">Backbone Patterns</a>
             </li>
             <li class="menu-item -level-1 -parent"><span class="title">Model patterns</span>
               <ul class="submenu">
@@ -108,7 +83,11 @@ its <a href="http://github.com/rstacruz/backbone-patterns/contributors">contribu
                 </li>
                 <li class="menu-item -level-2"><a href="jst-templates.html" class="link title  link-jst-templates">JST templates</a>
                 </li>
-                <li class="menu-item -level-2"><a href="partials.html" class="link title  link-partials">Partials</a>
+                <li class="menu-item -level-2"><a href="partials.html" class="link title -active link-partials">Partials</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a href="#solution" class="hlink link-solution">Solution</a>
+                    </li>
+                  </ul>
                 </li>
                 <li class="menu-item -level-2"><a href="animation-buffer.html" class="link title  link-animation-buffer">Animation buffer</a>
                 </li>

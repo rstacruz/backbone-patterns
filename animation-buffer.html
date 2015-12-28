@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=a44c9e9d">
+    <link rel="stylesheet" href="http://ricostacruz.com/docpress-rsc/style.css">
+    <script src="assets/script.js?t=2bcc4b59"></script>
+    <title>Animation buffer</title>
+    <meta name="viewport" content="width=device-width">
+    <script>
+      if (false || window.location.hostname.indexOf("ricostacruz.com") === window.location.hostname.length - 15) {
+        (function(d,o,c,p,r,e,s){d['GoogleAnalyticsObject']=r;d[r]=d[r]||function(){(d[r].q=d[r].q||[]).push(arguments)},d[r].l=1*new Date();e=o.createElement(c),s=o.getElementsByTagName(c)[0];e.async=1;e.src=p;s.parentNode.insertBefore(e,s)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create',"UA-20473929-1",'auto')
+      }
+    </script>
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="body page-animation-buffer">
+        <div class="header-nav">
+          <div class="right"><a href="https://github.com/rstacruz/backbone-patterns" data-title="rstacruz/backbone-patterns" class="iconlink">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="animation-buffer">Animation buffer</h1>
+<p><strong>The problem:</strong> When you have events that trigger animations, they can mess up
+when the user clicks too fast.</p>
+<p><strong>The solution:</strong> Make a buffering system to ensure that animations are fired
+serially (one after the other) and never parallel (at the same time).</p>
+<h2 id="the-situation">The situation</h2>
+<p>Let&#x2019;s say you have this innocent code that performs an animation.</p>
+<p>One fundamental flaw here is that it assumes that <code>.showNext()</code> will only be
+called when it is not animating. When the user clicks &#x201C;Next&#x201D; while the animation
+is working, unexpected results will occur.</p>
+<pre><code class="lang-javascript">PicturesView = Backbone.View.extend({
+  events: {
+    <span class="pl-s">&apos;click .next&apos;</span>: <span class="pl-s">&apos;showNext&apos;</span>
+  },
+
+  showNext: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="pl-k">var</span> current = <span class="pl-k">this</span>.$(<span class="pl-s">&quot;.current&quot;</span>);
+    <span class="pl-k">var</span> nextDiv = <span class="pl-k">this</span>.$(<span class="pl-s">&quot;.current + div&quot;</span>);
+
+    <span class="pl-k">if</span> (nextDiv.length == <span class="hljs-number">0</span>) { <span class="pl-k">return</span>; }
+
+    <span class="pl-c">// Make the current one move to the left via jQuery.</span>
+    <span class="pl-c">// This uses jQuery.fn.animate() that changes CSS values, then fires</span>
+    <span class="pl-c">// the function supplied when it&apos;s done.</span>
+    current.animate({ left: -<span class="hljs-number">300</span>, opacity: <span class="hljs-number">0</span> }, <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+      current.removeClass(<span class="pl-s">&apos;.current&apos;</span>);
+      nextDiv.addClass(<span class="pl-s">&apos;.current&apos;</span>);
+    });
+  }
+});
+</code></pre>
+<h2 id="the-solution">The solution</h2>
+<p>Here&#x2019;s a simple buffering solution. It provides two commands:</p>
+<ul>
+<li><code>add(fn)</code> which adds a given function to the buffer, and</li>
+<li><code>next()</code> which moves onto the next command. This is passed onto the functions
+when they are called.</li>
+</ul>
+<p>To use this, put your animations inside an anonymous function to be passed onto
+<code>add()</code>. Be sure to trigger <code>next()</code> when the animations are done.</p>
+<pre><code class="lang-javascript">Buffer = {
+  commands: [],
+
+  add: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params">fn</span>) </span>{
+    <span class="pl-c">// Adds a command to the buffer, and executes it if it&apos;s</span>
+    <span class="pl-c">// the only command to be ran.</span>
+    <span class="pl-k">var</span> commands = <span class="pl-k">this</span>.commands;
+    commands.push(fn);
+    <span class="pl-k">if</span> (<span class="pl-k">this</span>.commands.length == <span class="hljs-number">1</span>) fn(next);
+
+    <span class="pl-c">// Moves onto the next command in the buffer.</span>
+    <span class="hljs-function"><span class="pl-k">function</span> <span class="pl-ent">next</span>(<span class="hljs-params"></span>) </span>{
+      commands.shift();
+      <span class="pl-k">if</span> (commands.length) commands[<span class="hljs-number">0</span>](next);
+    }
+  }
+};
+</code></pre>
+<h2 id="example">Example</h2>
+<p>This is our example from a while ago that has been modified to use the bufferer.</p>
+<pre><code class="lang-javascript">showNext: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="pl-k">var</span> current = <span class="pl-k">this</span>.$(<span class="pl-s">&quot;.current&quot;</span>);
+  <span class="pl-k">var</span> nextDiv = <span class="pl-k">this</span>.$(<span class="pl-s">&quot;.current + div&quot;</span>);
+
+  <span class="pl-k">if</span> (nextDiv.length == <span class="hljs-number">0</span>) { <span class="pl-k">return</span>; }
+
+  <span class="pl-c">// Ensure that the animation will not happen while another</span>
+  <span class="pl-c">// animation is ongoing.</span>
+  Buffer.add(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params">next</span>) </span>{
+    current.animate({ left: -<span class="hljs-number">300</span>, opacity: <span class="hljs-number">0</span> }, <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+      current.removeClass(<span class="pl-s">&apos;.current&apos;</span>);
+      nextDiv.addClass(<span class="pl-s">&apos;.current&apos;</span>);
+
+      <span class="pl-c">// Trigger the next animation.</span>
+      next();
+    });
+  });
+}
+</code></pre>
+<h2 id="variations">Variations</h2>
+<p>You can make the <code>Buffer</code> object into a class that you can instantiate. This
+lets you have multiple buffers as you need. This way, you can have a buffer for
+each view instance.</p>
+<p>jQuery also provides a very similar function, <a href="http://api.jquery.com/queue/">jQuery.fn.queue()</a>. This
+may be adequate for most simple animations.</p>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="partials.html"><span class="title">Partials</span></a></div>
+          <div class="right"><a href="subviews.html"><span class="label">Next: </span><span class="title">Sub-views</span></a></div>
+        </div>
+      </div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a href="index.html" class="link title  link-index">Backbone Patterns</a>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Model patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="bootstrapping-data.html" class="link title  link-bootstrapping-data">Bootstrapping data</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">View patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="inline-templates.html" class="link title  link-inline-templates">Inline templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="jst-templates.html" class="link title  link-jst-templates">JST templates</a>
+                </li>
+                <li class="menu-item -level-2"><a href="partials.html" class="link title  link-partials">Partials</a>
+                </li>
+                <li class="menu-item -level-2"><a href="animation-buffer.html" class="link title -active link-animation-buffer">Animation buffer</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a href="#the-situation" class="hlink link-the-situation">The situation</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#the-solution" class="hlink link-the-solution">The solution</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#example" class="hlink link-example">Example</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#variations" class="hlink link-variations">Variations</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item -level-2"><a href="subviews.html" class="link title  link-subviews">Sub-views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="delegate-views.html" class="link title  link-delegate-views">Delegate views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">General patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="mixins.html" class="link title  link-mixins">Mixins</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Conventions</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="naming-convention.html" class="link title  link-naming-convention">Naming convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="namespace-convention.html" class="link title  link-namespace-convention">Namespace convention</a>
+                </li>
+                <li class="menu-item -level-2"><a href="requirejs-and-amd.html" class="link title  link-requirejs-and-amd">RequireJS and AMD</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1 -parent"><span class="title">Anti-patterns</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a href="document-ready-abuse.html" class="link title  link-document-ready-abuse">document.ready abuse</a>
+                </li>
+                <li class="menu-item -level-2"><a href="things-outside-views.html" class="link title  link-things-outside-views">Things outside views</a>
+                </li>
+                <li class="menu-item -level-2"><a href="event-handlers-outside-views.html" class="link title  link-event-handlers-outside-views">Event handlers outside views</a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-item -level-1"><a href="other-links.html" class="link title  link-other-links">Other links</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </body>
+</html>
