@@ -54,7 +54,7 @@ If you have collections for <code>Photos</code>, you may be doing it this way:</
 
 <span class="pl-c">// Gets a bunch of photos based on criteria</span>
 <span class="pl-k">var</span> photo = App.photos.select(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params">photo</span>) </span>{
-  <span class="pl-k">return</span> photo.filename.match(<span class="hljs-regexp">/^IMG/</span>);
+  <span class="pl-k">return</span> photo.get(<span class="pl-s">&apos;filename&apos;</span>).match(<span class="hljs-regexp">/^IMG/</span>);
 });
 </code></pre>
 <h2 id="in-ruby-(erb)">In Ruby (ERB)</h2>
