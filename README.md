@@ -1,4 +1,8 @@
-# [Backbone patterns](http://ricostacruz.com/backbone-patterns)
+# Backbone patterns
+
+<!-- {h1:.massive-heading.-with-tagline} -->
+
+> Building apps with Backbone.js
 
 Here, I try to document the good practices that our team has learned along the
 way building [Backbone][bb] applications.

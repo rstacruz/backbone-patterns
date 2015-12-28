@@ -1,0 +1,25 @@
+{
+  "name": "backbone-patterns",
+  "version": "1.0.0",
+  "description": "Here, I try to document the good practices that our team has learned along the way building [Backbone][bb] applications.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rstacruz/backbone-patterns.git"
+  },
+  "author": "Rico Sta. Cruz <rico@ricostacruz.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rstacruz/backbone-patterns/issues"
+  },
+  "homepage": "https://github.com/rstacruz/backbone-patterns#readme",
+  "devDependencies": {
+    "docpress": "0.6.10"
+  }
+}
