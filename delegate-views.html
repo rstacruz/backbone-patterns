@@ -53,7 +53,7 @@ App.TabView = Backbone.View.extend({
     <span class="pl-s">&apos;click nav.tabs a&apos;</span>: <span class="pl-s">&apos;switchTab&apos;</span>
   },
 
-  switchTo: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params">tab</span>) </span>{
+  switchTab: <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params">tab</span>) </span>{
     <span class="pl-c">// ...</span>
   },
 
@@ -77,7 +77,7 @@ write the (potentially long) code for hiding tabs in the <code>TabView</code>, m
 <p>You may also provide publicly-accessible methods to <code>TabView</code> that will be meant
 to be accessed outside of <code>ChromeView</code>.</p>
 <pre><code class="lang-javascript"><span class="pl-k">var</span> chrome = <span class="pl-k">new</span> App.ChromeView;
-chrome.tabs.switchTo(<span class="pl-s">&apos;home&apos;</span>);
+chrome.tabs.switchTab(<span class="pl-s">&apos;home&apos;</span>);
 </code></pre>
 <h2 id="variation:-private-delegate-views">Variation: private delegate views</h2>
 <p>You can also make delegate views <em>private</em> by design: that is, it shouldn&#x2019;t be
