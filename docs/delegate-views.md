@@ -37,7 +37,7 @@ App.TabView = Backbone.View.extend({
     'click nav.tabs a': 'switchTab'
   },
 
-  switchTo: function(tab) {
+  switchTab: function(tab) {
     // ...
   },
 
@@ -68,7 +68,7 @@ to be accessed outside of `ChromeView`.
 
 ``` javascript
 var chrome = new App.ChromeView;
-chrome.tabs.switchTo('home');
+chrome.tabs.switchTab('home');
 ```
 
 ## Variation: private delegate views
