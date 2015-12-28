@@ -2,17 +2,22 @@
 
 * [Backbone Patterns](../README.md)
 * Model patterns
-  * [Bootstrapping data](bootstrapping-data.md)
+  * [Bootstrapping data](/docs/bootstrapping-data.md)
 * View patterns
-  * [Inline templates](inline-templates.md)
-  * [JST templates](jst-templates.md)
-  * [Partials](partials.md)
-  * [Animation buffer](animation-buffer.md)
-  * [Sub-views](subviews.md)
-  * [Delegate views](delegate-views.md)
+  * [Inline templates](/docs/inline-templates.md)
+  * [JST templates](/docs/jst-templates.md)
+  * [Partials](/docs/partials.md)
+  * [Animation buffer](/docs/animation-buffer.md)
+  * [Sub-views](/docs/subviews.md)
+  * [Delegate views](/docs/delegate-views.md)
 * General patterns
-  * [Mixins](mixins.md)
+  * [Mixins](/docs/mixins.md)
 * Conventions
-  * [Naming convention](naming-convention.md)
-  * [Namespace convention](namespace-convention.md)
-  * [RequireJS and AMD](requirejs-and-amd.md)
+  * [Naming convention](/docs/naming-convention.md)
+  * [Namespace convention](/docs/namespace-convention.md)
+  * [RequireJS and AMD](/docs/requirejs-and-amd.md)
+* Anti-patterns
+  * [document.ready abuse](/docs/document-ready-abuse.md)
+  * [Things outside views](/docs/things-outside-views.md)
+  * [Event handlers outside views](/docs/event-handlers-outside-views.md)
+* [Other links](/docs/other-links.md)
