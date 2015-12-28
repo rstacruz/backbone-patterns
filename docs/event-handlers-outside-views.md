@@ -1,5 +1,4 @@
-Event handlers outside views
-----------------------------
+# Event handlers outside views
 
 Every time you make an event handler outside a view class, consider making a new
 view class.
