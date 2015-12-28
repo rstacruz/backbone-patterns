@@ -64,6 +64,11 @@ collection of your server-side models.</p>
   App.photos = <span class="pl-k">new</span> Photos(&lt;%= @photos.to_json %&gt;);
 </span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
 </code></pre>
+<p>On Rails, you may need to use the <code>.html_safe</code> method.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span>&gt;</span><span class="actionscript">
+  App.photos = <span class="pl-k">new</span> Photos(&lt;%= @photos.to_json.html_safe %&gt;);
+</span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
+</code></pre>
 <h2 id="in-ruby-(haml)">In Ruby (HAML)</h2>
 <p>If you use HAML, you will need use a syntax similar to this.</p>
 <pre><code class="lang-haml">:javascript
@@ -74,6 +79,12 @@ collection of your server-side models.</p>
 collection of your server-side models.</p>
 <pre><code class="lang-php">&lt;script&gt;
   App.photos = <span class="pl-k">new</span> Photos(<span class="hljs-preprocessor">&lt;?php</span> <span class="pl-k">echo</span> json_encode(<span class="hljs-variable">$photos</span>); <span class="hljs-preprocessor">?&gt;</span>);
+&lt;/script&gt;
+</code></pre>
+<h2 id="in-c-(razor)">In C# (Razor)</h2>
+<p>In your Razor view, you may parse your server side models into JSON using <code>Json.Encode()</code>.</p>
+<pre><code>&lt;script&gt;
+  App.photos = new Photos(@Html.Raw(Json.Encode(photos)))
 &lt;/script&gt;
 </code></pre>
 
@@ -101,6 +112,8 @@ collection of your server-side models.</p>
                     <li class="heading-item -depth-2"><a href="#in-ruby-(haml)" class="hlink link-in-ruby-(haml)">In Ruby (HAML)</a>
                     </li>
                     <li class="heading-item -depth-2"><a href="#in-php" class="hlink link-in-php">In PHP</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a href="#in-c-(razor)" class="hlink link-in-c-(razor)">In C# (Razor)</a>
                     </li>
                   </ul>
                 </li>

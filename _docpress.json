@@ -52,6 +52,11 @@
                 "title": "In PHP",
                 "depth": 2,
                 "id": "in-php"
+              },
+              {
+                "title": "In C# (Razor)",
+                "depth": 2,
+                "id": "in-c-(razor)"
               }
             ]
           }
@@ -346,6 +351,11 @@
           "title": "In PHP",
           "depth": 2,
           "id": "in-php"
+        },
+        {
+          "title": "In C# (Razor)",
+          "depth": 2,
+          "id": "in-c-(razor)"
         }
       ]
     },
