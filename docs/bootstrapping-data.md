@@ -55,13 +55,15 @@ collection of your server-side models.
 </script>
 ```
 
-On Rails, you may need to use the `.html_safe` method.
+On Rails, you may need to use the [.html_safe][] method.
 
 ``` html
 <script>
   App.photos = new Photos(<%= @photos.to_json.html_safe %>);
 </script>
 ```
+
+[.html_safe]: http://api.rubyonrails.org/classes/ActiveSupport/SafeBuffer.html
 
 ## In Ruby (HAML)
 
@@ -74,7 +76,7 @@ If you use HAML, you will need use a syntax similar to this.
 
 ## In PHP
 
-In your server-side templates, you will probably be using `json_encode()` on a
+In your server-side templates, you will probably be using [json_encode()][] on a
 collection of your server-side models.
 
 ``` php
@@ -83,9 +85,11 @@ collection of your server-side models.
 </script>
 ```
 
+[json_encode()]: http://php.net/manual/en/function.json-encode.php
+
 ## In C# (Razor)
 
-In your Razor view, you may parse your server side models into JSON using `Json.Encode()`.
+In your Razor view, you may parse your server side models into JSON using [Json.Encode()][].
 
 ```
 <script>
@@ -94,3 +98,4 @@ In your Razor view, you may parse your server side models into JSON using `Json.
 ```
 
 [bb.bootstrap]: http://documentcloud.github.com/backbone/#FAQ-bootstrap
+[Json.Encode()]: https://msdn.microsoft.com/en-us/library/system.web.helpers.json(v%3Dvs.111).aspx

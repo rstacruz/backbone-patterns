@@ -78,4 +78,3 @@ browser unnecessarily. Consider using JST templates instead.
 Note that the given example assumes that the `#template-contact` element appears
 before you include JavaScript files, as it requires the template element to be
 accessible before the class is defined.
-

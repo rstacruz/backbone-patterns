@@ -1,6 +1,6 @@
 {
   "name": "backbone-patterns",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Here, I try to document the good practices that our team has learned along the way building [Backbone][bb] applications.",
   "main": "index.js",
   "directories": {

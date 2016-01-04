@@ -58,4 +58,3 @@ var html = JST['person/contact'](dict);
 [jammit]: http://documentcloud.github.com/jammit
 [sprockets]: http://getsprockets.org
 [sinatra-backbone]: http://ricostacruz.com/sinatra-backbone
-
