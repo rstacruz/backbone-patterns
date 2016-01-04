@@ -64,7 +64,7 @@ collection of your server-side models.</p>
   App.photos = <span class="pl-k">new</span> Photos(&lt;%= @photos.to_json %&gt;);
 </span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
 </code></pre>
-<p>On Rails, you may need to use the <code>.html_safe</code> method.</p>
+<p>On Rails, you may need to use the <a href="http://api.rubyonrails.org/classes/ActiveSupport/SafeBuffer.html">.html_safe</a> method.</p>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span>&gt;</span><span class="actionscript">
   App.photos = <span class="pl-k">new</span> Photos(&lt;%= @photos.to_json.html_safe %&gt;);
 </span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
@@ -75,14 +75,14 @@ collection of your server-side models.</p>
   App.photos = new Photos(#{<span class="ruby"><span class="hljs-variable">@photos</span>.to_json}</span>);
 </code></pre>
 <h2 id="in-php">In PHP</h2>
-<p>In your server-side templates, you will probably be using <code>json_encode()</code> on a
+<p>In your server-side templates, you will probably be using <a href="http://php.net/manual/en/function.json-encode.php">json_encode()</a> on a
 collection of your server-side models.</p>
 <pre><code class="lang-php">&lt;script&gt;
   App.photos = <span class="pl-k">new</span> Photos(<span class="hljs-preprocessor">&lt;?php</span> <span class="pl-k">echo</span> json_encode(<span class="hljs-variable">$photos</span>); <span class="hljs-preprocessor">?&gt;</span>);
 &lt;/script&gt;
 </code></pre>
 <h2 id="in-c-(razor)">In C# (Razor)</h2>
-<p>In your Razor view, you may parse your server side models into JSON using <code>Json.Encode()</code>.</p>
+<p>In your Razor view, you may parse your server side models into JSON using <a href="https://msdn.microsoft.com/en-us/library/system.web.helpers.json(v%3Dvs.111).aspx">Json.Encode()</a>.</p>
 <pre><code>&lt;script&gt;
   App.photos = new Photos(@Html.Raw(Json.Encode(photos)))
 &lt;/script&gt;
