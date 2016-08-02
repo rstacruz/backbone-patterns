@@ -32,10 +32,10 @@ bootstrapped models</a> section.</p>
 <h2 id="define-collection-data">Define collection data</h2>
 <p>Define your collection data in an inline script in the HTML file.
 If you have collections for <code>Photos</code>, you may be doing it this way:</p>
-<pre><code class="lang-html">  <span class="hljs-tag">&lt;<span class="pl-ent">body</span>&gt;</span>
+<pre><code class="lang-html">  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
     ...
 
-    <span class="hljs-tag">&lt;<span class="pl-ent">script</span>&gt;</span><span class="actionscript">
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
       App.photos = <span class="pl-k">new</span> Photos([
         { id: <span class="hljs-number">2</span>, name: <span class="pl-s">&quot;My dog&quot;</span>, filename: <span class="pl-s">&quot;IMG_0392.jpg&quot;</span> },
         { id: <span class="hljs-number">3</span>, name: <span class="pl-s">&quot;Our house&quot;</span>, filename: <span class="pl-s">&quot;IMG_0393.jpg&quot;</span> },
@@ -43,8 +43,8 @@ If you have collections for <code>Photos</code>, you may be doing it this way:</
         { id: <span class="hljs-number">5</span>, name: <span class="pl-s">&quot;His bag&quot;</span>, filename: <span class="pl-s">&quot;IMG_0394.jpg&quot;</span> },
         ...
       ]);
-    </span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="pl-ent">body</span>&gt;</span>
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 </code></pre>
 <h2 id="accessing-instances">Accessing instances</h2>
 <p>To get a single <code>Photo</code>, instead of creating a <code>Photo</code> instance and using
@@ -60,25 +60,25 @@ If you have collections for <code>Photos</code>, you may be doing it this way:</
 <h2 id="in-ruby-(erb)">In Ruby (ERB)</h2>
 <p>In your server-side templates, you will probably be using <code>to_json</code> on a
 collection of your server-side models.</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span>&gt;</span><span class="actionscript">
-  App.photos = <span class="pl-k">new</span> Photos(&lt;%= @photos.to_json %&gt;);
-</span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  App.photos = <span class="pl-k">new</span> Photos(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span> @<span class="hljs-attr">photos.to_json</span> %&gt;</span>);
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
 <p>On Rails, you may need to use the <a href="http://api.rubyonrails.org/classes/ActiveSupport/SafeBuffer.html">.html_safe</a> method.</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="pl-ent">script</span>&gt;</span><span class="actionscript">
-  App.photos = <span class="pl-k">new</span> Photos(&lt;%= @photos.to_json.html_safe %&gt;);
-</span><span class="hljs-tag">&lt;/<span class="pl-ent">script</span>&gt;</span>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  App.photos = <span class="pl-k">new</span> Photos(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span> @<span class="hljs-attr">photos.to_json.html_safe</span> %&gt;</span>);
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
 <h2 id="in-ruby-(haml)">In Ruby (HAML)</h2>
 <p>If you use HAML, you will need use a syntax similar to this.</p>
 <pre><code class="lang-haml">:javascript
-  App.photos = new Photos(#{<span class="ruby"><span class="hljs-variable">@photos</span>.to_json}</span>);
+  App.photos = new Photos(#{<span class="ruby">@photos.to_json}</span>);
 </code></pre>
 <h2 id="in-php">In PHP</h2>
 <p>In your server-side templates, you will probably be using <a href="http://php.net/manual/en/function.json-encode.php">json_encode()</a> on a
 collection of your server-side models.</p>
 <pre><code class="lang-php">&lt;script&gt;
-  App.photos = <span class="pl-k">new</span> Photos(<span class="hljs-preprocessor">&lt;?php</span> <span class="pl-k">echo</span> json_encode(<span class="hljs-variable">$photos</span>); <span class="hljs-preprocessor">?&gt;</span>);
+  App.photos = <span class="pl-k">new</span> Photos(<span class="hljs-meta">&lt;?php</span> <span class="pl-k">echo</span> json_encode($photos); <span class="hljs-meta">?&gt;</span>);
 &lt;/script&gt;
 </code></pre>
 <h2 id="in-c-(razor)">In C# (Razor)</h2>

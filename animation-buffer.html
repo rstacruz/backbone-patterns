@@ -47,7 +47,7 @@ is working, unexpected results will occur.</p>
     <span class="pl-c">// Make the current one move to the left via jQuery.</span>
     <span class="pl-c">// This uses jQuery.fn.animate() that changes CSS values, then fires</span>
     <span class="pl-c">// the function supplied when it&apos;s done.</span>
-    current.animate({ left: -<span class="hljs-number">300</span>, opacity: <span class="hljs-number">0</span> }, <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    current.animate({ left: <span class="hljs-number">-300</span>, opacity: <span class="hljs-number">0</span> }, <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
       current.removeClass(<span class="pl-s">&apos;.current&apos;</span>);
       nextDiv.addClass(<span class="pl-s">&apos;.current&apos;</span>);
     });
@@ -92,7 +92,7 @@ when they are called.</li>
   <span class="pl-c">// Ensure that the animation will not happen while another</span>
   <span class="pl-c">// animation is ongoing.</span>
   Buffer.add(<span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params">next</span>) </span>{
-    current.animate({ left: -<span class="hljs-number">300</span>, opacity: <span class="hljs-number">0</span> }, <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
+    current.animate({ left: <span class="hljs-number">-300</span>, opacity: <span class="hljs-number">0</span> }, <span class="hljs-function"><span class="pl-k">function</span>(<span class="hljs-params"></span>) </span>{
       current.removeClass(<span class="pl-s">&apos;.current&apos;</span>);
       nextDiv.addClass(<span class="pl-s">&apos;.current&apos;</span>);
 
